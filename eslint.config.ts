@@ -95,7 +95,8 @@ export default tseslint.config(
           groups: [
             'value-builtin',
             'value-external',
-            ['value-internal', 'value-parent', 'value-sibling'],
+            'value-internal',
+            ['value-parent', 'value-sibling'],
             [
               'type-import',
               'type-internal',
@@ -107,7 +108,21 @@ export default tseslint.config(
             'side-effect-style',
             'style',
           ],
-          internalPattern: ['^@components/', '^@services/', '^@pages/', '^@utils/'],
+                    internalPattern: [
+            '^/',
+            '^@components/',
+            '^@contexts/',
+            '^@hooks/',
+            '^@pages/',
+            '^@services/',
+            '^@utils/',
+          ],
+          customGroups: {
+            value: {
+              'base-components': ['/*/*/[!-]*/*.*'],
+              'compound-components': ['/*/*/*-*/*.*'],
+            },
+          },
           newlinesBetween: 'always',
         },
       ],
