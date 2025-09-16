@@ -13,3 +13,33 @@
   text-align: center;
   list-style-type: none;
 }
+
+.ingredients_group {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  overflow-y: scroll;
+}
+
+.ingredient_item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.ingredient_item_image {
+  padding: 0;
+}
+
+.ingredient_item_price {
+  margin: 0;
+}
+
+.ingredient_item_name {
+  text-align: center;
+}
