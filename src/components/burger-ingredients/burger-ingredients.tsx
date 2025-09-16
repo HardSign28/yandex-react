@@ -1,5 +1,7 @@
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
-import { useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
+
+import IngredientsGroup from '@components/burger-ingredients/ingredients-group/ingredients-group';
 
 import type { TIngredient } from '@utils/types';
 
@@ -8,26 +10,52 @@ import styles from './burger-ingredients.module.css';
 type TBurgerIngredientsProps = {
   ingredients: TIngredient[];
 };
+const TABS = ['bun', 'main', 'sauce'] as const;
+type IngredientType = (typeof TABS)[number];
+
+const TYPES: Record<IngredientType, IngredientType> = {
+  bun: 'bun',
+  main: 'main',
+  sauce: 'sauce',
+};
+
+const LABELS: Record<IngredientType, string> = {
+  bun: 'Булки',
+  main: 'Начинки',
+  sauce: 'Соусы',
+};
 
 export const BurgerIngredients = ({
   ingredients,
 }: TBurgerIngredientsProps): React.JSX.Element => {
-  console.log(ingredients);
-  const [current, setCurrent] = useState('bun');
+  const [current, setCurrent] = useState<IngredientType>('bun');
+  const bunRef = useRef<HTMLElement>(null);
+  const mainRef = useRef<HTMLElement>(null);
+  const sauceRef = useRef<HTMLElement>(null);
 
-  const Ingredient = (props: TBurgerIngredientsProps): React.JSX.Element => {
-    const { ingredients } = props;
-    return (
-      <ul className={styles.ingredients_group}>
-        {ingredients.map((ingredient: TIngredient) => (
-          <li className={styles.ingredient_item} key={ingredient._id}>
-            <img className={styles.ingredient_item_image} src={ingredient.image} />
-            <div className={styles.ingredient_item_price}>{ingredient.price}</div>
-            <div className={styles.ingredient_item_name}>{ingredient.name}</div>
-          </li>
-        ))}
-      </ul>
-    );
+  const buns = useMemo(() => {
+    return ingredients.filter((item) => item.type === TYPES.bun);
+  }, [ingredients]);
+
+  const mains = useMemo(() => {
+    return ingredients.filter((item) => item.type === TYPES.main);
+  }, [ingredients]);
+
+  const sauces = useMemo(() => {
+    return ingredients.filter((item) => item.type === TYPES.sauce);
+  }, [ingredients]);
+
+  const onTabClick = (tab: IngredientType): void => {
+    setCurrent(tab);
+    (tab === TYPES.bun
+      ? bunRef
+      : tab === TYPES.main
+        ? mainRef
+        : sauceRef
+    ).current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
   };
 
   return (
@@ -35,20 +63,39 @@ export const BurgerIngredients = ({
       <section className={styles.burger_ingredients}>
         <nav>
           <ul className={styles.menu}>
-            <Tab value="bun" active={current === 'bun'} onClick={setCurrent}>
-              Булки
-            </Tab>
-            <Tab value="main" active={current === 'main'} onClick={setCurrent}>
-              Начинки
-            </Tab>
-            <Tab value="sauce" active={current === 'sauce'} onClick={setCurrent}>
-              Соусы
-            </Tab>
+            {TABS.map((tab) => (
+              <Tab
+                key={tab}
+                value={tab}
+                active={current === tab}
+                onClick={() => onTabClick(tab)}
+              >
+                {LABELS[tab]}
+              </Tab>
+            ))}
           </ul>
         </nav>
-        <Ingredient ingredients={ingredients} />
+        <div style={{ overflowY: 'scroll' }}>
+          <IngredientsGroup
+            id="section-bun"
+            ref={bunRef}
+            title={LABELS.bun}
+            group={buns}
+          />
+          <IngredientsGroup
+            id="section-main"
+            ref={mainRef}
+            title={LABELS.main}
+            group={mains}
+          />
+          <IngredientsGroup
+            id="section-sauce"
+            ref={sauceRef}
+            title={LABELS.sauce}
+            group={sauces}
+          />
+        </div>
       </section>
-      <section></section>
     </>
   );
 };
