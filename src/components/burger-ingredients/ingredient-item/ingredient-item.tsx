@@ -9,11 +9,18 @@ type TIngredientProps = {
 const IngredientItem = ({ ingredient }: TIngredientProps): React.JSX.Element => {
   return (
     <li className={styles.ingredient_item}>
-      <img
-        className={styles.ingredient_item_image}
-        src={ingredient.image}
-        alt={ingredient.name}
-      />
+      <picture>
+        {ingredient.image_mobile && (
+          <source media="(max-width: 600px)" srcSet={ingredient.image_mobile} />
+        )}
+        <img
+          className={styles.ingredient_item_image}
+          src={ingredient.image}
+          alt={ingredient.name}
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
       <div className={styles.ingredient_item_price}>{ingredient.price}</div>
       <div className={styles.ingredient_item_name}>{ingredient.name}</div>
     </li>
