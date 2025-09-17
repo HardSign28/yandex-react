@@ -118,8 +118,8 @@ export const BurgerIngredients = ({
         </nav>
         <div
           ref={scrollRef}
-          style={{ overflowY: 'scroll', maxHeight: 600 }}
           onScroll={handleScroll}
+          className={`${styles.burger_ingredients_wrapper} custom-scroll`}
         >
           <IngredientsGroup
             id="section-bun"

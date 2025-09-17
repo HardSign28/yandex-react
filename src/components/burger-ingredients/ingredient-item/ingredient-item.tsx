@@ -1,10 +1,6 @@
-import type { TIngredient } from '@utils/types.ts';
+import type { TIngredientProps } from '@utils/types.ts';
 
 import styles from './ingredient-item.module.css';
-
-type TIngredientProps = {
-  ingredient: TIngredient;
-};
 
 const IngredientItem = ({ ingredient }: TIngredientProps): React.JSX.Element => {
   return (
