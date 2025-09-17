@@ -1,5 +1,5 @@
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState, useCallback } from 'react';
 
 import IngredientsGroup from '@components/burger-ingredients/ingredients-group/ingredients-group';
 
@@ -32,6 +32,7 @@ export const BurgerIngredients = ({
   const bunRef = useRef<HTMLElement>(null);
   const mainRef = useRef<HTMLElement>(null);
   const sauceRef = useRef<HTMLElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const buns = useMemo(() => {
     return ingredients.filter((item) => item.type === TYPES.bun);
@@ -58,6 +59,46 @@ export const BurgerIngredients = ({
     });
   };
 
+  const isTickingRef = useRef(false);
+
+  const handleScroll = useCallback(() => {
+    if (isTickingRef.current) return;
+    isTickingRef.current = true;
+
+    requestAnimationFrame(() => {
+      isTickingRef.current = false;
+
+      const root = scrollRef.current;
+      if (!root) return;
+
+      const rootTop = root.getBoundingClientRect().top;
+
+      const sections: [IngredientType, HTMLElement | null][] = [
+        ['bun', bunRef.current],
+        ['main', mainRef.current],
+        ['sauce', sauceRef.current],
+      ];
+
+      let best: { tab: IngredientType; dist: number } | null = null;
+
+      for (const [tab, el] of sections) {
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        const dist = rect.top - rootTop;
+
+        const score = Math.abs(dist);
+
+        if (!best || score < best.dist) {
+          best = { tab, dist: score };
+        }
+      }
+
+      if (best && best.tab !== current) {
+        setCurrent(best.tab);
+      }
+    });
+  }, [current]);
+
   return (
     <>
       <section className={styles.burger_ingredients}>
@@ -75,7 +116,11 @@ export const BurgerIngredients = ({
             ))}
           </ul>
         </nav>
-        <div style={{ overflowY: 'scroll' }}>
+        <div
+          ref={scrollRef}
+          style={{ overflowY: 'scroll', maxHeight: 600 }}
+          onScroll={handleScroll}
+        >
           <IngredientsGroup
             id="section-bun"
             ref={bunRef}
