@@ -1,7 +1,9 @@
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
 import { useMemo, useRef, useState, useCallback } from 'react';
 
+import IngredientDetails from '@components/burger-ingredients/ingredient-details/ingredient-details';
 import IngredientsGroup from '@components/burger-ingredients/ingredients-group/ingredients-group';
+import Modal from '@components/modal/modal';
 
 import type { TIngredient } from '@utils/types';
 
@@ -28,11 +30,18 @@ const LABELS: Record<IngredientType, string> = {
 export const BurgerIngredients = ({
   ingredients,
 }: TBurgerIngredientsProps): React.JSX.Element => {
-  const [current, setCurrent] = useState<IngredientType>('bun');
+  const [currentTab, setCurrentTab] = useState<IngredientType>('bun');
   const bunRef = useRef<HTMLElement>(null);
   const mainRef = useRef<HTMLElement>(null);
   const sauceRef = useRef<HTMLElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const [selectedIngredient, setSelectedIngredient] = useState<TIngredient | null>(null);
+  const openIngredient = useCallback(
+    (ingredient: TIngredient) => setSelectedIngredient(ingredient),
+    []
+  );
+  const closeModal = useCallback(() => setSelectedIngredient(null), []);
 
   const buns = useMemo(() => {
     return ingredients.filter((item) => item.type === TYPES.bun);
@@ -47,7 +56,7 @@ export const BurgerIngredients = ({
   }, [ingredients]);
 
   const onTabClick = (tab: IngredientType): void => {
-    setCurrent(tab);
+    setCurrentTab(tab);
     (tab === TYPES.bun
       ? bunRef
       : tab === TYPES.main
@@ -93,11 +102,11 @@ export const BurgerIngredients = ({
         }
       }
 
-      if (best && best.tab !== current) {
-        setCurrent(best.tab);
+      if (best && best.tab !== currentTab) {
+        setCurrentTab(best.tab);
       }
     });
-  }, [current]);
+  }, [currentTab]);
 
   return (
     <>
@@ -108,7 +117,7 @@ export const BurgerIngredients = ({
               <Tab
                 key={tab}
                 value={tab}
-                active={current === tab}
+                active={currentTab === tab}
                 onClick={() => onTabClick(tab)}
               >
                 {LABELS[tab]}
@@ -126,20 +135,32 @@ export const BurgerIngredients = ({
             ref={bunRef}
             title={LABELS.bun}
             group={buns}
+            onItemClick={openIngredient}
           />
           <IngredientsGroup
             id="section-main"
             ref={mainRef}
             title={LABELS.main}
             group={mains}
+            onItemClick={openIngredient}
           />
           <IngredientsGroup
             id="section-sauce"
             ref={sauceRef}
             title={LABELS.sauce}
             group={sauces}
+            onItemClick={openIngredient}
           />
         </div>
+        <Modal
+          isOpen={!!selectedIngredient}
+          onClose={closeModal}
+          labelledById="ingredient-modal-title"
+          closeOnOverlay
+          title="Детали ингридиента"
+        >
+          {selectedIngredient && <IngredientDetails ingredient={selectedIngredient} />}
+        </Modal>
       </section>
     </>
   );

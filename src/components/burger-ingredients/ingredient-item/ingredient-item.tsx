@@ -1,10 +1,13 @@
-import type { TIngredientProps } from '@utils/types.ts';
+import type { TIngredientProps } from '@utils/types';
 
 import styles from './ingredient-item.module.css';
 
-const IngredientItem = ({ ingredient }: TIngredientProps): React.JSX.Element => {
+const IngredientItem = ({
+  ingredient,
+  onClick,
+}: TIngredientProps): React.JSX.Element => {
   return (
-    <li className={styles.ingredient_item}>
+    <li className={styles.ingredient_item} onClick={onClick}>
       <picture>
         {ingredient.image_mobile && (
           <source media="(max-width: 600px)" srcSet={ingredient.image_mobile} />

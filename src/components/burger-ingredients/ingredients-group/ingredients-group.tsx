@@ -10,16 +10,21 @@ type TIngredientsGroupProps = {
   id?: string;
   title: string;
   group: TIngredient[];
+  onItemClick?: (ingredient: TIngredient) => void;
 };
 
 const IngredientsGroup = forwardRef<HTMLElement, TIngredientsGroupProps>(
-  ({ id, title, group }, ref): React.JSX.Element => {
+  function IngredientsGroup({ id, title, group, onItemClick }, ref): React.JSX.Element {
     return (
       <section id={id} ref={ref}>
         <h3>{title}</h3>
         <ul className={styles.ingredients_group}>
           {group.map((ingredient) => (
-            <IngredientItem ingredient={ingredient} key={ingredient._id} />
+            <IngredientItem
+              key={ingredient._id}
+              ingredient={ingredient}
+              onClick={() => onItemClick?.(ingredient)}
+            />
           ))}
         </ul>
       </section>

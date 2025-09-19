@@ -1,3 +1,13 @@
-.test {
+.ingredient_details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ingredient_item_image {
+  padding: 0;
+}
+
+.ingredient_item_name {
   padding: 0;
 }

@@ -1,0 +1,19 @@
+.modal {
+  width: 100%;
+  max-width: 560px;
+  background: #000;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 25%);
+}
+
+.modal_header {
+  position: relative;
+  padding-right: 40px;
+}
+
+.modal_icon_close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+}

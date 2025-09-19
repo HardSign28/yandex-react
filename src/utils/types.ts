@@ -15,4 +15,5 @@ export type TIngredient = {
 
 export type TIngredientProps = {
   ingredient: TIngredient;
+  onClick?: () => void;
 };
