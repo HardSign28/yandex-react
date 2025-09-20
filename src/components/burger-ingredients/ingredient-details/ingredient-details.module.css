@@ -4,10 +4,24 @@
   align-items: center;
 }
 
-.ingredient_item_image {
-  padding: 0;
+.ingredient_details_image {
+  height: 120px;
+
+  @media screen and (width >= 601px) {
+    height: 240px;
+  }
 }
 
-.ingredient_item_name {
-  padding: 0;
+.nutritional_facts {
+  display: flex;
+  gap: 24px;
+}
+
+.nutritional_facts_item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-inactive-color);
+  composes: text text_type_main-default from global;
 }

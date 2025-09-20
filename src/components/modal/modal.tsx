@@ -56,7 +56,7 @@ const Modal = ({
           e.stopPropagation();
         }}
       >
-        <div className={styles.modal_header}>
+        <div className={`${styles.modal_header} text text_type_main-large pt-3 pb-3`}>
           {title}
           <CloseIcon
             className={styles.modal_icon_close}
