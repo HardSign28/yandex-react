@@ -1,7 +1,40 @@
+.burger_constructor_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: hidden;
+}
+
 .burger_constructor {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   width: 600px;
-  padding-bottom: 20px;
   color: var(--text-primary-color);
+}
+
+.burger_ingredients {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.burger_ingredients_item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.checkout {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  max-width: 536px;
+}
+
+.checkout_price {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

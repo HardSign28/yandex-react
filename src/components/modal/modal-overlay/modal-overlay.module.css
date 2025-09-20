@@ -4,6 +4,6 @@
   z-index: 1000;
   display: grid;
   padding: 16px;
-  background: rgb(0 0 0 / 50%);
+  background: rgb(0 0 0 / 60%);
   place-items: center;
 }

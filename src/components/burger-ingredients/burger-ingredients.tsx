@@ -109,59 +109,57 @@ export const BurgerIngredients = ({
   }, [currentTab]);
 
   return (
-    <>
-      <section className={styles.burger_ingredients}>
-        <nav>
-          <ul className={styles.menu}>
-            {TABS.map((tab) => (
-              <Tab
-                key={tab}
-                value={tab}
-                active={currentTab === tab}
-                onClick={() => onTabClick(tab)}
-              >
-                {LABELS[tab]}
-              </Tab>
-            ))}
-          </ul>
-        </nav>
-        <div
-          ref={scrollRef}
-          onScroll={handleScroll}
-          className={`${styles.burger_ingredients_wrapper} custom-scroll`}
-        >
-          <IngredientsGroup
-            id="section-bun"
-            ref={bunRef}
-            title={LABELS.bun}
-            group={buns}
-            onItemClick={openIngredient}
-          />
-          <IngredientsGroup
-            id="section-main"
-            ref={mainRef}
-            title={LABELS.main}
-            group={mains}
-            onItemClick={openIngredient}
-          />
-          <IngredientsGroup
-            id="section-sauce"
-            ref={sauceRef}
-            title={LABELS.sauce}
-            group={sauces}
-            onItemClick={openIngredient}
-          />
-        </div>
-        <Modal
-          isOpen={!!selectedIngredient}
-          onClose={closeModal}
-          labelledById="ingredient-modal-title"
-          closeOnOverlay
-          title="Детали ингридиента"
-        >
-          {selectedIngredient && <IngredientDetails ingredient={selectedIngredient} />}
-        </Modal>
-      </section>
-    </>
+    <section className={`${styles.burger_ingredients} mb-10`}>
+      <nav>
+        <ul className={styles.menu}>
+          {TABS.map((tab) => (
+            <Tab
+              key={tab}
+              value={tab}
+              active={currentTab === tab}
+              onClick={() => onTabClick(tab)}
+            >
+              {LABELS[tab]}
+            </Tab>
+          ))}
+        </ul>
+      </nav>
+      <div
+        ref={scrollRef}
+        onScroll={handleScroll}
+        className={`${styles.burger_ingredients_wrapper} custom-scroll`}
+      >
+        <IngredientsGroup
+          id="section-bun"
+          ref={bunRef}
+          title={LABELS.bun}
+          group={buns}
+          onItemClick={openIngredient}
+        />
+        <IngredientsGroup
+          id="section-main"
+          ref={mainRef}
+          title={LABELS.main}
+          group={mains}
+          onItemClick={openIngredient}
+        />
+        <IngredientsGroup
+          id="section-sauce"
+          ref={sauceRef}
+          title={LABELS.sauce}
+          group={sauces}
+          onItemClick={openIngredient}
+        />
+      </div>
+      <Modal
+        isOpen={!!selectedIngredient}
+        onClose={closeModal}
+        labelledById="ingredient-modal-title"
+        closeOnOverlay
+        title="Детали ингридиента"
+      >
+        {selectedIngredient && <IngredientDetails ingredient={selectedIngredient} />}
+      </Modal>
+    </section>
   );
 };
