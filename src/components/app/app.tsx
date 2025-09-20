@@ -4,20 +4,9 @@ import { AppHeader } from '@components/app-header/app-header';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
 
-import type { TIngredient } from '@utils/types';
+import type { IngredientsResponse, State, TIngredient } from '@utils/types';
 
 import styles from './app.module.css';
-
-type State = {
-  productData: TIngredient[];
-  loading: boolean;
-  error?: string | null;
-};
-
-type IngredientsResponse = {
-  success: boolean;
-  data?: TIngredient[];
-};
 
 const API_URL = 'https://norma.nomoreparties.space';
 

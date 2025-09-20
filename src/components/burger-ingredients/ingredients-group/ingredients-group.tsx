@@ -2,16 +2,9 @@ import { forwardRef } from 'react';
 
 import IngredientItem from '@components/burger-ingredients/ingredient-item/ingredient-item';
 
-import type { TIngredient } from '@utils/types';
+import type { TIngredientsGroupProps } from '@utils/types';
 
 import styles from './ingredients-group.module.css';
-
-type TIngredientsGroupProps = {
-  id?: string;
-  title: string;
-  group: TIngredient[];
-  onItemClick?: (ingredient: TIngredient) => void;
-};
 
 const IngredientsGroup = forwardRef<HTMLElement, TIngredientsGroupProps>(
   function IngredientsGroup({ id, title, group, onItemClick }, ref): React.JSX.Element {

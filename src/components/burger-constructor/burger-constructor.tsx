@@ -11,13 +11,9 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import OrderDetails from '@components/burger-constructor/order-details/order-details';
 import Modal from '@components/modal/modal.tsx';
 
-import type { TIngredient } from '@utils/types';
+import type { TBurgerConstructorProps } from '@utils/types';
 
 import styles from './burger-constructor.module.css';
-
-type TBurgerConstructorProps = {
-  ingredients: TIngredient[];
-};
 
 export const BurgerConstructor = ({
   ingredients,

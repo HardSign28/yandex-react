@@ -4,28 +4,11 @@ import { useMemo, useRef, useState, useCallback } from 'react';
 import IngredientDetails from '@components/burger-ingredients/ingredient-details/ingredient-details';
 import IngredientsGroup from '@components/burger-ingredients/ingredients-group/ingredients-group';
 import Modal from '@components/modal/modal';
+import { LABELS, TABS, TYPES } from '@utils/types';
 
-import type { TIngredient } from '@utils/types';
+import type { IngredientType, TBurgerIngredientsProps, TIngredient } from '@utils/types';
 
 import styles from './burger-ingredients.module.css';
-
-type TBurgerIngredientsProps = {
-  ingredients: TIngredient[];
-};
-const TABS = ['bun', 'main', 'sauce'] as const;
-type IngredientType = (typeof TABS)[number];
-
-const TYPES: Record<IngredientType, IngredientType> = {
-  bun: 'bun',
-  main: 'main',
-  sauce: 'sauce',
-};
-
-const LABELS: Record<IngredientType, string> = {
-  bun: 'Булки',
-  main: 'Начинки',
-  sauce: 'Соусы',
-};
 
 export const BurgerIngredients = ({
   ingredients,

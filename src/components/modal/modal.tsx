@@ -4,17 +4,10 @@ import { createPortal } from 'react-dom';
 
 import ModalOverlay from '@components/modal/modal-overlay/modal-overlay';
 
+import type { ModalProps } from '@utils/types.ts';
+
 import styles from './modal.module.css';
 
-type ModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  children: React.ReactNode;
-  ariaLabel?: string;
-  labelledById?: string;
-  closeOnOverlay?: boolean;
-  title?: string;
-};
 const Modal = ({
   title,
   isOpen,

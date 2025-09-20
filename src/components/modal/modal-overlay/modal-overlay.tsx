@@ -1,10 +1,7 @@
+import type { ModalOverlayProps } from '@utils/types';
+
 import styles from './modal-overlay.module.css';
 
-type ModalOverlayProps = {
-  children: React.ReactNode;
-  onClose?: () => void;
-  closeOnOverlay?: boolean;
-};
 const ModalOverlay = ({
   children,
   onClose,
