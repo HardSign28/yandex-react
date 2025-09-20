@@ -4,7 +4,7 @@ import {
   CurrencyIcon,
   DragIcon,
 } from '@krgaa/react-developer-burger-ui-components';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
@@ -22,9 +22,11 @@ type TBurgerConstructorProps = {
 export const BurgerConstructor = ({
   ingredients,
 }: TBurgerConstructorProps): React.JSX.Element => {
-  console.log(ingredients);
-
   const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const demoItems = useMemo(() => {
+    return ingredients.filter((item) => item.type === 'main');
+  }, [ingredients]);
 
   const closeModal = (): void => {
     setModalIsOpen(false);
@@ -43,70 +45,16 @@ export const BurgerConstructor = ({
         />
         <div className={`${styles.burger_ingredients} custom-scroll`}>
           <DndProvider backend={HTML5Backend}>
-            <div className={styles.burger_ingredients_item}>
-              <DragIcon type="primary" className="mr-2" />
-              <ConstructorElement
-                text="Краторная булка N-200i (верх)"
-                price={50}
-                thumbnail={ingredients[1].image}
-              />
-            </div>
-            <div className={styles.burger_ingredients_item}>
-              <DragIcon type="primary" className="mr-2" />
-              <ConstructorElement
-                text="Краторная булка N-200i (верх)"
-                price={50}
-                thumbnail={ingredients[1].image}
-              />
-            </div>
-            <div className={styles.burger_ingredients_item}>
-              <DragIcon type="primary" className="mr-2" />
-              <ConstructorElement
-                text="Краторная булка N-200i (верх)"
-                price={50}
-                thumbnail={ingredients[1].image}
-              />
-            </div>
-            <div className={styles.burger_ingredients_item}>
-              <DragIcon type="primary" className="mr-2" />
-              <ConstructorElement
-                text="Краторная булка N-200i (верх)"
-                price={50}
-                thumbnail={ingredients[1].image}
-              />
-            </div>
-            <div className={styles.burger_ingredients_item}>
-              <DragIcon type="primary" className="mr-2" />
-              <ConstructorElement
-                text="Краторная булка N-200i (верх)"
-                price={50}
-                thumbnail={ingredients[1].image}
-              />
-            </div>
-            <div className={styles.burger_ingredients_item}>
-              <DragIcon type="primary" className="mr-2" />
-              <ConstructorElement
-                text="Краторная булка N-200i (верх)"
-                price={50}
-                thumbnail={ingredients[1].image}
-              />
-            </div>
-            <div className={styles.burger_ingredients_item}>
-              <DragIcon type="primary" className="mr-2" />
-              <ConstructorElement
-                text="Краторная булка N-200i (верх)"
-                price={50}
-                thumbnail={ingredients[1].image}
-              />
-            </div>
-            <div className={styles.burger_ingredients_item}>
-              <DragIcon type="primary" className="mr-2" />
-              <ConstructorElement
-                text="Краторная булка N-200i (верх)"
-                price={50}
-                thumbnail={ingredients[1].image}
-              />
-            </div>
+            {demoItems.map((demoItem) => (
+              <div className={styles.burger_ingredients_item} key={demoItem._id}>
+                <DragIcon type="primary" className="mr-2" />
+                <ConstructorElement
+                  text="Краторная булка N-200i (верх)"
+                  price={50}
+                  thumbnail={demoItem.image}
+                />
+              </div>
+            ))}
           </DndProvider>
         </div>
         <ConstructorElement

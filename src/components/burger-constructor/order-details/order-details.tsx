@@ -1,3 +1,5 @@
+import iconOrderDetails from '@/images/icon-order-details.svg';
+
 import styles from './order-details.module.css';
 
 const OrderDetails = (): React.JSX.Element => {
@@ -7,7 +9,11 @@ const OrderDetails = (): React.JSX.Element => {
         034536
       </div>
       <div className="text text_type_main-medium mt-8">идентификатор заказа</div>
-      <div className={`${styles.order_details_icon} mt-15`}></div>
+      <img
+        src={iconOrderDetails}
+        className={`${styles.order_details_icon} mt-15`}
+        alt="iconOrderDetails"
+      ></img>
       <div className="text text_type_main-default mt-15">Ваш заказ начали готовить</div>
       <div className="text text_type_main-default text_color_inactive mt-2">
         Дождитесь готовности на орбитальной станции
