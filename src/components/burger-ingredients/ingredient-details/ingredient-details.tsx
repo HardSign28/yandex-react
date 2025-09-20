@@ -21,7 +21,9 @@ const IngredientDetails = ({ ingredient }: TIngredientProps): React.JSX.Element 
         />
       </picture>
       <div className="text text_type_main-medium mb-8">{ingredient.name}</div>
-      <div className={`${styles.nutritional_facts}`}>
+      <div
+        className={`${styles.nutritional_facts} text text_type_main-default text_color_inactive`}
+      >
         <div className={styles.nutritional_facts_item}>
           <div>Калории, ккал</div>
           <div className="text text_type_digits-default">420</div>

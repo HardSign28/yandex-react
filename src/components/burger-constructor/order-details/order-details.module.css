@@ -1,0 +1,21 @@
+.order_details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.order_details_number {
+  text-shadow:
+    0 0 16px rgb(51 51 255 / 25%),
+    0 4px 32px rgb(51 51 255 / 50%),
+    0 0 8px rgb(51 51 255 / 25%);
+}
+
+.order_details_icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 120px;
+  background: url('/icon-order-details.svg') no-repeat center;
+}

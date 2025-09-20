@@ -23,5 +23,4 @@
   align-items: center;
   gap: 8px;
   color: var(--text-inactive-color);
-  composes: text text_type_main-default from global;
 }
