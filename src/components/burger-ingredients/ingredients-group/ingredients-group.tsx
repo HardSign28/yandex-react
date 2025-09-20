@@ -16,9 +16,9 @@ type TIngredientsGroupProps = {
 const IngredientsGroup = forwardRef<HTMLElement, TIngredientsGroupProps>(
   function IngredientsGroup({ id, title, group, onItemClick }, ref): React.JSX.Element {
     return (
-      <section id={id} ref={ref}>
-        <h3>{title}</h3>
-        <ul className={styles.ingredients_group}>
+      <section className="mt-10 mb-10" id={id} ref={ref}>
+        <h3 className="text text_type_main-medium mb-6">{title}</h3>
+        <ul className={`${styles.ingredients_group} ml-4 mr-4`}>
           {group.map((ingredient) => (
             <IngredientItem
               key={ingredient._id}
