@@ -4,27 +4,21 @@ import {
   CurrencyIcon,
   DragIcon,
 } from '@krgaa/react-developer-burger-ui-components';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useDrop, type DropTargetMonitor } from 'react-dnd';
 
 import OrderDetails from '@components/burger-constructor/order-details/order-details';
 import Modal from '@components/modal/modal';
 
-import type {
-  Collected,
-  DragItem,
-  TBurgerConstructorProps,
-  TIngredient,
-} from '@utils/types';
+import type { Collected, DragItem, TIngredient } from '@utils/types';
 
 import styles from './burger-constructor.module.css';
 
-export const BurgerConstructor = ({
-  ingredients,
-}: TBurgerConstructorProps): React.JSX.Element => {
+export const BurgerConstructor = (): React.JSX.Element => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const [bun, setBun] = useState<TIngredient | null>(null);
+  const [fillings, setFillings] = useState<TIngredient[]>([]);
 
   const dropSpec = useCallback(
     () => ({
@@ -47,9 +41,21 @@ export const BurgerConstructor = ({
     [dropSpec]
   );
 
-  const demoItems = useMemo(() => {
-    return ingredients.filter((item) => item.type === 'main');
-  }, [ingredients]);
+  const midDropSpec = useCallback(
+    () => ({
+      accept: ['main', 'sauce'] as ('main' | 'sauce')[],
+      drop: (item: DragItem): void => setFillings((prev) => [...prev, item.ingredient]),
+      collect: (monitor: DropTargetMonitor<DragItem, void>): Collected => ({
+        canDrop: monitor.canDrop(),
+      }),
+    }),
+    []
+  );
+
+  const [{ canDrop: canDropMid }, dropMidRef] = useDrop<DragItem, void, Collected>(
+    midDropSpec,
+    [midDropSpec]
+  );
 
   const closeModal = (): void => {
     setModalIsOpen(false);
@@ -61,9 +67,6 @@ export const BurgerConstructor = ({
         <div
           ref={(node) => {
             if (node) dropTopRef(node);
-          }}
-          style={{
-            outline: canDropTop || canDropBottom ? '2px dashed #4C6FFF' : 'none',
           }}
           className={`${styles.burger_ingredient_empty} ${
             canDropTop || canDropBottom ? styles.can_drop : ''
@@ -81,17 +84,33 @@ export const BurgerConstructor = ({
             'Перетащите булку сюда'
           )}
         </div>
-        <div className={`${styles.burger_ingredients} custom-scroll`}>
-          {demoItems.map((demoItem) => (
-            <div className={styles.burger_ingredients_item} key={demoItem._id}>
-              <DragIcon type="primary" className="mr-2" />
-              <ConstructorElement
-                text={demoItem.name}
-                price={50}
-                thumbnail={demoItem.image}
-              />
+
+        <div
+          ref={(node) => {
+            if (node) dropMidRef(node);
+          }}
+          className={`${styles.burger_ingredients} custom-scroll`}
+        >
+          {fillings.length === 0 ? (
+            <div
+              className={`${styles.burger_ingredient_empty} ${
+                canDropMid ? styles.can_drop : ''
+              } constructor-element ml-10`}
+            >
+              Перетащите начинку сюда
             </div>
-          ))}
+          ) : (
+            fillings.map((ing, idx) => (
+              <div className={styles.burger_ingredients_item} key={`${ing._id}-${idx}`}>
+                <DragIcon type="primary" className="mr-2" />
+                <ConstructorElement
+                  text={ing.name}
+                  price={ing.price}
+                  thumbnail={ing.image}
+                />
+              </div>
+            ))
+          )}
         </div>
         <div
           ref={(node) => {

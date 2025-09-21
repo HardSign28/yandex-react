@@ -53,7 +53,7 @@ export const App = (): React.JSX.Element => {
         {!state.loading && state.productData.length > 0 && (
           <DndProvider backend={HTML5Backend}>
             <BurgerIngredients ingredients={state.productData} />
-            <BurgerConstructor ingredients={state.productData} />
+            <BurgerConstructor />
           </DndProvider>
         )}
       </main>
