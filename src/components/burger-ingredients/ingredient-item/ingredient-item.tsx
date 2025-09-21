@@ -1,15 +1,35 @@
 import { Counter, CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
+import { useDrag } from 'react-dnd';
 
-import type { TIngredientProps } from '@utils/types';
+import type { TIngredient, TIngredientProps } from '@utils/types';
 
 import styles from './ingredient-item.module.css';
+type DragItem = { ingredient: TIngredient };
 
 const IngredientItem = ({
   ingredient,
   onClick,
 }: TIngredientProps): React.JSX.Element => {
+  const [{ isDragging }, dragRef] = useDrag<DragItem, void, { isDragging: boolean }>(
+    () => ({
+      type: 'bun',
+      item: { ingredient },
+      canDrag: ingredient.type === 'bun',
+      collect: (monitor): { isDragging: boolean } => ({
+        isDragging: monitor.isDragging(),
+      }),
+    }),
+    [ingredient]
+  );
   return (
-    <li className={styles.ingredient_item} onClick={onClick}>
+    <li
+      ref={(node) => {
+        if (node) dragRef(node);
+      }}
+      className={styles.ingredient_item}
+      onClick={onClick}
+      style={{ opacity: isDragging ? 0.5 : 1 }}
+    >
       <picture>
         {ingredient.image_mobile && (
           <source media="(max-width: 600px)" srcSet={ingredient.image_mobile} />

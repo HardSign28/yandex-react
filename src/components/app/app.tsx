@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { AppHeader } from '@components/app-header/app-header';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
@@ -49,10 +51,10 @@ export const App = (): React.JSX.Element => {
       <main className={`${styles.main} pl-4 pr-4`}>
         {state.loading && 'Загрузка...'}
         {!state.loading && state.productData.length > 0 && (
-          <>
+          <DndProvider backend={HTML5Backend}>
             <BurgerIngredients ingredients={state.productData} />
             <BurgerConstructor ingredients={state.productData} />
-          </>
+          </DndProvider>
         )}
       </main>
     </div>
