@@ -4,14 +4,15 @@ import {
   CurrencyIcon,
   DragIcon,
 } from '@krgaa/react-developer-burger-ui-components';
-import { useMemo, useState } from 'react';
-import { useDrop } from 'react-dnd';
+import { useCallback, useMemo, useState } from 'react';
+import { useDrop, type DropTargetMonitor } from 'react-dnd';
 
 import OrderDetails from '@components/burger-constructor/order-details/order-details';
 import Modal from '@components/modal/modal';
 
 import type { TBurgerConstructorProps, TIngredient } from '@utils/types';
 type DragItemBun = { ingredient: TIngredient };
+type Collected = { canDrop: boolean };
 
 import styles from './burger-constructor.module.css';
 
@@ -22,35 +23,27 @@ export const BurgerConstructor = ({
 
   const [bun, setBun] = useState<TIngredient | null>(null);
 
-  /**
-   * Drop зона верхней булки
-   */
-  const [{ canDrop }, dropTopRef] = useDrop<DragItemBun, void, { canDrop: boolean }>(
+  const dropSpec = useCallback(
     () => ({
-      accept: 'bun',
-      drop: (item): void => setBun(item.ingredient),
-      collect: (monitor): { canDrop: boolean } => ({ canDrop: monitor.canDrop() }),
-    }),
-    []
-  );
-
-  /**
-   * Drop зона нижней булки
-   */
-  const [{ isOverBottom }, dropBottomRef] = useDrop<
-    DragItemBun,
-    void,
-    { isOverBottom: boolean }
-  >(
-    () => ({
-      accept: 'bun',
-      drop: (item): void => setBun(item.ingredient),
-      collect: (monitor): { isOverBottom: boolean } => ({
-        isOverBottom: monitor.isOver(),
+      accept: 'bun' as const,
+      drop: (item: DragItemBun): void => setBun(item.ingredient),
+      collect: (monitor: DropTargetMonitor<DragItemBun, void>): Collected => ({
+        canDrop: monitor.canDrop(),
       }),
     }),
     []
   );
+
+  const [{ canDrop: canDropTop }, dropTopRef] = useDrop<DragItemBun, void, Collected>(
+    dropSpec,
+    [dropSpec]
+  );
+
+  const [{ canDrop: canDropBottom }, dropBottomRef] = useDrop<
+    DragItemBun,
+    void,
+    Collected
+  >(dropSpec, [dropSpec]);
 
   const demoItems = useMemo(() => {
     return ingredients.filter((item) => item.type === 'main');
@@ -67,7 +60,9 @@ export const BurgerConstructor = ({
           ref={(node) => {
             if (node) dropTopRef(node);
           }}
-          style={{ outline: canDrop ? '2px dashed #4C6FFF' : 'none' }}
+          style={{
+            outline: canDropTop || canDropBottom ? '2px dashed #4C6FFF' : 'none',
+          }}
           className={`constructor-element constructor-element_pos_top ml-10 ${styles.burger_ingredient_empty}`}
         >
           {bun ? (
@@ -99,7 +94,9 @@ export const BurgerConstructor = ({
             if (node) dropBottomRef(node);
           }}
           className={`constructor-element constructor-element_pos_bottom ml-10 ${styles.burger_ingredient_empty}`}
-          style={{ outline: isOverBottom ? '2px dashed #4C6FFF' : 'none' }}
+          style={{
+            outline: canDropTop || canDropBottom ? '2px dashed #4C6FFF' : 'none',
+          }}
         >
           {bun ? (
             <ConstructorElement
