@@ -25,11 +25,11 @@ export const BurgerConstructor = ({
   /**
    * Drop зона верхней булки
    */
-  const [{ isOverTop }, dropTopRef] = useDrop<DragItemBun, void, { isOverTop: boolean }>(
+  const [{ canDrop }, dropTopRef] = useDrop<DragItemBun, void, { canDrop: boolean }>(
     () => ({
       accept: 'bun',
       drop: (item): void => setBun(item.ingredient),
-      collect: (monitor): { isOverTop: boolean } => ({ isOverTop: monitor.isOver() }),
+      collect: (monitor): { canDrop: boolean } => ({ canDrop: monitor.canDrop() }),
     }),
     []
   );
@@ -67,23 +67,27 @@ export const BurgerConstructor = ({
           ref={(node) => {
             if (node) dropTopRef(node);
           }}
-          style={{ outline: isOverTop ? '2px dashed #4C6FFF' : 'none' }}
+          style={{ outline: canDrop ? '2px dashed #4C6FFF' : 'none' }}
+          className={`constructor-element constructor-element_pos_top ml-10 ${styles.burger_ingredient_empty}`}
         >
-          <ConstructorElement
-            type="top"
-            isLocked={true}
-            text={bun ? bun.name : 'Перетащите булку сюда'}
-            price={bun ? bun.price : 0}
-            thumbnail={bun ? bun.image : ''}
-            extraClass="ml-10"
-          />
+          {bun ? (
+            <ConstructorElement
+              type="top"
+              isLocked={true}
+              text={bun.name}
+              price={bun.price}
+              thumbnail={bun.image}
+            />
+          ) : (
+            'Перетащите булку сюда'
+          )}
         </div>
         <div className={`${styles.burger_ingredients} custom-scroll`}>
           {demoItems.map((demoItem) => (
             <div className={styles.burger_ingredients_item} key={demoItem._id}>
               <DragIcon type="primary" className="mr-2" />
               <ConstructorElement
-                text="Краторная булка N-200i (верх)"
+                text={demoItem.name}
                 price={50}
                 thumbnail={demoItem.image}
               />
@@ -94,16 +98,20 @@ export const BurgerConstructor = ({
           ref={(node) => {
             if (node) dropBottomRef(node);
           }}
+          className={`constructor-element constructor-element_pos_bottom ml-10 ${styles.burger_ingredient_empty}`}
           style={{ outline: isOverBottom ? '2px dashed #4C6FFF' : 'none' }}
         >
-          <ConstructorElement
-            type="bottom"
-            isLocked={true}
-            text={bun ? bun.name : 'Перетащите булку сюда'}
-            price={bun ? bun.price : 0}
-            thumbnail={bun ? bun.image : ''}
-            extraClass="ml-10"
-          />
+          {bun ? (
+            <ConstructorElement
+              type="bottom"
+              isLocked={true}
+              text={bun.name}
+              price={bun.price}
+              thumbnail={bun.image}
+            />
+          ) : (
+            'Перетащите булку сюда'
+          )}
         </div>
       </div>
       <div className={`${styles.checkout} mt-10 mb-10`}>
