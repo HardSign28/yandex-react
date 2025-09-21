@@ -46,3 +46,7 @@
   align-items: center;
   padding: 0;
 }
+
+.can_drop {
+  outline: 2px dashed var(--colors-interface-accent);
+}

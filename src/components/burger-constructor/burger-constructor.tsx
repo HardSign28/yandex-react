@@ -63,7 +63,9 @@ export const BurgerConstructor = ({
           style={{
             outline: canDropTop || canDropBottom ? '2px dashed #4C6FFF' : 'none',
           }}
-          className={`constructor-element constructor-element_pos_top ml-10 ${styles.burger_ingredient_empty}`}
+          className={`${styles.burger_ingredient_empty} ${
+            canDropTop || canDropBottom ? styles.can_drop : ''
+          } constructor-element constructor-element_pos_top ml-10`}
         >
           {bun ? (
             <ConstructorElement
@@ -93,10 +95,9 @@ export const BurgerConstructor = ({
           ref={(node) => {
             if (node) dropBottomRef(node);
           }}
-          className={`constructor-element constructor-element_pos_bottom ml-10 ${styles.burger_ingredient_empty}`}
-          style={{
-            outline: canDropTop || canDropBottom ? '2px dashed #4C6FFF' : 'none',
-          }}
+          className={`${styles.burger_ingredient_empty} ${
+            canDropTop || canDropBottom ? styles.can_drop : ''
+          } constructor-element constructor-element_pos_bottom ml-10`}
         >
           {bun ? (
             <ConstructorElement
