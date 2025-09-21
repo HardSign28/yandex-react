@@ -1,0 +1,26 @@
+.ingredient_details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ingredient_details_image {
+  height: 120px;
+
+  @media screen and (width >= 601px) {
+    height: 240px;
+  }
+}
+
+.nutritional_facts {
+  display: flex;
+  gap: 24px;
+}
+
+.nutritional_facts_item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-inactive-color);
+}

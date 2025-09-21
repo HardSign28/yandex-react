@@ -12,3 +12,65 @@ export type TIngredient = {
   image_mobile: string;
   __v: number;
 };
+
+export type TBurgerIngredientsProps = {
+  ingredients: TIngredient[];
+};
+
+export type TIngredientProps = {
+  ingredient: TIngredient;
+  onClick?: () => void;
+};
+
+export type TBurgerConstructorProps = {
+  ingredients: TIngredient[];
+};
+
+export type ModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+  ariaLabel?: string;
+  labelledById?: string;
+  closeOnOverlay?: boolean;
+  title?: string;
+};
+
+export type ModalOverlayProps = {
+  children: React.ReactNode;
+  onClose?: () => void;
+  closeOnOverlay?: boolean;
+};
+
+export type State = {
+  productData: TIngredient[];
+  loading: boolean;
+  error?: string | null;
+};
+
+export type IngredientsResponse = {
+  success: boolean;
+  data?: TIngredient[];
+};
+
+export type TIngredientsGroupProps = {
+  id?: string;
+  title: string;
+  group: TIngredient[];
+  onItemClick?: (ingredient: TIngredient) => void;
+};
+
+export const TABS = ['bun', 'main', 'sauce'] as const;
+export type IngredientType = (typeof TABS)[number];
+
+export const TYPES: Record<IngredientType, IngredientType> = {
+  bun: 'bun',
+  main: 'main',
+  sauce: 'sauce',
+};
+
+export const LABELS: Record<IngredientType, string> = {
+  bun: 'Булки',
+  main: 'Начинки',
+  sauce: 'Соусы',
+};
