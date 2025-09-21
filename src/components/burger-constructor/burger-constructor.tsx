@@ -61,6 +61,10 @@ export const BurgerConstructor = (): React.JSX.Element => {
     setModalIsOpen(false);
   };
 
+  const handleRemoveFilling = useCallback((index: number) => {
+    setFillings((prev) => prev.filter((_, idx) => idx !== index));
+  }, []);
+
   return (
     <section className={`${styles.burger_constructor} mb-10`}>
       <div className={`${styles.burger_constructor_wrapper}`}>
@@ -107,6 +111,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
                   text={ing.name}
                   price={ing.price}
                   thumbnail={ing.image}
+                  handleClose={() => handleRemoveFilling(idx)}
                 />
               </div>
             ))
