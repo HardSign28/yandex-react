@@ -10,9 +10,12 @@ import { useDrop, type DropTargetMonitor } from 'react-dnd';
 import OrderDetails from '@components/burger-constructor/order-details/order-details';
 import Modal from '@components/modal/modal';
 
-import type { TBurgerConstructorProps, TIngredient } from '@utils/types';
-type DragItemBun = { ingredient: TIngredient };
-type Collected = { canDrop: boolean };
+import type {
+  Collected,
+  DragItem,
+  TBurgerConstructorProps,
+  TIngredient,
+} from '@utils/types';
 
 import styles from './burger-constructor.module.css';
 
@@ -26,24 +29,23 @@ export const BurgerConstructor = ({
   const dropSpec = useCallback(
     () => ({
       accept: 'bun' as const,
-      drop: (item: DragItemBun): void => setBun(item.ingredient),
-      collect: (monitor: DropTargetMonitor<DragItemBun, void>): Collected => ({
+      drop: (item: DragItem): void => setBun(item.ingredient),
+      collect: (monitor: DropTargetMonitor<DragItem, void>): Collected => ({
         canDrop: monitor.canDrop(),
       }),
     }),
     []
   );
 
-  const [{ canDrop: canDropTop }, dropTopRef] = useDrop<DragItemBun, void, Collected>(
+  const [{ canDrop: canDropTop }, dropTopRef] = useDrop<DragItem, void, Collected>(
     dropSpec,
     [dropSpec]
   );
 
-  const [{ canDrop: canDropBottom }, dropBottomRef] = useDrop<
-    DragItemBun,
-    void,
-    Collected
-  >(dropSpec, [dropSpec]);
+  const [{ canDrop: canDropBottom }, dropBottomRef] = useDrop<DragItem, void, Collected>(
+    dropSpec,
+    [dropSpec]
+  );
 
   const demoItems = useMemo(() => {
     return ingredients.filter((item) => item.type === 'main');

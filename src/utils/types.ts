@@ -74,3 +74,11 @@ export const LABELS: Record<IngredientType, string> = {
   main: 'Начинки',
   sauce: 'Соусы',
 };
+
+export type Collected = {
+  canDrop: boolean;
+};
+
+export type DragItem = {
+  ingredient: TIngredient;
+};
