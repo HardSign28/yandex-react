@@ -4,7 +4,7 @@ import {
   CurrencyIcon,
   DragIcon,
 } from '@krgaa/react-developer-burger-ui-components';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useDrop, type DropTargetMonitor } from 'react-dnd';
 
 import OrderDetails from '@components/burger-constructor/order-details/order-details';
@@ -19,6 +19,11 @@ export const BurgerConstructor = (): React.JSX.Element => {
 
   const [bun, setBun] = useState<TIngredient | null>(null);
   const [fillings, setFillings] = useState<TIngredient[]>([]);
+
+  const total = useMemo(() => {
+    const fillingsSum = fillings.reduce((sum, item) => sum + (item.price || 0), 0);
+    return (bun ? (bun.price || 0) * 2 : 0) + fillingsSum;
+  }, [bun, fillings]);
 
   const dropSpec = useCallback(
     () => ({
@@ -140,7 +145,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
       </div>
       <div className={`${styles.checkout} mt-10 mb-10`}>
         <div className={`${styles.checkout_price} mr-10`}>
-          <div className="text text_type_digits-medium mr-2">610</div>
+          <div className="text text_type_digits-medium mr-2">{total}</div>
           <CurrencyIcon type="primary" />
         </div>
         <Button
