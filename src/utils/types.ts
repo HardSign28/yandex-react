@@ -15,11 +15,13 @@ export type TIngredient = {
 
 export type TBurgerIngredientsProps = {
   ingredients: TIngredient[];
+  counts: Record<string, number>;
 };
 
 export type TIngredientProps = {
   ingredient: TIngredient;
   onClick?: () => void;
+  count?: number;
 };
 
 export type TBurgerConstructorProps = {
@@ -58,6 +60,7 @@ export type TIngredientsGroupProps = {
   title: string;
   group: TIngredient[];
   onItemClick?: (ingredient: TIngredient) => void;
+  counts: Record<string, number>;
 };
 
 export const TABS = ['bun', 'main', 'sauce'] as const;

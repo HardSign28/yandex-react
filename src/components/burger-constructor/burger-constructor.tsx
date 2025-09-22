@@ -14,11 +14,20 @@ import type { Collected, DragItem, TIngredient } from '@utils/types';
 
 import styles from './burger-constructor.module.css';
 
-export const BurgerConstructor = (): React.JSX.Element => {
+export const BurgerConstructor = ({
+  bun,
+  fillings,
+  setBun,
+  addIngredient,
+  removeIngredient,
+}: {
+  bun: TIngredient | null;
+  fillings: TIngredient[];
+  setBun: (bun: TIngredient | null) => void;
+  addIngredient: (ingredient: TIngredient) => void;
+  removeIngredient: (index: number) => void;
+}): React.JSX.Element => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
-  const [bun, setBun] = useState<TIngredient | null>(null);
-  const [fillings, setFillings] = useState<TIngredient[]>([]);
 
   const total = useMemo(() => {
     const fillingsSum = fillings.reduce((sum, item) => sum + (item.price || 0), 0);
@@ -33,7 +42,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
         canDrop: monitor.canDrop(),
       }),
     }),
-    []
+    [setBun]
   );
 
   const [{ canDrop: canDropTop }, dropTopRef] = useDrop<DragItem, void, Collected>(
@@ -49,7 +58,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
   const midDropSpec = useCallback(
     () => ({
       accept: ['main', 'sauce'] as ('main' | 'sauce')[],
-      drop: (item: DragItem): void => setFillings((prev) => [...prev, item.ingredient]),
+      drop: (item: DragItem): void => addIngredient(item.ingredient),
       collect: (monitor: DropTargetMonitor<DragItem, void>): Collected => ({
         canDrop: monitor.canDrop(),
       }),
@@ -65,10 +74,6 @@ export const BurgerConstructor = (): React.JSX.Element => {
   const closeModal = (): void => {
     setModalIsOpen(false);
   };
-
-  const handleRemoveFilling = useCallback((index: number) => {
-    setFillings((prev) => prev.filter((_, idx) => idx !== index));
-  }, []);
 
   return (
     <section className={`${styles.burger_constructor} mb-10`}>
@@ -109,14 +114,17 @@ export const BurgerConstructor = (): React.JSX.Element => {
               Перетащите начинку сюда
             </div>
           ) : (
-            fillings.map((ing, idx) => (
-              <div className={styles.burger_ingredients_item} key={`${ing._id}-${idx}`}>
+            fillings.map((ing, index) => (
+              <div
+                className={styles.burger_ingredients_item}
+                key={`${ing._id}-${index}`}
+              >
                 <DragIcon type="primary" className="mr-2" />
                 <ConstructorElement
                   text={ing.name}
                   price={ing.price}
                   thumbnail={ing.image}
-                  handleClose={() => handleRemoveFilling(idx)}
+                  handleClose={() => removeIngredient(index)}
                 />
               </div>
             ))

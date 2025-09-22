@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
@@ -18,6 +18,9 @@ export const App = (): React.JSX.Element => {
     loading: true,
     error: null,
   });
+
+  const [bun, setBun] = useState<TIngredient | null>(null);
+  const [fillings, setFillings] = useState<TIngredient[]>([]);
 
   const getProductData = async (): Promise<void> => {
     setState((state) => ({ ...state, loading: true, error: null }));
@@ -42,6 +45,24 @@ export const App = (): React.JSX.Element => {
   useEffect(() => {
     void getProductData();
   }, []);
+
+  const counts = useMemo<Record<string, number>>(() => {
+    const map: Record<string, number> = {};
+    // начинки — по количеству вхождений
+    for (const f of fillings) map[f._id] = (map[f._id] ?? 0) + 1;
+    // булка — если выбрана, всегда 2
+    if (bun) map[bun._id] = (map[bun._id] ?? 0) + 2;
+    return map;
+  }, [bun, fillings]);
+
+  const removeIngredient = (index: number): void => {
+    setFillings((ingredients) => ingredients.filter((_, idx) => idx !== index));
+  };
+
+  const addIngredient = (ingredient: TIngredient): void => {
+    setFillings((ingredients) => [...ingredients, ingredient]);
+  };
+
   return (
     <div className={styles.app}>
       <AppHeader />
@@ -52,8 +73,14 @@ export const App = (): React.JSX.Element => {
         {state.loading && 'Загрузка...'}
         {!state.loading && state.productData.length > 0 && (
           <DndProvider backend={HTML5Backend}>
-            <BurgerIngredients ingredients={state.productData} />
-            <BurgerConstructor />
+            <BurgerIngredients ingredients={state.productData} counts={counts} />
+            <BurgerConstructor
+              bun={bun}
+              fillings={fillings}
+              setBun={setBun}
+              addIngredient={(ingredient) => addIngredient(ingredient)}
+              removeIngredient={(index) => removeIngredient(index)}
+            />
           </DndProvider>
         )}
       </main>

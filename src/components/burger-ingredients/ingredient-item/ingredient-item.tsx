@@ -8,6 +8,7 @@ import styles from './ingredient-item.module.css';
 const IngredientItem = ({
   ingredient,
   onClick,
+  count = 0,
 }: TIngredientProps): React.JSX.Element => {
   const [{ isDragging }, dragRef] = useDrag<DragItem, void, { isDragging: boolean }>(
     () => ({
@@ -49,11 +50,13 @@ const IngredientItem = ({
       <div className={`${styles.ingredient_item_name} text text_type_main-default`}>
         {ingredient.name}
       </div>
-      <Counter
-        count={1}
-        size="default"
-        extraClass={`${styles.ingredient_item_count} m-1`}
-      />
+      {count > 0 && (
+        <Counter
+          count={count}
+          size="default"
+          extraClass={`${styles.ingredient_item_count} m-1`}
+        />
+      )}
     </li>
   );
 };

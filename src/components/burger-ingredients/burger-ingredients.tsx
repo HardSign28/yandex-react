@@ -12,6 +12,7 @@ import styles from './burger-ingredients.module.css';
 
 export const BurgerIngredients = ({
   ingredients,
+  counts,
 }: TBurgerIngredientsProps): React.JSX.Element => {
   const [currentTab, setCurrentTab] = useState<IngredientType>('bun');
   const bunRef = useRef<HTMLElement>(null);
@@ -118,6 +119,7 @@ export const BurgerIngredients = ({
           title={LABELS.bun}
           group={buns}
           onItemClick={openIngredient}
+          counts={counts}
         />
         <IngredientsGroup
           id="section-main"
@@ -125,6 +127,7 @@ export const BurgerIngredients = ({
           title={LABELS.main}
           group={mains}
           onItemClick={openIngredient}
+          counts={counts}
         />
         <IngredientsGroup
           id="section-sauce"
@@ -132,6 +135,7 @@ export const BurgerIngredients = ({
           title={LABELS.sauce}
           group={sauces}
           onItemClick={openIngredient}
+          counts={counts}
         />
       </div>
       <Modal
