@@ -20,7 +20,7 @@ export const App = (): React.JSX.Element => {
   });
 
   const [bun, setBun] = useState<TIngredient | null>(null);
-  const [fillings, setFillings] = useState<TIngredient[]>([]);
+  const [ingredients, setIngredients] = useState<TIngredient[]>([]);
 
   const getProductData = async (): Promise<void> => {
     setState((state) => ({ ...state, loading: true, error: null }));
@@ -49,18 +49,19 @@ export const App = (): React.JSX.Element => {
   const counts = useMemo<Record<string, number>>(() => {
     const map: Record<string, number> = {};
     // начинки — по количеству вхождений
-    for (const f of fillings) map[f._id] = (map[f._id] ?? 0) + 1;
+    for (const ingredient of ingredients)
+      map[ingredient._id] = (map[ingredient._id] ?? 0) + 1;
     // булка — если выбрана, всегда 2
     if (bun) map[bun._id] = (map[bun._id] ?? 0) + 2;
     return map;
-  }, [bun, fillings]);
+  }, [bun, ingredients]);
 
   const removeIngredient = (index: number): void => {
-    setFillings((ingredients) => ingredients.filter((_, idx) => idx !== index));
+    setIngredients((ingredients) => ingredients.filter((_, idx) => idx !== index));
   };
 
   const addIngredient = (ingredient: TIngredient): void => {
-    setFillings((ingredients) => [...ingredients, ingredient]);
+    setIngredients((ingredients) => [...ingredients, ingredient]);
   };
 
   return (
@@ -76,7 +77,7 @@ export const App = (): React.JSX.Element => {
             <BurgerIngredients ingredients={state.productData} counts={counts} />
             <BurgerConstructor
               bun={bun}
-              fillings={fillings}
+              ingredients={ingredients}
               setBun={setBun}
               addIngredient={(ingredient) => addIngredient(ingredient)}
               removeIngredient={(index) => removeIngredient(index)}

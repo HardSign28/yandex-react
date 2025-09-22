@@ -16,13 +16,13 @@ import styles from './burger-constructor.module.css';
 
 export const BurgerConstructor = ({
   bun,
-  fillings,
+  ingredients,
   setBun,
   addIngredient,
   removeIngredient,
 }: {
   bun: TIngredient | null;
-  fillings: TIngredient[];
+  ingredients: TIngredient[];
   setBun: (bun: TIngredient | null) => void;
   addIngredient: (ingredient: TIngredient) => void;
   removeIngredient: (index: number) => void;
@@ -30,9 +30,9 @@ export const BurgerConstructor = ({
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const total = useMemo(() => {
-    const fillingsSum = fillings.reduce((sum, item) => sum + (item.price || 0), 0);
-    return (bun ? (bun.price || 0) * 2 : 0) + fillingsSum;
-  }, [bun, fillings]);
+    const ingredientsSum = ingredients.reduce((sum, item) => sum + (item.price || 0), 0);
+    return (bun ? (bun.price || 0) * 2 : 0) + ingredientsSum;
+  }, [bun, ingredients]);
 
   const dropSpec = useCallback(
     () => ({
@@ -105,7 +105,7 @@ export const BurgerConstructor = ({
           }}
           className={`${styles.burger_ingredients} custom-scroll`}
         >
-          {fillings.length === 0 ? (
+          {ingredients.length === 0 ? (
             <div
               className={`${styles.burger_ingredient_empty} ${
                 canDropMid ? styles.can_drop : ''
@@ -114,7 +114,7 @@ export const BurgerConstructor = ({
               Перетащите начинку сюда
             </div>
           ) : (
-            fillings.map((ing, index) => (
+            ingredients.map((ing, index) => (
               <div
                 className={styles.burger_ingredients_item}
                 key={`${ing._id}-${index}`}
