@@ -4,13 +4,13 @@ import {
   CurrencyIcon,
   DragIcon,
 } from '@krgaa/react-developer-burger-ui-components';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useDrop, type DropTargetMonitor } from 'react-dnd';
 
 import OrderDetails from '@components/burger-constructor/order-details/order-details';
 import Modal from '@components/modal/modal';
 
-import type { Collected, DragItem, TIngredient } from '@utils/types';
+import type { Collected, DragItem, TIngredient, TOrderDetails } from '@utils/types';
 
 import styles from './burger-constructor.module.css';
 
@@ -20,15 +20,19 @@ export const BurgerConstructor = ({
   setBun,
   addIngredient,
   removeIngredient,
+  onCheckout,
+  orderDetails,
+  setOrderDetails,
 }: {
   bun: TIngredient | null;
   ingredients: TIngredient[];
   setBun: (bun: TIngredient | null) => void;
   addIngredient: (ingredient: TIngredient) => void;
   removeIngredient: (index: number) => void;
+  orderDetails: TOrderDetails | null;
+  setOrderDetails: (orderDetails: TOrderDetails | null) => void;
+  onCheckout: () => Promise<void>;
 }): React.JSX.Element => {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-
   const total = useMemo(() => {
     const ingredientsSum = ingredients.reduce((sum, item) => sum + (item.price || 0), 0);
     return (bun ? (bun.price || 0) * 2 : 0) + ingredientsSum;
@@ -71,9 +75,7 @@ export const BurgerConstructor = ({
     [midDropSpec]
   );
 
-  const closeModal = (): void => {
-    setModalIsOpen(false);
-  };
+  const closeModal = useCallback(() => setOrderDetails(null), []);
 
   return (
     <section className={`${styles.burger_constructor} mb-10`}>
@@ -157,7 +159,7 @@ export const BurgerConstructor = ({
           <CurrencyIcon type="primary" />
         </div>
         <Button
-          onClick={() => setModalIsOpen(true)}
+          onClick={() => void onCheckout()}
           htmlType="button"
           type="primary"
           size="large"
@@ -166,12 +168,12 @@ export const BurgerConstructor = ({
         </Button>
       </div>
       <Modal
-        isOpen={modalIsOpen}
+        isOpen={!!orderDetails}
         onClose={closeModal}
         labelledById="ingredient-modal-title"
         closeOnOverlay
       >
-        <OrderDetails />
+        <OrderDetails orderDetails={orderDetails} />
       </Modal>
     </section>
   );

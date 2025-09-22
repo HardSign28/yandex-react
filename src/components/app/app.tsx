@@ -6,7 +6,12 @@ import { AppHeader } from '@components/app-header/app-header';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
 
-import type { IngredientsResponse, State, TIngredient } from '@utils/types';
+import type {
+  IngredientsResponse,
+  State,
+  TIngredient,
+  TOrderDetails,
+} from '@utils/types';
 
 import styles from './app.module.css';
 
@@ -21,6 +26,7 @@ export const App = (): React.JSX.Element => {
 
   const [bun, setBun] = useState<TIngredient | null>(null);
   const [ingredients, setIngredients] = useState<TIngredient[]>([]);
+  const [orderDetails, setOrderDetails] = useState<TOrderDetails | null>(null);
 
   const getProductData = async (): Promise<void> => {
     setState((state) => ({ ...state, loading: true, error: null }));
@@ -39,6 +45,35 @@ export const App = (): React.JSX.Element => {
       console.error(message);
     } finally {
       setState((s) => ({ ...s, loading: false }));
+    }
+  };
+
+  const getOrderData = async (): Promise<void> => {
+    if (!bun || !ingredients.length) return;
+    const ingredientsIds = ingredients.map((item) => item._id);
+    const requestData = {
+      ingredients: [bun._id, ...ingredientsIds],
+    };
+
+    try {
+      const res = await fetch(`${API_URL}/api/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = (await res.json()) as TOrderDetails;
+
+      if (data) {
+        setOrderDetails(data);
+      }
+    } catch (e: unknown) {
+      const message =
+        e instanceof Error ? e.message : typeof e === 'string' ? e : 'Fetch error';
+      setState((s) => ({ ...s, error: message }));
+      console.error(message);
     }
   };
 
@@ -64,6 +99,10 @@ export const App = (): React.JSX.Element => {
     setIngredients((ingredients) => [...ingredients, ingredient]);
   };
 
+  const checkout = async (): Promise<void> => {
+    await getOrderData();
+  };
+
   return (
     <div className={styles.app}>
       <AppHeader />
@@ -81,6 +120,9 @@ export const App = (): React.JSX.Element => {
               setBun={setBun}
               addIngredient={(ingredient) => addIngredient(ingredient)}
               removeIngredient={(index) => removeIngredient(index)}
+              orderDetails={orderDetails}
+              setOrderDetails={setOrderDetails}
+              onCheckout={checkout}
             />
           </DndProvider>
         )}

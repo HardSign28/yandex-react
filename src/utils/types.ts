@@ -24,10 +24,6 @@ export type TIngredientProps = {
   count?: number;
 };
 
-export type TBurgerConstructorProps = {
-  ingredients: TIngredient[];
-};
-
 export type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -84,4 +80,12 @@ export type Collected = {
 
 export type DragItem = {
   ingredient: TIngredient;
+};
+
+export type TOrderDetails = {
+  success: boolean;
+  name: string;
+  order: {
+    number: number;
+  };
 };

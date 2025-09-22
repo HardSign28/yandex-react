@@ -1,12 +1,18 @@
 import iconOrderDetails from '@/images/icon-order-details.svg';
 
+import type { TOrderDetails } from '@utils/types';
+
 import styles from './order-details.module.css';
 
-const OrderDetails = (): React.JSX.Element => {
+const OrderDetails = ({
+  orderDetails,
+}: {
+  orderDetails: TOrderDetails | null;
+}): React.JSX.Element => {
   return (
     <div className={`${styles.order_details} mt-8 mb-20`}>
       <div className={`${styles.order_details_number} text text_type_digits-large`}>
-        034536
+        {orderDetails?.order.number}
       </div>
       <div className="text text_type_main-medium mt-8">идентификатор заказа</div>
       <img
