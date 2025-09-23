@@ -13,11 +13,6 @@ export type TIngredient = {
   __v: number;
 };
 
-export type TBurgerIngredientsProps = {
-  ingredients: TIngredient[];
-  counts: Record<string, number>;
-};
-
 export type TIngredientProps = {
   ingredient: TIngredient;
   onClick?: () => void;
@@ -38,17 +33,6 @@ export type TModalOverlayProps = {
   children: React.ReactNode;
   onClose?: () => void;
   closeOnOverlay?: boolean;
-};
-
-export type TState = {
-  productData: TIngredient[];
-  loading: boolean;
-  error?: string | null;
-};
-
-export type TIngredientsResponse = {
-  success: boolean;
-  data?: TIngredient[];
 };
 
 export type TIngredientsGroupProps = {
@@ -95,4 +79,22 @@ export type TBurgerConstructorItemProps = {
   index: number;
   moveIngredient: (from: number, to: number) => void;
   removeIngredient: (index: number) => void;
+};
+
+export type SelectedState = {
+  current: TIngredient | null;
+};
+
+export type ConstructorState = {
+  bun: TIngredient | null;
+  ingredients: (TIngredient & { uid: string })[];
+};
+
+export type IngredientsState = {
+  items: TIngredient[];
+  error: string | null;
+};
+
+export type OrderState = {
+  last: TOrderDetails | null;
 };

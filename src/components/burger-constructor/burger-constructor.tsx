@@ -1,3 +1,12 @@
+import { useCreateOrderMutation } from '@/store/api';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import {
+  setBun,
+  addIngredient,
+  removeIngredient,
+  moveIngredient,
+} from '@/store/slices/burgerConstructorSlice';
+import { clearOrder } from '@/store/slices/orderSlice';
 import {
   Button,
   ConstructorElement,
@@ -10,46 +19,34 @@ import BurgerConstructorItem from '@components/burger-constructor/burger-constru
 import OrderDetails from '@components/burger-constructor/order-details/order-details';
 import Modal from '@components/modal/modal';
 
-import type { TCollected, TDragItem, TIngredient, TOrderDetails } from '@utils/types';
-import type { Dispatch, SetStateAction } from 'react';
+import type { TCollected, TDragItem } from '@utils/types';
 
 import styles from './burger-constructor.module.css';
 
-export const BurgerConstructor = ({
-  bun,
-  ingredients,
-  setIngredients,
-  setBun,
-  addIngredient,
-  removeIngredient,
-  onCheckout,
-  orderDetails,
-  setOrderDetails,
-}: {
-  bun: TIngredient | null;
-  ingredients: TIngredient[];
-  setIngredients: Dispatch<SetStateAction<TIngredient[]>>;
-  setBun: (bun: TIngredient | null) => void;
-  addIngredient: (ingredient: TIngredient) => void;
-  removeIngredient: (index: number) => void;
-  orderDetails: TOrderDetails | null;
-  setOrderDetails: (orderDetails: TOrderDetails | null) => void;
-  onCheckout: () => Promise<void>;
-}): React.JSX.Element => {
+export const BurgerConstructor = (): React.JSX.Element => {
+  const dispatch = useAppDispatch();
+  const bun = useAppSelector((s) => s.burgerConstructor.bun);
+  const ingredients = useAppSelector((s) => s.burgerConstructor.ingredients);
+  const orderDetails = useAppSelector((s) => s.order.last);
+
   const total = useMemo(() => {
     const ingredientsSum = ingredients.reduce((sum, item) => sum + (item.price || 0), 0);
     return (bun ? (bun.price || 0) * 2 : 0) + ingredientsSum;
   }, [bun, ingredients]);
 
+  const [createOrder] = useCreateOrderMutation();
+
   const dropSpec = useCallback(
     () => ({
       accept: 'bun' as const,
-      drop: (item: TDragItem): void => setBun(item.ingredient),
+      drop: (item: TDragItem): void => {
+        dispatch(setBun(item.ingredient));
+      },
       collect: (monitor: DropTargetMonitor<TDragItem, void>): TCollected => ({
         canDrop: monitor.canDrop(),
       }),
     }),
-    [setBun]
+    [dispatch]
   );
 
   const [{ canDrop: canDropTop }, dropTopRef] = useDrop<TDragItem, void, TCollected>(
@@ -66,7 +63,9 @@ export const BurgerConstructor = ({
   const midDropSpec = useCallback(
     () => ({
       accept: ['main', 'sauce'] as ('main' | 'sauce')[],
-      drop: (item: TDragItem): void => addIngredient(item.ingredient),
+      drop: (item: TDragItem): void => {
+        dispatch(addIngredient(item.ingredient));
+      },
       collect: (monitor: DropTargetMonitor<TDragItem, void>): TCollected => ({
         canDrop: monitor.canDrop(),
       }),
@@ -79,15 +78,22 @@ export const BurgerConstructor = ({
     [midDropSpec]
   );
 
-  const closeModal = useCallback(() => setOrderDetails(null), []);
+  const onMove = (from: number, to: number): void => {
+    dispatch(moveIngredient({ from, to }));
+  };
 
-  const moveIngredient = (from: number, to: number): void => {
-    setIngredients((prev) => {
-      const newItems = [...prev];
-      const [removed] = newItems.splice(from, 1);
-      newItems.splice(to, 0, removed);
-      return newItems;
-    });
+  const onRemove = (uid: string): void => {
+    dispatch(removeIngredient(uid));
+  };
+
+  const checkout = async (): Promise<void> => {
+    if (!bun || ingredients.length === 0) return;
+    const ids = [bun._id, ...ingredients.map((i) => i._id), bun._id];
+    await createOrder({ ingredients: ids });
+  };
+
+  const closeModal = (): void => {
+    dispatch(clearOrder());
   };
 
   return (
@@ -131,11 +137,11 @@ export const BurgerConstructor = ({
           ) : (
             ingredients.map((ingredient, index) => (
               <BurgerConstructorItem
-                key={`${ingredient._id}-${index}`}
+                key={ingredient.uid}
                 ingredient={ingredient}
                 index={index}
-                moveIngredient={moveIngredient}
-                removeIngredient={removeIngredient}
+                moveIngredient={onMove}
+                removeIngredient={() => onRemove(ingredient.uid)}
               />
             ))
           )}
@@ -167,7 +173,7 @@ export const BurgerConstructor = ({
           <CurrencyIcon type="primary" />
         </div>
         <Button
-          onClick={() => void onCheckout()}
+          onClick={() => void checkout()}
           htmlType="button"
           type="primary"
           size="large"

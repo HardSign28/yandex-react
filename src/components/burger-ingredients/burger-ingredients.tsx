@@ -1,3 +1,5 @@
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { select } from '@/store/slices/selectedIngredientSlice';
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
 import { useMemo, useRef, useState, useCallback } from 'react';
 
@@ -6,30 +8,40 @@ import IngredientsGroup from '@components/burger-ingredients/ingredients-group/i
 import Modal from '@components/modal/modal';
 import { LABELS, TABS, TYPES } from '@utils/types';
 
-import type {
-  TIngredientType,
-  TBurgerIngredientsProps,
-  TIngredient,
-} from '@utils/types';
+import type { TIngredientType, TIngredient } from '@utils/types';
 
 import styles from './burger-ingredients.module.css';
 
-export const BurgerIngredients = ({
-  ingredients,
-  counts,
-}: TBurgerIngredientsProps): React.JSX.Element => {
+export const BurgerIngredients = (): React.JSX.Element => {
   const [currentTab, setCurrentTab] = useState<TIngredientType>('bun');
   const bunRef = useRef<HTMLElement>(null);
   const mainRef = useRef<HTMLElement>(null);
   const sauceRef = useRef<HTMLElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const [selectedIngredient, setSelectedIngredient] = useState<TIngredient | null>(null);
+  const selectedIngredient = useAppSelector((s) => s.selectedIngredient.current);
+  const dispatch = useAppDispatch();
+
   const openIngredient = useCallback(
-    (ingredient: TIngredient) => setSelectedIngredient(ingredient),
-    []
+    (ingredient: TIngredient) => {
+      dispatch(select(ingredient));
+    },
+    [dispatch]
   );
-  const closeModal = useCallback(() => setSelectedIngredient(null), []);
+
+  const closeModal = useCallback(() => {
+    dispatch(select(null));
+  }, [dispatch]);
+
+  const bun = useAppSelector((s) => s.burgerConstructor.bun);
+  const ingredients = useAppSelector((s) => s.ingredients.items);
+  const selectedIngredients = useAppSelector((s) => s.burgerConstructor.ingredients);
+  const counts = useMemo<Record<string, number>>(() => {
+    const m: Record<string, number> = {};
+    for (const f of selectedIngredients) m[f._id] = (m[f._id] ?? 0) + 1;
+    if (bun) m[bun._id] = (m[bun._id] ?? 0) + 2;
+    return m;
+  }, [bun, selectedIngredients]);
 
   const buns = useMemo(() => {
     return ingredients.filter((item) => item.type === TYPES.bun);
