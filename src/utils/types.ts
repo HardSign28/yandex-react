@@ -89,3 +89,10 @@ export type TOrderDetails = {
     number: number;
   };
 };
+
+export type BurgerConstructorItemProps = {
+  ingredient: TIngredient;
+  index: number;
+  moveIngredient: (from: number, to: number) => void;
+  removeIngredient: (index: number) => void;
+};

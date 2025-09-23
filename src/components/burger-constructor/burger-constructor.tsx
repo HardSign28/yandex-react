@@ -2,21 +2,23 @@ import {
   Button,
   ConstructorElement,
   CurrencyIcon,
-  DragIcon,
 } from '@krgaa/react-developer-burger-ui-components';
 import { useCallback, useMemo } from 'react';
 import { useDrop, type DropTargetMonitor } from 'react-dnd';
 
+import BurgerConstructorItem from '@components/burger-constructor/burger-constructor-item/burger-constructor-item';
 import OrderDetails from '@components/burger-constructor/order-details/order-details';
 import Modal from '@components/modal/modal';
 
 import type { Collected, DragItem, TIngredient, TOrderDetails } from '@utils/types';
+import type { Dispatch, SetStateAction } from 'react';
 
 import styles from './burger-constructor.module.css';
 
 export const BurgerConstructor = ({
   bun,
   ingredients,
+  setIngredients,
   setBun,
   addIngredient,
   removeIngredient,
@@ -26,6 +28,7 @@ export const BurgerConstructor = ({
 }: {
   bun: TIngredient | null;
   ingredients: TIngredient[];
+  setIngredients: Dispatch<SetStateAction<TIngredient[]>>;
   setBun: (bun: TIngredient | null) => void;
   addIngredient: (ingredient: TIngredient) => void;
   removeIngredient: (index: number) => void;
@@ -77,6 +80,15 @@ export const BurgerConstructor = ({
 
   const closeModal = useCallback(() => setOrderDetails(null), []);
 
+  const moveIngredient = (from: number, to: number): void => {
+    setIngredients((prev) => {
+      const newItems = [...prev];
+      const [removed] = newItems.splice(from, 1);
+      newItems.splice(to, 0, removed);
+      return newItems;
+    });
+  };
+
   return (
     <section className={`${styles.burger_constructor} mb-10`}>
       <div className={`${styles.burger_constructor_wrapper}`}>
@@ -116,19 +128,14 @@ export const BurgerConstructor = ({
               Перетащите начинку сюда
             </div>
           ) : (
-            ingredients.map((ing, index) => (
-              <div
-                className={styles.burger_ingredients_item}
-                key={`${ing._id}-${index}`}
-              >
-                <DragIcon type="primary" className="mr-2" />
-                <ConstructorElement
-                  text={ing.name}
-                  price={ing.price}
-                  thumbnail={ing.image}
-                  handleClose={() => removeIngredient(index)}
-                />
-              </div>
+            ingredients.map((ingredient, index) => (
+              <BurgerConstructorItem
+                key={`${ingredient._id}-${index}`}
+                ingredient={ingredient}
+                index={index}
+                moveIngredient={moveIngredient}
+                removeIngredient={removeIngredient}
+              />
             ))
           )}
         </div>

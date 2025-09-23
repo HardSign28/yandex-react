@@ -117,6 +117,7 @@ export const App = (): React.JSX.Element => {
             <BurgerConstructor
               bun={bun}
               ingredients={ingredients}
+              setIngredients={setIngredients}
               setBun={setBun}
               addIngredient={(ingredient) => addIngredient(ingredient)}
               removeIngredient={(index) => removeIngredient(index)}
