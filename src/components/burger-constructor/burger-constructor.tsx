@@ -1,3 +1,4 @@
+import IconSpinner from '@/images/spinner.svg?react';
 import { useCreateOrderMutation } from '@/store/api';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import {
@@ -28,7 +29,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
   const bun = useAppSelector((s) => s.burgerConstructor.bun);
   const ingredients = useAppSelector((s) => s.burgerConstructor.ingredients);
   const orderDetails = useAppSelector((s) => s.order.last);
-  const [createOrder] = useCreateOrderMutation();
+  const [createOrder, { isLoading }] = useCreateOrderMutation();
 
   /**
    * Расчет итоговой суммы
@@ -97,7 +98,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
 
   /**
    * Сортировка ингредиентов
-   * @param from - нанальный индекс
+   * @param from - начальный индекс
    * @param to - конечный индекс
    */
   const onMove = (from: number, to: number): void => {
@@ -214,8 +215,10 @@ export const BurgerConstructor = (): React.JSX.Element => {
           htmlType="button"
           type="primary"
           size="large"
+          extraClass={styles.button_with_spinner}
+          disabled={isLoading}
         >
-          Оформить заказ
+          {isLoading && <IconSpinner className={styles.button_spinner} />} Оформить заказ
         </Button>
       </div>
       <Modal

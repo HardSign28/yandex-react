@@ -3,6 +3,7 @@ import { checker } from 'vite-plugin-checker';
 import readableClassnames from 'vite-plugin-readable-classnames';
 import sassDts from 'vite-plugin-sass-dts';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import svgr from 'vite-plugin-svgr';
 import { defineConfig } from 'vitest/config';
 
 // https://vitejs.dev/config/
@@ -18,6 +19,7 @@ export default defineConfig({
       esmExport: true,
     }),
     tsconfigPaths(),
+    svgr(),
   ],
   base: '',
   test: {

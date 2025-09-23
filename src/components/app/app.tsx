@@ -1,3 +1,4 @@
+import IconSpinner from '@/images/spinner.svg?react';
 import { useGetIngredientsQuery } from '@/store/api';
 import { useAppSelector } from '@/store/hooks';
 import { DndProvider } from 'react-dnd';
@@ -19,7 +20,12 @@ export const App = (): React.JSX.Element => {
         Соберите бургер
       </h1>
       <main className={`${styles.main} pl-4 pr-4`}>
-        {isLoading && 'Загрузка...'}
+        {isLoading && (
+          <div className={`${styles.loading} text text_type_main-medium`}>
+            <IconSpinner className={styles.spinner_icon} />
+            Загрузка
+          </div>
+        )}
         {!isLoading && ingredients.length > 0 && (
           <DndProvider backend={HTML5Backend}>
             <BurgerIngredients />
