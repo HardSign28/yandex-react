@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { SelectedState, TIngredient } from '@utils/types';
+import type { TSelectedState, TIngredient } from '@utils/types';
 
-const initialState: SelectedState = { current: null };
+const initialState: TSelectedState = { current: null };
 
 const selectedIngredientSlice = createSlice({
   name: 'selectedIngredient',

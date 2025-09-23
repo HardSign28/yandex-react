@@ -28,14 +28,19 @@ export const BurgerConstructor = (): React.JSX.Element => {
   const bun = useAppSelector((s) => s.burgerConstructor.bun);
   const ingredients = useAppSelector((s) => s.burgerConstructor.ingredients);
   const orderDetails = useAppSelector((s) => s.order.last);
+  const [createOrder] = useCreateOrderMutation();
 
+  /**
+   * Расчет итоговой суммы
+   */
   const total = useMemo(() => {
     const ingredientsSum = ingredients.reduce((sum, item) => sum + (item.price || 0), 0);
     return (bun ? (bun.price || 0) * 2 : 0) + ingredientsSum;
   }, [bun, ingredients]);
 
-  const [createOrder] = useCreateOrderMutation();
-
+  /**
+   * Перетаскивание булки
+   */
   const dropSpec = useCallback(
     () => ({
       accept: 'bun' as const,
@@ -49,17 +54,26 @@ export const BurgerConstructor = (): React.JSX.Element => {
     [dispatch]
   );
 
+  /**
+   * Дроп зона верхней булки
+   */
   const [{ canDrop: canDropTop }, dropTopRef] = useDrop<TDragItem, void, TCollected>(
     dropSpec,
     [dropSpec]
   );
 
+  /**
+   * Дроп зона нижней булки
+   */
   const [{ canDrop: canDropBottom }, dropBottomRef] = useDrop<
     TDragItem,
     void,
     TCollected
   >(dropSpec, [dropSpec]);
 
+  /**
+   * Перетаскивание ингредиентов
+   */
   const midDropSpec = useCallback(
     () => ({
       accept: ['main', 'sauce'] as ('main' | 'sauce')[],
@@ -73,25 +87,48 @@ export const BurgerConstructor = (): React.JSX.Element => {
     []
   );
 
+  /**
+   * Дроп зона ингредиентов
+   */
   const [{ canDrop: canDropMid }, dropMidRef] = useDrop<TDragItem, void, TCollected>(
     midDropSpec,
     [midDropSpec]
   );
 
+  /**
+   * Сортировка ингредиентов
+   * @param from - нанальный индекс
+   * @param to - конечный индекс
+   */
   const onMove = (from: number, to: number): void => {
     dispatch(moveIngredient({ from, to }));
   };
 
+  /**
+   * Удаление ингредиента
+   * @param uid - уникальный uid ингредиента
+   */
   const onRemove = (uid: string): void => {
     dispatch(removeIngredient(uid));
   };
 
+  /**
+   * Оформление заказа
+   */
   const checkout = async (): Promise<void> => {
     if (!bun || ingredients.length === 0) return;
-    const ids = [bun._id, ...ingredients.map((i) => i._id), bun._id];
-    await createOrder({ ingredients: ids });
+    const ingredientsId = [bun._id, ...ingredients.map((i) => i._id), bun._id];
+
+    try {
+      await createOrder({ ingredients: ingredientsId }).unwrap();
+    } catch (e) {
+      console.error('Ошибка оформления заказа:', e);
+    }
   };
 
+  /**
+   * Закрытие модального окна заказа
+   */
   const closeModal = (): void => {
     dispatch(clearOrder());
   };

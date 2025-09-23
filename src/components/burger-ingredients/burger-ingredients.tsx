@@ -13,15 +13,21 @@ import type { TIngredientType, TIngredient } from '@utils/types';
 import styles from './burger-ingredients.module.css';
 
 export const BurgerIngredients = (): React.JSX.Element => {
+  const dispatch = useAppDispatch();
   const [currentTab, setCurrentTab] = useState<TIngredientType>('bun');
   const bunRef = useRef<HTMLElement>(null);
   const mainRef = useRef<HTMLElement>(null);
   const sauceRef = useRef<HTMLElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-
   const selectedIngredient = useAppSelector((s) => s.selectedIngredient.current);
-  const dispatch = useAppDispatch();
+  const bun = useAppSelector((s) => s.burgerConstructor.bun);
+  const ingredients = useAppSelector((s) => s.ingredients.items);
+  const selectedIngredients = useAppSelector((s) => s.burgerConstructor.ingredients);
+  const isTickingRef = useRef(false);
 
+  /**
+   * Открытие модалки ингредиента
+   */
   const openIngredient = useCallback(
     (ingredient: TIngredient) => {
       dispatch(select(ingredient));
@@ -29,32 +35,54 @@ export const BurgerIngredients = (): React.JSX.Element => {
     [dispatch]
   );
 
+  /**
+   * Закрытие модалки ингредиента
+   */
   const closeModal = useCallback(() => {
     dispatch(select(null));
   }, [dispatch]);
 
-  const bun = useAppSelector((s) => s.burgerConstructor.bun);
-  const ingredients = useAppSelector((s) => s.ingredients.items);
-  const selectedIngredients = useAppSelector((s) => s.burgerConstructor.ingredients);
+  /**
+   * Счетчик ингредиентов
+   */
   const counts = useMemo<Record<string, number>>(() => {
-    const m: Record<string, number> = {};
-    for (const f of selectedIngredients) m[f._id] = (m[f._id] ?? 0) + 1;
-    if (bun) m[bun._id] = (m[bun._id] ?? 0) + 2;
-    return m;
+    const counts = selectedIngredients.reduce<Record<string, number>>((acc, item) => {
+      acc[item._id] = (acc[item._id] ?? 0) + 1;
+      return acc;
+    }, {});
+
+    if (bun) {
+      counts[bun._id] = (counts[bun._id] ?? 0) + 2;
+    }
+
+    return counts;
   }, [bun, selectedIngredients]);
 
+  /**
+   * Раздел "Булки"
+   */
   const buns = useMemo(() => {
     return ingredients.filter((item) => item.type === TYPES.bun);
   }, [ingredients]);
 
+  /**
+   * Раздел "Начинки"
+   */
   const mains = useMemo(() => {
     return ingredients.filter((item) => item.type === TYPES.main);
   }, [ingredients]);
 
+  /**
+   * Раздел "Соусы"
+   */
   const sauces = useMemo(() => {
     return ingredients.filter((item) => item.type === TYPES.sauce);
   }, [ingredients]);
 
+  /**
+   * Клик по вкладкам
+   * @param tab - тип вкладки
+   */
   const onTabClick = (tab: TIngredientType): void => {
     setCurrentTab(tab);
     (tab === TYPES.bun
@@ -68,8 +96,9 @@ export const BurgerIngredients = (): React.JSX.Element => {
     });
   };
 
-  const isTickingRef = useRef(false);
-
+  /**
+   * Переключение вкладок при скролле
+   */
   const handleScroll = useCallback(() => {
     if (isTickingRef.current) return;
     isTickingRef.current = true;

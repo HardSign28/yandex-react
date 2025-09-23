@@ -2,9 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { ConstructorState, TIngredient } from '@utils/types';
+import type { TConstructorState, TIngredient } from '@utils/types';
 
-const initialState: ConstructorState = { bun: null, ingredients: [] };
+const initialState: TConstructorState = { bun: null, ingredients: [] };
 
 const burgerConstructorSlice = createSlice({
   name: 'burgerConstructor',
@@ -17,12 +17,14 @@ const burgerConstructorSlice = createSlice({
       state.ingredients.push({ ...action.payload, uid: uuidv4() });
     },
     removeIngredient(state, action: PayloadAction<string>) {
-      state.ingredients = state.ingredients.filter((x) => x.uid !== action.payload);
+      state.ingredients = state.ingredients.filter(
+        (item) => item.uid !== action.payload
+      );
     },
     moveIngredient(state, action: PayloadAction<{ from: number; to: number }>) {
       const { from, to } = action.payload;
       const arr = [...state.ingredients];
-      arr.splice(to, 0, arr.splice(from, 1)[0]); // из ТЗ
+      arr.splice(to, 0, arr.splice(from, 1)[0]);
       state.ingredients = arr;
     },
     resetConstructor(state) {

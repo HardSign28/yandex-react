@@ -2,9 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { api } from '../api';
 
-import type { IngredientsState } from '@utils/types';
+import type { TIngredientsState } from '@utils/types';
 
-const initialState: IngredientsState = { items: [], error: null };
+const initialState: TIngredientsState = { items: [], error: null };
 
 const ingredientsSlice = createSlice({
   name: 'ingredients',
@@ -18,14 +18,15 @@ const ingredientsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addMatcher(api.endpoints.getIngredients.matchFulfilled, (state, { payload }) => {
-        state.items = payload.data ?? [];
+        state.items = payload;
         state.error = null;
       })
-      .addMatcher(api.endpoints.getIngredients.matchRejected, (state) => {
+      .addMatcher(api.endpoints.getIngredients.matchRejected, (state, action) => {
         state.items = [];
-        state.error = 'Failed to load ingredients';
+        state.error = action.error?.message ?? 'Ошибка загрузки ингредиентов';
       });
   },
 });
-export const { reset: resetIngredients } = ingredientsSlice.actions;
+
+export const { reset } = ingredientsSlice.actions;
 export default ingredientsSlice.reducer;

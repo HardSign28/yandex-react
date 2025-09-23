@@ -81,20 +81,22 @@ export type TBurgerConstructorItemProps = {
   removeIngredient: (index: number) => void;
 };
 
-export type SelectedState = {
+export type TSelectedState = {
   current: TIngredient | null;
 };
 
-export type ConstructorState = {
+export type TConstructorState = {
   bun: TIngredient | null;
   ingredients: (TIngredient & { uid: string })[];
 };
 
-export type IngredientsState = {
+export type TIngredientsState = {
   items: TIngredient[];
   error: string | null;
 };
 
-export type OrderState = {
+export type TOrderState = {
   last: TOrderDetails | null;
+  error: string | null;
+  isLoading: boolean;
 };
