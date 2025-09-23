@@ -6,7 +6,11 @@ import IngredientsGroup from '@components/burger-ingredients/ingredients-group/i
 import Modal from '@components/modal/modal';
 import { LABELS, TABS, TYPES } from '@utils/types';
 
-import type { IngredientType, TBurgerIngredientsProps, TIngredient } from '@utils/types';
+import type {
+  TIngredientType,
+  TBurgerIngredientsProps,
+  TIngredient,
+} from '@utils/types';
 
 import styles from './burger-ingredients.module.css';
 
@@ -14,7 +18,7 @@ export const BurgerIngredients = ({
   ingredients,
   counts,
 }: TBurgerIngredientsProps): React.JSX.Element => {
-  const [currentTab, setCurrentTab] = useState<IngredientType>('bun');
+  const [currentTab, setCurrentTab] = useState<TIngredientType>('bun');
   const bunRef = useRef<HTMLElement>(null);
   const mainRef = useRef<HTMLElement>(null);
   const sauceRef = useRef<HTMLElement>(null);
@@ -39,7 +43,7 @@ export const BurgerIngredients = ({
     return ingredients.filter((item) => item.type === TYPES.sauce);
   }, [ingredients]);
 
-  const onTabClick = (tab: IngredientType): void => {
+  const onTabClick = (tab: TIngredientType): void => {
     setCurrentTab(tab);
     (tab === TYPES.bun
       ? bunRef
@@ -66,13 +70,13 @@ export const BurgerIngredients = ({
 
       const rootTop = root.getBoundingClientRect().top;
 
-      const sections: [IngredientType, HTMLElement | null][] = [
+      const sections: [TIngredientType, HTMLElement | null][] = [
         ['bun', bunRef.current],
         ['main', mainRef.current],
         ['sauce', sauceRef.current],
       ];
 
-      let best: { tab: IngredientType; dist: number } | null = null;
+      let best: { tab: TIngredientType; dist: number } | null = null;
 
       for (const [tab, el] of sections) {
         if (!el) continue;

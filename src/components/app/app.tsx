@@ -7,8 +7,8 @@ import { BurgerConstructor } from '@components/burger-constructor/burger-constru
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
 
 import type {
-  IngredientsResponse,
-  State,
+  TIngredientsResponse,
+  TState,
   TIngredient,
   TOrderDetails,
 } from '@utils/types';
@@ -18,7 +18,7 @@ import styles from './app.module.css';
 const API_URL = 'https://norma.nomoreparties.space';
 
 export const App = (): React.JSX.Element => {
-  const [state, setState] = useState<State>({
+  const [state, setState] = useState<TState>({
     productData: [],
     loading: true,
     error: null,
@@ -33,7 +33,7 @@ export const App = (): React.JSX.Element => {
     try {
       const res = await fetch(`${API_URL}/api/ingredients`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = (await res.json()) as IngredientsResponse;
+      const data = (await res.json()) as TIngredientsResponse;
       if (Array.isArray(data?.data)) {
         const items: TIngredient[] = data.data;
         setState((s) => ({ ...s, productData: items, loading: false }));

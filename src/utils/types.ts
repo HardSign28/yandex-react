@@ -24,7 +24,7 @@ export type TIngredientProps = {
   count?: number;
 };
 
-export type ModalProps = {
+export type TModalProps = {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
@@ -34,19 +34,19 @@ export type ModalProps = {
   title?: string;
 };
 
-export type ModalOverlayProps = {
+export type TModalOverlayProps = {
   children: React.ReactNode;
   onClose?: () => void;
   closeOnOverlay?: boolean;
 };
 
-export type State = {
+export type TState = {
   productData: TIngredient[];
   loading: boolean;
   error?: string | null;
 };
 
-export type IngredientsResponse = {
+export type TIngredientsResponse = {
   success: boolean;
   data?: TIngredient[];
 };
@@ -60,25 +60,25 @@ export type TIngredientsGroupProps = {
 };
 
 export const TABS = ['bun', 'main', 'sauce'] as const;
-export type IngredientType = (typeof TABS)[number];
+export type TIngredientType = (typeof TABS)[number];
 
-export const TYPES: Record<IngredientType, IngredientType> = {
+export const TYPES: Record<TIngredientType, TIngredientType> = {
   bun: 'bun',
   main: 'main',
   sauce: 'sauce',
 };
 
-export const LABELS: Record<IngredientType, string> = {
+export const LABELS: Record<TIngredientType, string> = {
   bun: 'Булки',
   main: 'Начинки',
   sauce: 'Соусы',
 };
 
-export type Collected = {
+export type TCollected = {
   canDrop: boolean;
 };
 
-export type DragItem = {
+export type TDragItem = {
   ingredient: TIngredient;
 };
 
@@ -90,7 +90,7 @@ export type TOrderDetails = {
   };
 };
 
-export type BurgerConstructorItemProps = {
+export type TBurgerConstructorItemProps = {
   ingredient: TIngredient;
   index: number;
   moveIngredient: (from: number, to: number) => void;

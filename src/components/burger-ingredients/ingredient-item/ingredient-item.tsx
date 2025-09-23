@@ -1,7 +1,7 @@
 import { Counter, CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
 import { useDrag } from 'react-dnd';
 
-import type { DragItem, IngredientType, TIngredientProps } from '@utils/types';
+import type { TDragItem, TIngredientType, TIngredientProps } from '@utils/types';
 
 import styles from './ingredient-item.module.css';
 
@@ -10,9 +10,9 @@ const IngredientItem = ({
   onClick,
   count = 0,
 }: TIngredientProps): React.JSX.Element => {
-  const [{ isDragging }, dragRef] = useDrag<DragItem, void, { isDragging: boolean }>(
+  const [{ isDragging }, dragRef] = useDrag<TDragItem, void, { isDragging: boolean }>(
     () => ({
-      type: ingredient.type as IngredientType,
+      type: ingredient.type as TIngredientType,
       item: { ingredient },
       collect: (monitor): { isDragging: boolean } => ({
         isDragging: monitor.isDragging(),

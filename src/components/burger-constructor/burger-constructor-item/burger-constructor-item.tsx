@@ -5,7 +5,7 @@ import {
 import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 
-import type { BurgerConstructorItemProps } from '@utils/types';
+import type { TBurgerConstructorItemProps } from '@utils/types';
 
 import styles from './burger-constructor-item.module.css';
 const BurgerConstructorItem = ({
@@ -13,7 +13,7 @@ const BurgerConstructorItem = ({
   index,
   moveIngredient,
   removeIngredient,
-}: BurgerConstructorItemProps): React.JSX.Element => {
+}: TBurgerConstructorItemProps): React.JSX.Element => {
   const ref = useRef<HTMLDivElement>(null);
 
   const [, drop] = useDrop<{ index: number }, void>({

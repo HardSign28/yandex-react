@@ -10,7 +10,7 @@ import BurgerConstructorItem from '@components/burger-constructor/burger-constru
 import OrderDetails from '@components/burger-constructor/order-details/order-details';
 import Modal from '@components/modal/modal';
 
-import type { Collected, DragItem, TIngredient, TOrderDetails } from '@utils/types';
+import type { TCollected, TDragItem, TIngredient, TOrderDetails } from '@utils/types';
 import type { Dispatch, SetStateAction } from 'react';
 
 import styles from './burger-constructor.module.css';
@@ -44,36 +44,37 @@ export const BurgerConstructor = ({
   const dropSpec = useCallback(
     () => ({
       accept: 'bun' as const,
-      drop: (item: DragItem): void => setBun(item.ingredient),
-      collect: (monitor: DropTargetMonitor<DragItem, void>): Collected => ({
+      drop: (item: TDragItem): void => setBun(item.ingredient),
+      collect: (monitor: DropTargetMonitor<TDragItem, void>): TCollected => ({
         canDrop: monitor.canDrop(),
       }),
     }),
     [setBun]
   );
 
-  const [{ canDrop: canDropTop }, dropTopRef] = useDrop<DragItem, void, Collected>(
+  const [{ canDrop: canDropTop }, dropTopRef] = useDrop<TDragItem, void, TCollected>(
     dropSpec,
     [dropSpec]
   );
 
-  const [{ canDrop: canDropBottom }, dropBottomRef] = useDrop<DragItem, void, Collected>(
-    dropSpec,
-    [dropSpec]
-  );
+  const [{ canDrop: canDropBottom }, dropBottomRef] = useDrop<
+    TDragItem,
+    void,
+    TCollected
+  >(dropSpec, [dropSpec]);
 
   const midDropSpec = useCallback(
     () => ({
       accept: ['main', 'sauce'] as ('main' | 'sauce')[],
-      drop: (item: DragItem): void => addIngredient(item.ingredient),
-      collect: (monitor: DropTargetMonitor<DragItem, void>): Collected => ({
+      drop: (item: TDragItem): void => addIngredient(item.ingredient),
+      collect: (monitor: DropTargetMonitor<TDragItem, void>): TCollected => ({
         canDrop: monitor.canDrop(),
       }),
     }),
     []
   );
 
-  const [{ canDrop: canDropMid }, dropMidRef] = useDrop<DragItem, void, Collected>(
+  const [{ canDrop: canDropMid }, dropMidRef] = useDrop<TDragItem, void, TCollected>(
     midDropSpec,
     [midDropSpec]
   );

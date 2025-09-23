@@ -1,4 +1,4 @@
-import type { ModalOverlayProps } from '@utils/types';
+import type { TModalOverlayProps } from '@utils/types';
 
 import styles from './modal-overlay.module.css';
 
@@ -6,7 +6,7 @@ const ModalOverlay = ({
   children,
   onClose,
   closeOnOverlay = true,
-}: ModalOverlayProps): React.JSX.Element => {
+}: TModalOverlayProps): React.JSX.Element => {
   return (
     <div
       className={styles.modal_overlay}
