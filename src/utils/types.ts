@@ -100,3 +100,7 @@ export type TOrderState = {
   error: string | null;
   isLoading: boolean;
 };
+
+export type TIngredientUid = TIngredient & {
+  uid: string;
+};

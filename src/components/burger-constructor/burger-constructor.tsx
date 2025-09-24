@@ -6,6 +6,7 @@ import {
   addIngredient,
   removeIngredient,
   moveIngredient,
+  resetConstructor,
 } from '@/store/slices/burgerConstructorSlice';
 import { clearOrder } from '@/store/slices/orderSlice';
 import {
@@ -122,6 +123,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
 
     try {
       await createOrder({ ingredients: ingredientsId }).unwrap();
+      dispatch(resetConstructor());
     } catch (e) {
       console.error('Ошибка оформления заказа:', e);
     }
@@ -149,7 +151,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
             <ConstructorElement
               type="top"
               isLocked={true}
-              text={bun.name}
+              text={`${bun.name} (верх)`}
               price={bun.price}
               thumbnail={bun.image}
             />
@@ -196,7 +198,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
             <ConstructorElement
               type="bottom"
               isLocked={true}
-              text={bun.name}
+              text={`${bun.name} (низ)`}
               price={bun.price}
               thumbnail={bun.image}
             />
