@@ -1,0 +1,12 @@
+.burger_constructor_item:hover {
+  cursor: grab;
+}
+
+.burger_constructor_item:active {
+  cursor: grabbing;
+}
+
+.burger_constructor_item.is_dragging {
+  cursor: grabbing;
+  opacity: 0.5;
+}

@@ -1,45 +1,18 @@
-import { useEffect, useState } from 'react';
+import IconSpinner from '@/images/spinner.svg?react';
+import { useGetIngredientsQuery } from '@/store/api';
+import { useAppSelector } from '@/store/hooks';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { AppHeader } from '@components/app-header/app-header';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
 
-import type { IngredientsResponse, State, TIngredient } from '@utils/types';
-
 import styles from './app.module.css';
 
-const API_URL = 'https://norma.nomoreparties.space';
-
 export const App = (): React.JSX.Element => {
-  const [state, setState] = useState<State>({
-    productData: [],
-    loading: true,
-    error: null,
-  });
-
-  const getProductData = async (): Promise<void> => {
-    setState((state) => ({ ...state, loading: true, error: null }));
-    try {
-      const res = await fetch(`${API_URL}/api/ingredients`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = (await res.json()) as IngredientsResponse;
-      if (Array.isArray(data?.data)) {
-        const items: TIngredient[] = data.data;
-        setState((s) => ({ ...s, productData: items, loading: false }));
-      }
-    } catch (e: unknown) {
-      const message =
-        e instanceof Error ? e.message : typeof e === 'string' ? e : 'Fetch error';
-      setState((s) => ({ ...s, error: message }));
-      console.error(message);
-    } finally {
-      setState((s) => ({ ...s, loading: false }));
-    }
-  };
-
-  useEffect(() => {
-    void getProductData();
-  }, []);
+  const { isLoading } = useGetIngredientsQuery();
+  const ingredients = useAppSelector((s) => s.ingredients.items);
   return (
     <div className={styles.app}>
       <AppHeader />
@@ -47,12 +20,17 @@ export const App = (): React.JSX.Element => {
         Соберите бургер
       </h1>
       <main className={`${styles.main} pl-4 pr-4`}>
-        {state.loading && 'Загрузка...'}
-        {!state.loading && state.productData.length > 0 && (
-          <>
-            <BurgerIngredients ingredients={state.productData} />
-            <BurgerConstructor ingredients={state.productData} />
-          </>
+        {isLoading && (
+          <div className={`${styles.loading} text text_type_main-medium`}>
+            <IconSpinner className={styles.spinner_icon} />
+            Загрузка
+          </div>
+        )}
+        {!isLoading && ingredients.length > 0 && (
+          <DndProvider backend={HTML5Backend}>
+            <BurgerIngredients />
+            <BurgerConstructor />
+          </DndProvider>
         )}
       </main>
     </div>

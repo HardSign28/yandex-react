@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 
 import ModalOverlay from '@components/modal/modal-overlay/modal-overlay';
 
-import type { ModalProps } from '@utils/types.ts';
+import type { TModalProps } from '@utils/types';
 
 import styles from './modal.module.css';
 
@@ -16,7 +16,7 @@ const Modal = ({
   ariaLabel,
   labelledById,
   closeOnOverlay = true,
-}: ModalProps): React.JSX.Element | null => {
+}: TModalProps): React.JSX.Element | null => {
   useEffect(() => {
     if (!isOpen) return;
     const onKey = (e: KeyboardEvent): void => {
@@ -26,7 +26,9 @@ const Modal = ({
     return (): void => window.removeEventListener('keydown', onKey);
   }, [isOpen, onClose]);
 
-  // Блокируем скролл body
+  /**
+   * Блокируем скролл body
+   */
   useEffect(() => {
     if (!isOpen) return;
     const prev = document.body.style.overflow;

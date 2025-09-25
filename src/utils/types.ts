@@ -13,20 +13,13 @@ export type TIngredient = {
   __v: number;
 };
 
-export type TBurgerIngredientsProps = {
-  ingredients: TIngredient[];
-};
-
 export type TIngredientProps = {
   ingredient: TIngredient;
   onClick?: () => void;
+  count?: number;
 };
 
-export type TBurgerConstructorProps = {
-  ingredients: TIngredient[];
-};
-
-export type ModalProps = {
+export type TModalProps = {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
@@ -36,21 +29,10 @@ export type ModalProps = {
   title?: string;
 };
 
-export type ModalOverlayProps = {
+export type TModalOverlayProps = {
   children: React.ReactNode;
   onClose?: () => void;
   closeOnOverlay?: boolean;
-};
-
-export type State = {
-  productData: TIngredient[];
-  loading: boolean;
-  error?: string | null;
-};
-
-export type IngredientsResponse = {
-  success: boolean;
-  data?: TIngredient[];
 };
 
 export type TIngredientsGroupProps = {
@@ -58,19 +40,67 @@ export type TIngredientsGroupProps = {
   title: string;
   group: TIngredient[];
   onItemClick?: (ingredient: TIngredient) => void;
+  counts: Record<string, number>;
 };
 
 export const TABS = ['bun', 'main', 'sauce'] as const;
-export type IngredientType = (typeof TABS)[number];
+export type TIngredientType = (typeof TABS)[number];
 
-export const TYPES: Record<IngredientType, IngredientType> = {
+export const TYPES: Record<TIngredientType, TIngredientType> = {
   bun: 'bun',
   main: 'main',
   sauce: 'sauce',
 };
 
-export const LABELS: Record<IngredientType, string> = {
+export const LABELS: Record<TIngredientType, string> = {
   bun: 'Булки',
   main: 'Начинки',
   sauce: 'Соусы',
+};
+
+export type TCollected = {
+  canDrop: boolean;
+};
+
+export type TDragItem = {
+  ingredient: TIngredient;
+};
+
+export type TOrderDetails = {
+  success: boolean;
+  name: string;
+  order: {
+    number: number;
+  };
+};
+
+export type TBurgerConstructorItemProps = {
+  ingredient: TIngredient;
+  index: number;
+  moveIngredient: (from: number, to: number) => void;
+  removeIngredient: (index: number) => void;
+};
+
+export type TSelectedState = {
+  current: TIngredient | null;
+};
+
+export type TConstructorState = {
+  bun: TIngredient | null;
+  ingredients: (TIngredient & { uid: string })[];
+};
+
+export type TIngredientsState = {
+  items: TIngredient[];
+  error: string | null;
+};
+
+export type TOrderState = {
+  last: TOrderDetails | null;
+  error: string | null;
+  isLoading: boolean;
+};
+
+export type TIngredientUid = TIngredient & {
+  uid: string;
 };

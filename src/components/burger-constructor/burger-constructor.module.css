@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding: 2px 0;
   overflow-y: hidden;
 }
 
@@ -17,6 +18,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding: 2px 0;
   overflow-y: auto;
 }
 
@@ -37,4 +39,28 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.burger_ingredient_empty {
+  display: flex;
+  flex-grow: 0;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.can_drop {
+  outline: 2px dashed var(--colors-interface-accent);
+}
+
+.button_with_spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button_spinner {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
 }

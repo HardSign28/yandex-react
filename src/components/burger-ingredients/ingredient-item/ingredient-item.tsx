@@ -1,15 +1,34 @@
 import { Counter, CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
+import { useDrag } from 'react-dnd';
 
-import type { TIngredientProps } from '@utils/types';
+import type { TDragItem, TIngredientType, TIngredientProps } from '@utils/types';
 
 import styles from './ingredient-item.module.css';
 
 const IngredientItem = ({
   ingredient,
   onClick,
+  count = 0,
 }: TIngredientProps): React.JSX.Element => {
+  const [{ isDragging }, dragRef] = useDrag<TDragItem, void, { isDragging: boolean }>(
+    () => ({
+      type: ingredient.type as TIngredientType,
+      item: { ingredient },
+      collect: (monitor): { isDragging: boolean } => ({
+        isDragging: monitor.isDragging(),
+      }),
+    }),
+    [ingredient]
+  );
   return (
-    <li className={styles.ingredient_item} onClick={onClick}>
+    <li
+      ref={(node) => {
+        if (node) dragRef(node);
+      }}
+      className={styles.ingredient_item}
+      onClick={onClick}
+      style={{ opacity: isDragging ? 0.5 : 1 }}
+    >
       <picture>
         {ingredient.image_mobile && (
           <source media="(max-width: 600px)" srcSet={ingredient.image_mobile} />
@@ -31,11 +50,13 @@ const IngredientItem = ({
       <div className={`${styles.ingredient_item_name} text text_type_main-default`}>
         {ingredient.name}
       </div>
-      <Counter
-        count={1}
-        size="default"
-        extraClass={`${styles.ingredient_item_count} m-1`}
-      />
+      {count > 0 && (
+        <Counter
+          count={count}
+          size="default"
+          extraClass={`${styles.ingredient_item_count} m-1`}
+        />
+      )}
     </li>
   );
 };

@@ -1,3 +1,5 @@
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { select } from '@/store/slices/selectedIngredientSlice';
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
 import { useMemo, useRef, useState, useCallback } from 'react';
 
@@ -6,39 +8,82 @@ import IngredientsGroup from '@components/burger-ingredients/ingredients-group/i
 import Modal from '@components/modal/modal';
 import { LABELS, TABS, TYPES } from '@utils/types';
 
-import type { IngredientType, TBurgerIngredientsProps, TIngredient } from '@utils/types';
+import type { TIngredientType, TIngredient } from '@utils/types';
 
 import styles from './burger-ingredients.module.css';
 
-export const BurgerIngredients = ({
-  ingredients,
-}: TBurgerIngredientsProps): React.JSX.Element => {
-  const [currentTab, setCurrentTab] = useState<IngredientType>('bun');
+export const BurgerIngredients = (): React.JSX.Element => {
+  const dispatch = useAppDispatch();
+  const [currentTab, setCurrentTab] = useState<TIngredientType>('bun');
   const bunRef = useRef<HTMLElement>(null);
   const mainRef = useRef<HTMLElement>(null);
   const sauceRef = useRef<HTMLElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const selectedIngredient = useAppSelector((s) => s.selectedIngredient.current);
+  const bun = useAppSelector((s) => s.burgerConstructor.bun);
+  const ingredients = useAppSelector((s) => s.ingredients.items);
+  const selectedIngredients = useAppSelector((s) => s.burgerConstructor.ingredients);
+  const isTickingRef = useRef(false);
 
-  const [selectedIngredient, setSelectedIngredient] = useState<TIngredient | null>(null);
+  /**
+   * Открытие модалки ингредиента
+   */
   const openIngredient = useCallback(
-    (ingredient: TIngredient) => setSelectedIngredient(ingredient),
-    []
+    (ingredient: TIngredient) => {
+      dispatch(select(ingredient));
+    },
+    [dispatch]
   );
-  const closeModal = useCallback(() => setSelectedIngredient(null), []);
 
+  /**
+   * Закрытие модалки ингредиента
+   */
+  const closeModal = useCallback(() => {
+    dispatch(select(null));
+  }, [dispatch]);
+
+  /**
+   * Счетчик ингредиентов
+   */
+  const counts = useMemo<Record<string, number>>(() => {
+    const counts = selectedIngredients.reduce<Record<string, number>>((acc, item) => {
+      acc[item._id] = (acc[item._id] ?? 0) + 1;
+      return acc;
+    }, {});
+
+    if (bun) {
+      counts[bun._id] = (counts[bun._id] ?? 0) + 2;
+    }
+
+    return counts;
+  }, [bun, selectedIngredients]);
+
+  /**
+   * Раздел "Булки"
+   */
   const buns = useMemo(() => {
     return ingredients.filter((item) => item.type === TYPES.bun);
   }, [ingredients]);
 
+  /**
+   * Раздел "Начинки"
+   */
   const mains = useMemo(() => {
     return ingredients.filter((item) => item.type === TYPES.main);
   }, [ingredients]);
 
+  /**
+   * Раздел "Соусы"
+   */
   const sauces = useMemo(() => {
     return ingredients.filter((item) => item.type === TYPES.sauce);
   }, [ingredients]);
 
-  const onTabClick = (tab: IngredientType): void => {
+  /**
+   * Клик по вкладкам
+   * @param tab - тип вкладки
+   */
+  const onTabClick = (tab: TIngredientType): void => {
     setCurrentTab(tab);
     (tab === TYPES.bun
       ? bunRef
@@ -51,8 +96,9 @@ export const BurgerIngredients = ({
     });
   };
 
-  const isTickingRef = useRef(false);
-
+  /**
+   * Переключение вкладок при скролле
+   */
   const handleScroll = useCallback(() => {
     if (isTickingRef.current) return;
     isTickingRef.current = true;
@@ -65,13 +111,13 @@ export const BurgerIngredients = ({
 
       const rootTop = root.getBoundingClientRect().top;
 
-      const sections: [IngredientType, HTMLElement | null][] = [
+      const sections: [TIngredientType, HTMLElement | null][] = [
         ['bun', bunRef.current],
         ['main', mainRef.current],
         ['sauce', sauceRef.current],
       ];
 
-      let best: { tab: IngredientType; dist: number } | null = null;
+      let best: { tab: TIngredientType; dist: number } | null = null;
 
       for (const [tab, el] of sections) {
         if (!el) continue;
@@ -118,6 +164,7 @@ export const BurgerIngredients = ({
           title={LABELS.bun}
           group={buns}
           onItemClick={openIngredient}
+          counts={counts}
         />
         <IngredientsGroup
           id="section-main"
@@ -125,6 +172,7 @@ export const BurgerIngredients = ({
           title={LABELS.main}
           group={mains}
           onItemClick={openIngredient}
+          counts={counts}
         />
         <IngredientsGroup
           id="section-sauce"
@@ -132,6 +180,7 @@ export const BurgerIngredients = ({
           title={LABELS.sauce}
           group={sauces}
           onItemClick={openIngredient}
+          counts={counts}
         />
       </div>
       <Modal
