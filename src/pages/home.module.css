@@ -1,0 +1,31 @@
+.main {
+  display: flex;
+  justify-content: space-between;
+  width: 1260px;
+  height: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.title {
+  width: 100%;
+  max-width: 1260px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.loading {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  font-size: 20px;
+  opacity: 0.5;
+}
+
+.spinner_icon {
+  width: 32px;
+  height: 32px;
+}
