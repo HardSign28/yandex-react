@@ -1,4 +1,4 @@
-import { API_URL } from '@/constants/api.ts';
+import { API_URL } from '@/constants/api';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import type { TIngredient, TOrderDetails } from '@utils/types';

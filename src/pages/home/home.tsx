@@ -1,11 +1,11 @@
 import IconSpinner from '@/images/spinner.svg?react';
-import { useGetIngredientsQuery } from '@/store/api.ts';
-import { useAppSelector } from '@/store/hooks.ts';
+import { useGetIngredientsQuery } from '@/store/api';
+import { useAppSelector } from '@/store/hooks';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import { BurgerConstructor } from '@components/burger-constructor/burger-constructor.tsx';
-import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients.tsx';
+import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
+import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
 
 import styles from './home.module.css';
 
