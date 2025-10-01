@@ -6,6 +6,11 @@ body {
   margin: 0;
 }
 
+.margin-auto-x {
+  margin-right: auto;
+  margin-left: auto;
+}
+
 /* Fix for scrollbar */
 
 @supports (scrollbar-color: auto) {

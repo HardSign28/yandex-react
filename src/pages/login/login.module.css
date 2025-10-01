@@ -1,0 +1,28 @@
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1260px;
+  height: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.login_wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 480px;
+}
+
+.login_footer {
+  text-align: center;
+}
+
+h1 {
+  text-align: center;
+}
+
+.link {
+  color: var(--colors-interface-accent);
+  text-decoration: none;
+}
