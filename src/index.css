@@ -11,6 +11,10 @@ body {
   margin-left: auto;
 }
 
+.text-center {
+  text-align: center;
+}
+
 /* Fix for scrollbar */
 
 @supports (scrollbar-color: auto) {

@@ -22,8 +22,8 @@ const Register = (): React.JSX.Element => {
   };
   return (
     <main className={`${styles.main} pl-4 pr-4`}>
-      <div className={styles.login_wrapper}>
-        <h1 className="text text_type_main-medium">Регистрация</h1>
+      <div className={styles.register_wrapper}>
+        <h1 className="text text_type_main-medium text-center">Регистрация</h1>
         <Input
           type={'text'}
           placeholder={'Имя'}
@@ -57,9 +57,7 @@ const Register = (): React.JSX.Element => {
         >
           Зарегистрироваться
         </Button>
-        <div
-          className={`${styles.login_footer} mt-20 text text_type_main-default text_color_inactive`}
-        >
+        <div className="mt-20 text text_type_main-default text_color_inactive text-center">
           <p>
             Уже зарегистрированы?
             <Link className={`${styles.link} ml-2`} to="/login">

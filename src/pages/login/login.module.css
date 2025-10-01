@@ -18,10 +18,6 @@
   text-align: center;
 }
 
-h1 {
-  text-align: center;
-}
-
 .link {
   color: var(--colors-interface-accent);
   text-decoration: none;
