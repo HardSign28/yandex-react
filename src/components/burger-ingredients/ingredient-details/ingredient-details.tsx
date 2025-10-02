@@ -26,19 +26,19 @@ const IngredientDetails = ({ ingredient }: TIngredientProps): React.JSX.Element 
       >
         <div className={styles.nutritional_facts_item}>
           <div>Калории, ккал</div>
-          <div className="text text_type_digits-default">420</div>
+          <div className="text text_type_digits-default">{ingredient.calories}</div>
         </div>
         <div className={styles.nutritional_facts_item}>
           <div>Белки, г</div>
-          <div className="text text_type_digits-default">80</div>
+          <div className="text text_type_digits-default">{ingredient.proteins}</div>
         </div>
         <div className={styles.nutritional_facts_item}>
           <div>Жиры, г</div>
-          <div className="text text_type_digits-default">24</div>
+          <div className="text text_type_digits-default">{ingredient.fat}</div>
         </div>
         <div className={styles.nutritional_facts_item}>
           <div>Углеводы, г</div>
-          <div className="text text_type_digits-default">53</div>
+          <div className="text text_type_digits-default">{ingredient.carbohydrates}</div>
         </div>
       </div>
     </div>

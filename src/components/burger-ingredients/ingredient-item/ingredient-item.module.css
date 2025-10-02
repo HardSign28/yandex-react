@@ -32,3 +32,8 @@
   top: 0;
   right: 0;
 }
+
+.link {
+  color: inherit;
+  text-decoration: inherit;
+}

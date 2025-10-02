@@ -1,3 +1,5 @@
+import type { Location } from 'react-router-dom';
+
 export type TIngredient = {
   _id: string;
   name: string;
@@ -103,4 +105,8 @@ export type TOrderState = {
 
 export type TIngredientUid = TIngredient & {
   uid: string;
+};
+
+export type LocationState = {
+  background?: Location;
 };
