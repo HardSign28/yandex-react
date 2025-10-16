@@ -57,6 +57,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  min-width: 215px;
 }
 
 .button_spinner {

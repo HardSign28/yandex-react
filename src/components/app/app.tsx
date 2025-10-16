@@ -6,6 +6,7 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
 import { AppHeader } from '@components/app-header/app-header';
 import IngredientDetails from '@components/burger-ingredients/ingredient-details/ingredient-details';
+import Loader from '@components/loader/loader.tsx';
 import Modal from '@components/modal/modal';
 import ResetPassword from '@pages/forgot-password/reset-password';
 import Home from '@pages/home/home';
@@ -45,7 +46,7 @@ export const App = (): React.JSX.Element => {
             selectedIngredient ? (
               <IngredientDetails ingredient={selectedIngredient} />
             ) : loading ? (
-              <div>Загрузка ингредиента...</div>
+              <Loader />
             ) : (
               <div>Ингредиент не найден.</div>
             )
@@ -72,7 +73,7 @@ export const App = (): React.JSX.Element => {
                 {selectedIngredient ? (
                   <IngredientDetails ingredient={selectedIngredient} />
                 ) : loading ? (
-                  <div>Загрузка ингредиента...</div>
+                  <Loader />
                 ) : (
                   <div>Ингредиент не найден.</div>
                 )}
