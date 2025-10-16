@@ -20,7 +20,7 @@ export const App = (): React.JSX.Element => {
   const navigate = useNavigate();
   const location = useLocation() as unknown as Location & { state?: LocationState };
   const background = location.state?.background;
-  const selectedIngredient: TIngredient = useAppSelector(
+  const selectedIngredient: TIngredient | null = useAppSelector(
     (s) => s.selectedIngredient.current
   );
   const dispatch = useAppDispatch();
