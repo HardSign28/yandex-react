@@ -16,7 +16,7 @@ export type TIngredient = {
 };
 
 export type TIngredientProps = {
-  ingredient: TIngredient | null;
+  ingredient: TIngredient;
   onClick?: () => void;
   count?: number;
 };

@@ -1,4 +1,5 @@
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { useSelectedIngredient } from '@/hooks/useSelectedIngredient';
+import { useAppDispatch } from '@/store/hooks';
 import { select } from '@/store/slices/selectedIngredientSlice';
 import { useCallback } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
@@ -12,7 +13,7 @@ import Login from '@pages/login/login';
 import Register from '@pages/register/register';
 import ForgotPassword from '@pages/reset-password/forgot-password';
 
-import type { LocationState, TIngredient } from '@utils/types';
+import type { LocationState } from '@utils/types';
 
 import styles from './app.module.css';
 
@@ -20,10 +21,10 @@ export const App = (): React.JSX.Element => {
   const navigate = useNavigate();
   const location = useLocation() as unknown as Location & { state?: LocationState };
   const background = location.state?.background;
-  const selectedIngredient: TIngredient | null = useAppSelector(
-    (s) => s.selectedIngredient.current
-  );
+
   const dispatch = useAppDispatch();
+
+  const { ingredient: selectedIngredient, loading } = useSelectedIngredient();
 
   /**
    * Закрытие модалки ингредиента
@@ -40,27 +41,41 @@ export const App = (): React.JSX.Element => {
         <Route path="/" element={<Home />} />
         <Route
           path="/ingredients/:ingredientId"
-          element={<IngredientDetails ingredient={selectedIngredient} />}
+          element={
+            selectedIngredient ? (
+              <IngredientDetails ingredient={selectedIngredient} />
+            ) : loading ? (
+              <div>Загрузка ингредиента...</div>
+            ) : (
+              <div>Ингредиент не найден.</div>
+            )
+          }
         />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        {/*<Route path="*" element={<NotFound404 />} />*/}
       </Routes>
+
       {background && (
         <Routes>
           <Route
             path="/ingredients/:ingredientId"
             element={
               <Modal
-                isOpen={!!selectedIngredient && !!background}
+                isOpen={!!background}
                 labelledById="ingredient-modal-title"
                 closeOnOverlay
                 title="Детали ингридиента"
                 onClose={handleModalClose}
               >
-                <IngredientDetails ingredient={selectedIngredient} />
+                {selectedIngredient ? (
+                  <IngredientDetails ingredient={selectedIngredient} />
+                ) : loading ? (
+                  <div>Загрузка ингредиента...</div>
+                ) : (
+                  <div>Ингредиент не найден.</div>
+                )}
               </Modal>
             }
           />
