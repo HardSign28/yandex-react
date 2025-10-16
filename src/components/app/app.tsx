@@ -8,12 +8,12 @@ import { AppHeader } from '@components/app-header/app-header';
 import IngredientDetails from '@components/burger-ingredients/ingredient-details/ingredient-details';
 import Loader from '@components/loader/loader.tsx';
 import Modal from '@components/modal/modal';
-import ResetPassword from '@pages/forgot-password/reset-password';
+import ForgotPassword from '@pages/forgot-password/forgot-password';
 import Home from '@pages/home/home';
 import Login from '@pages/login/login';
 import NotFound from '@pages/not-found/not-found.tsx';
 import Register from '@pages/register/register';
-import ForgotPassword from '@pages/reset-password/forgot-password';
+import ResetPassword from '@pages/reset-password/reset-password';
 
 import type { LocationState } from '@utils/types';
 

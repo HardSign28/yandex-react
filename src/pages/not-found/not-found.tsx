@@ -1,6 +1,7 @@
 import { Button } from '@krgaa/react-developer-burger-ui-components';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 import type React from 'react';
 
@@ -22,7 +23,7 @@ const NotFound: React.FC = (): React.JSX.Element => {
   const navigate = useNavigate();
   const stars = useMemo<Star[]>(
     () =>
-      Array.from({ length: NUM_STARS }).map((_, i) => {
+      Array.from({ length: NUM_STARS }).map(() => {
         const cx = Math.random() * 1000;
         const cy = Math.random() * 600;
         const r = Math.random();
@@ -31,7 +32,7 @@ const NotFound: React.FC = (): React.JSX.Element => {
         const colorIndex = Math.ceil(Math.random() * 3);
         const colorClass = (styles as Record<string, string>)[`color-${colorIndex}`];
         return {
-          id: `star-${i}-${Math.floor(Math.random() * 1e6)}`,
+          id: uuidv4(),
           cx,
           cy,
           r,
