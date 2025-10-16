@@ -1,0 +1,33 @@
+.bg {
+  position: relative;
+  overflow: hidden;
+}
+
+.page {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+svg {
+  display: block;
+}
+
+.star {
+  opacity: 0;
+}
+
+.color-1 {
+  fill: var(--text-inactive-color);
+}
+
+.color-2 {
+  fill: var(--colors-interface-success);
+}
+
+.color-3 {
+  fill: var(--colors-button-inactive);
+}

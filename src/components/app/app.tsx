@@ -11,6 +11,7 @@ import Modal from '@components/modal/modal';
 import ResetPassword from '@pages/forgot-password/reset-password';
 import Home from '@pages/home/home';
 import Login from '@pages/login/login';
+import NotFound from '@pages/not-found/not-found.tsx';
 import Register from '@pages/register/register';
 import ForgotPassword from '@pages/reset-password/forgot-password';
 
@@ -56,6 +57,7 @@ export const App = (): React.JSX.Element => {
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
 
       {background && (
