@@ -21,6 +21,10 @@ body {
   text-align: center;
 }
 
+.input__icon svg:hover {
+  cursor: pointer;
+}
+
 /* Fix for scrollbar */
 
 @supports (scrollbar-color: auto) {
