@@ -35,6 +35,8 @@ const Login = (): React.JSX.Element => {
     const accessToken = res.accessToken?.replace('Bearer ', '') ?? '';
     const refreshToken = res.refreshToken ?? '';
     dispatch(setCredentials({ user: res.user, accessToken, refreshToken }));
+    console.log('data', data);
+    console.log('error', error);
     // дальше редирект и т.д.
   };
 

@@ -4,15 +4,24 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { setCredentials, logout as logoutAction } from './slices/authSlice';
 
 import type { RootState } from '@/store';
-import type { AuthResponse, TIngredient, TOrderDetails } from '@utils/types';
+import type {
+  BaseQueryFn,
+  FetchArgs,
+  FetchBaseQueryError,
+  FetchBaseQueryMeta,
+} from '@reduxjs/toolkit/query';
+import type {
+  TAuthResponse,
+  TIngredient,
+  TIngredientsResponse,
+  TOrderDetails,
+  TOrderResponse,
+} from '@utils/types';
 
-type IngredientsResponse = { success: boolean; data?: TIngredient[]; message?: string };
-type OrderResponse = { success: boolean } & TOrderDetails;
-
-const baseUrl = API_URL;
+type RawExtra = Parameters<typeof rawBaseQuery>[2];
 
 const rawBaseQuery = fetchBaseQuery({
-  baseUrl,
+  baseUrl: API_URL,
   prepareHeaders: (headers, { getState }) => {
     const state = getState() as RootState;
     const token = state.auth.accessToken;
@@ -23,8 +32,15 @@ const rawBaseQuery = fetchBaseQuery({
   },
 });
 
-const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
-  let result = await rawBaseQuery(args, api, extraOptions);
+const baseQueryWithReauth: BaseQueryFn<
+  string | FetchArgs, // тип аргумента (endpoint URL или объект с настройками)
+  unknown, // тип успешного результата (можно уточнить, если хотите)
+  FetchBaseQueryError, // тип ошибки
+  unknown, // дополнительные параметры, если есть
+  FetchBaseQueryMeta // метаданные запроса
+> = async (args, api, extraOptions) => {
+  const rawExtra = extraOptions as RawExtra;
+  let result = await rawBaseQuery(args, api, rawExtra);
 
   if (result?.error?.status === 401) {
     // попробуем обновить токен
@@ -44,11 +60,11 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
         body: { token: refreshToken }, // форма тела зависит от вашего API
       },
       api,
-      extraOptions
+      rawExtra
     );
 
     if (refreshResult?.data) {
-      const payload = refreshResult.data as AuthResponse;
+      const payload = refreshResult.data as TAuthResponse;
       // достаём токены (приведите в соответствие с тем, что возвращает бэкенд)
       const accessToken = payload.accessToken?.replace('Bearer ', '') ?? '';
       const newRefresh = payload.refreshToken ?? refreshToken;
@@ -57,7 +73,7 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
       api.dispatch(setCredentials({ accessToken, refreshToken: newRefresh }));
 
       // повторяем исходный запрос с обновлённым токеном
-      result = await rawBaseQuery(args, api, extraOptions);
+      result = await rawBaseQuery(args, api, rawExtra);
     } else {
       // refresh не сработал — разлогиниваем
       api.dispatch(logoutAction());
@@ -76,7 +92,7 @@ export const api = createApi({
       async queryFn(_arg, _api, _extra, baseQuery) {
         const response = await baseQuery('/ingredients');
         if (response.error) return { error: response.error };
-        const payload = response.data as IngredientsResponse;
+        const payload = response.data as TIngredientsResponse;
         if (!payload?.success || !Array.isArray(payload.data)) {
           return {
             error: { status: 500, data: { message: 'Ошибка загрузки ингредиентов' } },
@@ -90,7 +106,7 @@ export const api = createApi({
       async queryFn(body, _api, _extra, baseQuery) {
         const response = await baseQuery({ url: '/orders', method: 'POST', body });
         if (response.error) return { error: response.error };
-        const payload = response.data as OrderResponse;
+        const payload = response.data as TOrderResponse;
         if (!payload?.success) {
           return {
             error: { status: 500, data: { message: 'ошибка оформления заказа' } },
@@ -102,7 +118,7 @@ export const api = createApi({
       invalidatesTags: ['Orders'],
     }),
 
-    login: build.mutation<AuthResponse, { email: string; password: string }>({
+    login: build.mutation<TAuthResponse, { email: string; password: string }>({
       query: (body) => ({
         url: '/auth/login',
         method: 'POST',
@@ -112,7 +128,7 @@ export const api = createApi({
     }),
 
     register: build.mutation<
-      AuthResponse,
+      TAuthResponse,
       { name?: string; email: string; password: string }
     >({
       query: (body) => ({
@@ -123,7 +139,7 @@ export const api = createApi({
       invalidatesTags: ['Auth'],
     }),
 
-    logout: build.mutation<AuthResponse, void>({
+    logout: build.mutation<TAuthResponse, void>({
       query: () => ({
         url: '/auth/logout',
         method: 'POST',
@@ -131,7 +147,7 @@ export const api = createApi({
       invalidatesTags: ['Auth'],
     }),
 
-    refreshToken: build.mutation<AuthResponse, { token: string }>({
+    refreshToken: build.mutation<TAuthResponse, { token: string }>({
       query: (body) => ({
         url: '/auth/token',
         method: 'POST',

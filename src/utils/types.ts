@@ -107,14 +107,22 @@ export type TIngredientUid = TIngredient & {
   uid: string;
 };
 
-export type LocationState = {
+export type TLocationState = {
   background?: Location;
 };
 
-export type AuthResponse = {
+export type TAuthResponse = {
   success: boolean;
   accessToken?: string;
   refreshToken?: string;
   user?: { name: string; email: string };
   message?: string;
 };
+
+export type TIngredientsResponse = {
+  success: boolean;
+  data?: TIngredient[];
+  message?: string;
+};
+
+export type TOrderResponse = { success: boolean } & TOrderDetails;

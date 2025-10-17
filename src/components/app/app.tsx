@@ -18,13 +18,13 @@ import Profile from '@pages/profile/profile.tsx';
 import Register from '@pages/register/register';
 import ResetPassword from '@pages/reset-password/reset-password';
 
-import type { LocationState } from '@utils/types';
+import type { TLocationState } from '@utils/types';
 
 import styles from './app.module.css';
 
 export const App = (): React.JSX.Element => {
   const navigate = useNavigate();
-  const location = useLocation() as unknown as Location & { state?: LocationState };
+  const location = useLocation() as unknown as Location & { state?: TLocationState };
   const background = location.state?.background;
 
   const dispatch = useAppDispatch();
