@@ -4,15 +4,27 @@ import {
   Input,
   PasswordInput,
 } from '@krgaa/react-developer-burger-ui-components';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import styles from './profile.module.css';
 
 const Profile = (): React.JSX.Element => {
   const [name, setName] = useState('Космос');
+  const [nameDisabled, setNameDisabled] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('password');
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!nameDisabled) {
+      inputRef.current?.focus();
+    }
+  }, [nameDisabled]);
+
+  const onNameIconClick = (): void => {
+    setNameDisabled(false);
+  };
+
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setEmail(e.target.value);
   };
@@ -33,6 +45,9 @@ const Profile = (): React.JSX.Element => {
         errorText={'Ошибка'}
         size={'default'}
         icon="EditIcon"
+        disabled={nameDisabled}
+        onIconClick={onNameIconClick}
+        onBlur={() => setNameDisabled(true)}
       />
       <EmailInput
         placeholder="Логин"
