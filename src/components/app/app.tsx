@@ -12,6 +12,8 @@ import ForgotPassword from '@pages/forgot-password/forgot-password';
 import Home from '@pages/home/home';
 import Login from '@pages/login/login';
 import NotFound from '@pages/not-found/not-found.tsx';
+import Orders from '@pages/profile/orders/orders.tsx';
+import ProfileLayout from '@pages/profile/profile-layout.tsx';
 import Profile from '@pages/profile/profile.tsx';
 import Register from '@pages/register/register';
 import ResetPassword from '@pages/reset-password/reset-password';
@@ -42,7 +44,10 @@ export const App = (): React.JSX.Element => {
       <AppHeader />
       <Routes location={background ?? location}>
         <Route path="/" element={<Home />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<ProfileLayout />}>
+          <Route index element={<Profile />} />
+          <Route path="orders" element={<Orders />} />
+        </Route>
         <Route
           path="/ingredients/:ingredientId"
           element={
