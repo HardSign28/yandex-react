@@ -8,7 +8,7 @@ import {
   PasswordInput,
 } from '@krgaa/react-developer-burger-ui-components';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import styles from './login.module.css';
 
@@ -17,6 +17,8 @@ const Login = (): React.JSX.Element => {
   const [email, setEmail] = useState('demo@test.kz');
   const [login, { isLoading, data, error }] = useLoginMutation();
   const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
 
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPassword(e.target.value);
@@ -31,13 +33,16 @@ const Login = (): React.JSX.Element => {
       email,
       password,
     }).unwrap();
-    // res должен содержать accessToken, refreshToken и user (проверьте структуру API)
-    const accessToken = res.accessToken?.replace('Bearer ', '') ?? '';
+    const accessToken = res.accessToken ?? '';
     const refreshToken = res.refreshToken ?? '';
     dispatch(setCredentials({ user: res.user, accessToken, refreshToken }));
     console.log('data', data);
     console.log('error', error);
-    // дальше редирект и т.д.
+    console.log('user', res.user);
+    console.log('accessToken', accessToken);
+    console.log('refreshToken', refreshToken);
+    localStorage.setItem('refreshToken', refreshToken);
+    await navigate('/');
   };
 
   return (

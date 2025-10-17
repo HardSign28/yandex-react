@@ -126,3 +126,15 @@ export type TIngredientsResponse = {
 };
 
 export type TOrderResponse = { success: boolean } & TOrderDetails;
+
+export type TUser = {
+  name?: string;
+  email?: string;
+};
+
+export type TAuthState = {
+  user: TUser | null;
+  accessToken: string | null;
+  refreshToken: string | null;
+  isAuthenticated: boolean;
+};

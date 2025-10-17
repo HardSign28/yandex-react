@@ -17,9 +17,11 @@ export const BurgerIngredients = (): React.JSX.Element => {
   const mainRef = useRef<HTMLElement>(null);
   const sauceRef = useRef<HTMLElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const bun = useAppSelector((s) => s.burgerConstructor.bun);
-  const ingredients = useAppSelector((s) => s.ingredients.items);
-  const selectedIngredients = useAppSelector((s) => s.burgerConstructor.ingredients);
+  const bun = useAppSelector((state) => state.burgerConstructor.bun);
+  const ingredients = useAppSelector((state) => state.ingredients.items);
+  const selectedIngredients = useAppSelector(
+    (state) => state.burgerConstructor.ingredients
+  );
   const isTickingRef = useRef(false);
 
   /**

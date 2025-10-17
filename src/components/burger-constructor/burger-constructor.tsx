@@ -27,9 +27,9 @@ import styles from './burger-constructor.module.css';
 
 export const BurgerConstructor = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
-  const bun = useAppSelector((s) => s.burgerConstructor.bun);
-  const ingredients = useAppSelector((s) => s.burgerConstructor.ingredients);
-  const orderDetails = useAppSelector((s) => s.order.last);
+  const bun = useAppSelector((state) => state.burgerConstructor.bun);
+  const ingredients = useAppSelector((state) => state.burgerConstructor.ingredients);
+  const orderDetails = useAppSelector((state) => state.order.last);
   const [createOrder, { isLoading }] = useCreateOrderMutation();
 
   /**

@@ -1,3 +1,4 @@
+import { useAppSelector } from '@/store/hooks';
 import {
   Button,
   EmailInput,
@@ -9,11 +10,10 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './profile.module.css';
 
 const Profile = (): React.JSX.Element => {
-  const [name, setName] = useState('Космос');
   const [nameDisabled, setNameDisabled] = useState(true);
-  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('password');
   const inputRef = useRef<HTMLInputElement>(null);
+  const user = useAppSelector((state) => state.auth.user);
 
   useEffect(() => {
     if (!nameDisabled) {
@@ -21,12 +21,22 @@ const Profile = (): React.JSX.Element => {
     }
   }, [nameDisabled]);
 
+  useEffect(() => {
+    console.log('user', user);
+  }, [user]);
+
   const onNameIconClick = (): void => {
     setNameDisabled(false);
   };
 
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setEmail(e.target.value);
+    console.log(e);
+    // setEmail(e.target.value);
+  };
+
+  const onChangeName = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    console.log(e);
+    // setName(e.target.value);
   };
 
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -37,8 +47,8 @@ const Profile = (): React.JSX.Element => {
       <Input
         type={'text'}
         placeholder={'Имя'}
-        onChange={(e) => setName(e.target.value)}
-        value={name}
+        onChange={onChangeName}
+        value={user?.name ?? ''}
         name={'name'}
         error={false}
         ref={inputRef}
@@ -52,7 +62,7 @@ const Profile = (): React.JSX.Element => {
       <EmailInput
         placeholder="Логин"
         onChange={onChangeEmail}
-        value={email}
+        value={user?.email ?? ''}
         name={'email'}
         isIcon={true}
         extraClass="mt-6"

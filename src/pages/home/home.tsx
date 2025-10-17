@@ -11,7 +11,7 @@ import styles from './home.module.css';
 
 const Home = (): React.JSX.Element => {
   const { isLoading } = useGetIngredientsQuery();
-  const ingredients = useAppSelector((s) => s.ingredients.items);
+  const ingredients = useAppSelector((state) => state.ingredients.items);
   return (
     <>
       <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-4`}>
