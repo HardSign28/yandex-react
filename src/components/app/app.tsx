@@ -6,15 +6,15 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
 import { AppHeader } from '@components/app-header/app-header';
 import IngredientDetails from '@components/burger-ingredients/ingredient-details/ingredient-details';
-import Loader from '@components/loader/loader.tsx';
+import Loader from '@components/loader/loader';
 import Modal from '@components/modal/modal';
 import ForgotPassword from '@pages/forgot-password/forgot-password';
 import Home from '@pages/home/home';
 import Login from '@pages/login/login';
-import NotFound from '@pages/not-found/not-found.tsx';
-import Orders from '@pages/profile/orders/orders.tsx';
-import ProfileLayout from '@pages/profile/profile-layout.tsx';
-import Profile from '@pages/profile/profile.tsx';
+import NotFound from '@pages/not-found/not-found';
+import Orders from '@pages/profile/orders/orders';
+import Profile from '@pages/profile/profile';
+import ProfileLayout from '@pages/profile/profile-layout';
 import Register from '@pages/register/register';
 import ResetPassword from '@pages/reset-password/reset-password';
 
