@@ -1,18 +1,12 @@
-.main {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 1260px;
-  height: 100%;
-  margin: 0 auto;
-  overflow: hidden;
-}
-
 .register_wrapper {
   /* TODO: Дубль */
   display: flex;
   flex-direction: column;
   max-width: 480px;
+}
+
+.button {
+  min-width: 253px;
 }
 
 .login_footer {

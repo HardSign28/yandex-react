@@ -1,8 +1,20 @@
+import { useLogoutMutation } from '@/store/api';
+import { useAppDispatch } from '@/store/hooks';
+import { logout } from '@/store/slices/authSlice';
 import { NavLink, Outlet } from 'react-router-dom';
 
 import styles from './profile-layout.module.css';
 
 const ProfileLayout = (): React.JSX.Element => {
+  const [logoutApi] = useLogoutMutation();
+  const dispatch = useAppDispatch();
+  const onLogout = async (): Promise<void> => {
+    try {
+      await logoutApi().unwrap();
+    } finally {
+      dispatch(logout());
+    }
+  };
   return (
     <main className={`${styles.main} pl-4 pr-4 mt-30`}>
       <aside className={styles.aside}>
@@ -24,7 +36,11 @@ const ProfileLayout = (): React.JSX.Element => {
           >
             История заказов
           </NavLink>
-          <NavLink to="" className="text text_type_main-medium link mt-4 mb-7">
+          <NavLink
+            to=""
+            onClick={() => void onLogout()}
+            className="text text_type_main-medium link mt-4 mb-7"
+          >
             Выход
           </NavLink>
         </nav>

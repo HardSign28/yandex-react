@@ -1,6 +1,7 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 
 import { api } from './api';
+import auth from './slices/authSlice';
 import burgerConstructor from './slices/burgerConstructorSlice';
 import ingredients from './slices/ingredientsSlice';
 import order from './slices/orderSlice';
@@ -11,12 +12,13 @@ const rootReducer = combineReducers({
   ingredients,
   selectedIngredient,
   order,
+  auth,
   [api.reducerPath]: api.reducer,
 });
 
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: (gDM) => gDM().concat(api.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
   devTools: import.meta.env.DEV,
 });
 

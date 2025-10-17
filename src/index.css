@@ -9,7 +9,21 @@ body,
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   margin: 0;
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  width: 1260px;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 20px 0;
 }
 
 .link {
@@ -33,6 +47,17 @@ body {
 
 .input__icon svg:hover {
   cursor: pointer;
+}
+
+.button_spinner {
+  width: 24px;
+  height: 24px;
+}
+
+.button_with_spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Fix for scrollbar */

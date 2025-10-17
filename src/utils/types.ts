@@ -110,3 +110,11 @@ export type TIngredientUid = TIngredient & {
 export type LocationState = {
   background?: Location;
 };
+
+export type AuthResponse = {
+  success: boolean;
+  accessToken?: string;
+  refreshToken?: string;
+  user?: { name: string; email: string };
+  message?: string;
+};

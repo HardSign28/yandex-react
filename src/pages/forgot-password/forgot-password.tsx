@@ -10,7 +10,7 @@ const ForgotPassword = (): React.JSX.Element => {
     setEmail(e.target.value);
   };
   return (
-    <main className={`${styles.main} pl-4 pr-4`}>
+    <main className="main pl-4 pr-4">
       <div className={styles.forgot_password_wrapper}>
         <h1 className="text text_type_main-medium text-center">Восстановление пароля</h1>
         <EmailInput

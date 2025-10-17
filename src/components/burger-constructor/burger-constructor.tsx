@@ -217,14 +217,10 @@ export const BurgerConstructor = (): React.JSX.Element => {
           htmlType="button"
           type="primary"
           size="large"
-          extraClass={styles.button_with_spinner}
+          extraClass={`${styles.button} button_with_spinner`}
           disabled={isLoading}
         >
-          {isLoading ? (
-            <IconSpinner className={styles.button_spinner} />
-          ) : (
-            'Оформить заказ'
-          )}
+          {isLoading ? <IconSpinner className="button_spinner" /> : 'Оформить заказ'}
         </Button>
       </div>
       <Modal
