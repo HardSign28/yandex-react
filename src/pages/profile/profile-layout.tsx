@@ -7,13 +7,30 @@ const ProfileLayout = (): React.JSX.Element => {
     <main className={`${styles.main} pl-4 pr-4 mt-30`}>
       <aside className={styles.aside}>
         <nav>
-          <NavLink to="/profile" className="">
+          <NavLink
+            to="/profile"
+            end
+            className={({ isActive }) =>
+              `text text_type_main-medium link mt-4 mb-7 ${isActive ? 'link_active' : ''}`
+            }
+          >
             Профиль
           </NavLink>
-          <NavLink to="orders">История заказов</NavLink>
-          <NavLink to="">Выход</NavLink>
+          <NavLink
+            to="orders"
+            className={({ isActive }) =>
+              `text text_type_main-medium link mt-4 mb-7 ${isActive ? 'link_active' : ''}`
+            }
+          >
+            История заказов
+          </NavLink>
+          <NavLink to="" className="text text_type_main-medium link mt-4 mb-7">
+            Выход
+          </NavLink>
         </nav>
-        <div className="text text_type_main-default text_color_inactive">
+        <div
+          className={`${styles.description} text text_type_main-default text_color_inactive mt-30`}
+        >
           В этом разделе вы можете
           <br />
           изменить свои персональные данные

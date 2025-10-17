@@ -10,3 +10,7 @@
 .aside {
   max-width: 320px;
 }
+
+.description {
+  opacity: 0.4;
+}

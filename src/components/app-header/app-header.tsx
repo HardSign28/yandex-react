@@ -13,12 +13,9 @@ export const AppHeader = (): React.JSX.Element => {
     <header className={styles.header}>
       <nav className={`${styles.menu} p-4`}>
         <div className={styles.menu_part_left}>
-          {/* Тут должны быть ссылки, а не например кнопки или абзацы */}
           <NavLink
             to="/"
-            className={({ isActive }) =>
-              `${styles.link} ${isActive ? styles.link_active : ''}`
-            }
+            className={({ isActive }) => `link ml-10 ${isActive ? 'link_active' : ''}`}
           >
             {({ isActive }) => (
               <>
@@ -29,9 +26,7 @@ export const AppHeader = (): React.JSX.Element => {
           </NavLink>
           <NavLink
             to="/feed"
-            className={({ isActive }) =>
-              `${styles.link} ml-10 ${isActive ? styles.link_active : ''}`
-            }
+            className={({ isActive }) => `link ml-10 ${isActive ? 'link_active' : ''}`}
           >
             {({ isActive }) => (
               <>
@@ -46,9 +41,7 @@ export const AppHeader = (): React.JSX.Element => {
         </div>
         <NavLink
           to="/profile"
-          className={({ isActive }) =>
-            `${styles.link} ${styles.link_position_last} ${isActive ? styles.link_active : ''}`
-          }
+          className={({ isActive }) => `link ml-10 ${isActive ? 'link_active' : ''}`}
         >
           {({ isActive }) => (
             <>
