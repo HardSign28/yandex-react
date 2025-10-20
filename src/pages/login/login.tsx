@@ -41,7 +41,6 @@ const Login = (): React.JSX.Element => {
     console.log('user', res.user);
     console.log('accessToken', accessToken);
     console.log('refreshToken', refreshToken);
-    localStorage.setItem('refreshToken', refreshToken);
     await navigate('/');
   };
 

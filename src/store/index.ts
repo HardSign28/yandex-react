@@ -1,6 +1,7 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 
 import { api } from './api';
+import authListener from './authListener';
 import auth from './slices/authSlice';
 import burgerConstructor from './slices/burgerConstructorSlice';
 import ingredients from './slices/ingredientsSlice';
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
 
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().prepend(authListener.middleware).concat(api.middleware),
   devTools: import.meta.env.DEV,
 });
 
