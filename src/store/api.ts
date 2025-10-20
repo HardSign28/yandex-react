@@ -139,10 +139,11 @@ export const api = createApi({
       invalidatesTags: ['Auth'],
     }),
 
-    logout: build.mutation<TAuthResponse, void>({
-      query: () => ({
+    logout: build.mutation<TAuthResponse, string>({
+      query: (token) => ({
         url: '/auth/logout',
         method: 'POST',
+        body: { token },
       }),
       invalidatesTags: ['Auth'],
     }),

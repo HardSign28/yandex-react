@@ -1,5 +1,5 @@
 import { useLogoutMutation } from '@/store/api';
-import { useAppDispatch } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { logout } from '@/store/slices/authSlice';
 import { NavLink, Outlet } from 'react-router-dom';
 
@@ -7,10 +7,13 @@ import styles from './profile-layout.module.css';
 
 const ProfileLayout = (): React.JSX.Element => {
   const [logoutApi] = useLogoutMutation();
+  const refreshToken = useAppSelector((state) => state.auth.refreshToken);
   const dispatch = useAppDispatch();
   const onLogout = async (): Promise<void> => {
     try {
-      await logoutApi().unwrap();
+      if (refreshToken) {
+        await logoutApi(refreshToken).unwrap();
+      }
     } finally {
       dispatch(logout());
     }
