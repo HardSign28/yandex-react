@@ -155,6 +155,38 @@ export const api = createApi({
         body,
       }),
     }),
+
+    getUser: build.query<TUser, void>({
+      async queryFn(_arg, _api, _extra, baseQuery) {
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+          return {
+            error: {
+              status: 401,
+              data: { message: 'Токен не найден' },
+            },
+          };
+        }
+
+        const response = await baseQuery({
+          url: '/auth/user',
+          method: 'GET',
+          headers: { authorization: token },
+        });
+
+        if (response.error) return { error: response.error };
+        const data = response.data as { success: boolean; user: TUser };
+
+        if (!data?.success || !data.user) {
+          return {
+            error: { status: 500, data: { message: 'Ошибка получения данных пользователя' } },
+          };
+        }
+
+        return { data: data.user };
+      },
+      providesTags: ['Auth'],
+    }),
   }),
 });
 
@@ -165,4 +197,5 @@ export const {
   useRegisterMutation,
   useLogoutMutation,
   useRefreshTokenMutation,
+  useGetUserQuery,
 } = api;

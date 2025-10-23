@@ -137,4 +137,5 @@ export type TAuthState = {
   accessToken: string | null;
   refreshToken: string | null;
   isAuthenticated: boolean;
+  isAuthChecked: boolean;
 };

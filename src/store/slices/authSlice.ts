@@ -8,6 +8,7 @@ const initialState: TAuthState = {
   accessToken: null,
   refreshToken: null,
   isAuthenticated: false,
+  isAuthChecked: false,
 };
 
 const authSlice = createSlice({
@@ -26,7 +27,13 @@ const authSlice = createSlice({
       if (user) state.user = user;
       state.accessToken = accessToken ?? state.accessToken;
       state.refreshToken = refreshToken ?? state.refreshToken;
-      state.isAuthenticated = Boolean(state.accessToken);
+      state.isAuthenticated = !!state.accessToken;
+    },
+    setUser: (state, action: PayloadAction<TUser | null>) => {
+      state.user = action.payload;
+    },
+    setIsAuthChecked: (state, action: PayloadAction<boolean>) => {
+      state.isAuthChecked = action.payload;
     },
     logout(state) {
       state.user = null;
@@ -34,8 +41,20 @@ const authSlice = createSlice({
       state.refreshToken = null;
       state.isAuthenticated = false;
     },
+    /*
+    checkUserAuth: (state) => {
+      state.isAuthenticated = !!localStorage.getItem('refreshToken');
+      state.isAuthChecked = true;
+    },
+    */
+  },
+  selectors: {
+    selectUser: (state) => state.user,
+    selectIsAuthChecked: (state) => state.isAuthChecked,
   },
 });
 
 export const { setCredentials, logout } = authSlice.actions;
+export const { setUser, setIsAuthChecked } = authSlice.actions;
+export const { selectUser, selectIsAuthChecked } = authSlice.selectors;
 export default authSlice.reducer;

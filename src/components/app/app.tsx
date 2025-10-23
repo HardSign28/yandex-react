@@ -1,13 +1,14 @@
 import { useSelectedIngredient } from '@/hooks/useSelectedIngredient';
 import { useAppDispatch } from '@/store/hooks';
 import { select } from '@/store/slices/selectedIngredientSlice';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
 import { AppHeader } from '@components/app-header/app-header';
 import IngredientDetails from '@components/burger-ingredients/ingredient-details/ingredient-details';
 import Loader from '@components/loader/loader';
 import Modal from '@components/modal/modal';
+import { ProtectedRoute } from '@components/protected-route/protected-route.tsx';
 import ForgotPassword from '@pages/forgot-password/forgot-password';
 import Home from '@pages/home/home';
 import Login from '@pages/login/login';
@@ -21,6 +22,7 @@ import ResetPassword from '@pages/reset-password/reset-password';
 import type { TLocationState } from '@utils/types';
 
 import styles from './app.module.css';
+import { checkUserAuth } from '@/store/thunks/checkUserAuth.ts';
 
 export const App = (): React.JSX.Element => {
   const navigate = useNavigate();
@@ -39,12 +41,21 @@ export const App = (): React.JSX.Element => {
     dispatch(select(null));
   }, [dispatch, navigate]);
 
+  useEffect(() => {
+    void dispatch(checkUserAuth()).finally(() => {
+      // ничего не нужно — thunk сам диспатчит setIsAuthChecked внутри (см. ниже)
+    });
+  }, [dispatch]);
+
   return (
     <div className={styles.app}>
       <AppHeader />
       <Routes location={background ?? location}>
         <Route path="/" element={<Home />} />
-        <Route path="/profile" element={<ProfileLayout />}>
+        <Route
+          path="/profile"
+          element={<ProtectedRoute component={<ProfileLayout />} />}
+        >
           <Route index element={<Profile />} />
           <Route path="orders" element={<Orders />} />
         </Route>
@@ -60,8 +71,14 @@ export const App = (): React.JSX.Element => {
             )
           }
         />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route
+          path="/login"
+          element={<ProtectedRoute onlyUnAuth component={<Login />} />}
+        />
+        <Route
+          path="/register"
+          element={<ProtectedRoute onlyUnAuth component={<Register />} />}
+        />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="*" element={<NotFound />} />
