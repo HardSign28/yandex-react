@@ -117,7 +117,7 @@ const ResetPassword = (): React.JSX.Element => {
           </div>
         )}
         <Button
-          htmlType="button"
+          htmlType="submit"
           type="primary"
           size="medium"
           extraClass="mt-6 margin-auto-x"

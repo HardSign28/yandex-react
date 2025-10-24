@@ -1,6 +1,7 @@
 import IconSpinner from '@/images/spinner.svg?react';
 import { useCreateOrderMutation } from '@/store/api';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { selectUser } from '@/store/slices/authSlice';
 import {
   setBun,
   addIngredient,
@@ -31,6 +32,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
   const ingredients = useAppSelector((state) => state.burgerConstructor.ingredients);
   const orderDetails = useAppSelector((state) => state.order.last);
   const [createOrder, { isLoading }] = useCreateOrderMutation();
+  const user = useAppSelector(selectUser);
 
   /**
    * Расчет итоговой суммы
@@ -218,10 +220,18 @@ export const BurgerConstructor = (): React.JSX.Element => {
           type="primary"
           size="large"
           extraClass={`${styles.button} button_with_spinner`}
-          disabled={isLoading}
+          disabled={isLoading || !user}
+          title={!user ? 'Авторизуйтесь, чтобы оформить заказ' : ''}
         >
           {isLoading ? <IconSpinner className="button_spinner" /> : 'Оформить заказ'}
         </Button>
+        <div>
+          {!user && (
+            <span className="text text_type_main-small">
+              Авторизуйтесь, чтобы оформить заказ
+            </span>
+          )}
+        </div>
       </div>
       <Modal
         isOpen={!!orderDetails}
