@@ -119,6 +119,7 @@ const baseQueryWithReauth: BaseQueryFn<
             setCredentials({ accessToken: newAccess, refreshToken: newRefresh })
           );
 
+          /*
           // При желании — синхронно сохранить в localStorage (но у вас есть listener, который это делает)
           // TODO: refactor
           try {
@@ -127,6 +128,7 @@ const baseQueryWithReauth: BaseQueryFn<
           } catch (_) {
             // ignore storage errors
           }
+          */
 
           return { ok: true };
         } else {
@@ -306,9 +308,6 @@ export const api = createApi({
 
         return { data: data.user };
       },
-
-      // убираем invalidatesTags: ['Auth'], чтобы RTK Query не перезапрашивал getUser
-      // invalidatesTags: ['Auth'],
 
       // аккуратно обновим кеш getUser и откатим при ошибке
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {

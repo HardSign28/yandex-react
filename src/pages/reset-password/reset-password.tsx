@@ -89,10 +89,7 @@ const ResetPassword = (): React.JSX.Element => {
 
   return (
     <main className="main pl-4 pr-4">
-      <form
-        className={styles.reset_password_wrapper}
-        onSubmit={(e) => void handleSubmit(e)}
-      >
+      <form className="auth_page_wrapper" onSubmit={(e) => void handleSubmit(e)}>
         <h1 className="text text_type_main-medium text-center">Восстановление пароля</h1>
         <PasswordInput
           placeholder="Введите новый пароль"
@@ -129,7 +126,7 @@ const ResetPassword = (): React.JSX.Element => {
         <div className="mt-20 text text_type_main-default text_color_inactive text-center">
           <p>
             Вспомнили пароль?
-            <Link className={`${styles.link} ml-2`} to="/login">
+            <Link className="auth_link ml-2" to="/login">
               Войти
             </Link>
           </p>

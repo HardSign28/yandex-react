@@ -57,7 +57,7 @@ const Login = (): React.JSX.Element => {
 
   return (
     <main className="main pl-4 pr-4">
-      <div className={styles.login_wrapper}>
+      <div className="auth_page_wrapper">
         <h1 className="text text_type_main-medium text-center">Вход</h1>
         <EmailInput
           onChange={onChangeEmail}
@@ -84,13 +84,13 @@ const Login = (): React.JSX.Element => {
         <div className="mt-20 text text_type_main-default text_color_inactive text-center">
           <p>
             Вы - новый пользователь?
-            <Link className={`${styles.link} ml-2`} to="/register">
+            <Link className="auth_link ml-2" to="/register">
               Зарегистрироваться
             </Link>
           </p>
           <p>
             Забыли пароль?
-            <Link className={`${styles.link} ml-2`} to="/forgot-password">
+            <Link className="auth_link ml-2" to="/forgot-password">
               Восстановить пароль
             </Link>
           </p>

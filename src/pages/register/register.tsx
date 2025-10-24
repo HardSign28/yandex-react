@@ -55,7 +55,7 @@ const Register = (): React.JSX.Element => {
 
   return (
     <main className="main pl-4 pr-4">
-      <form className={styles.register_wrapper} onSubmit={(e) => void onRegister(e)}>
+      <form className="auth_page_wrapper" onSubmit={(e) => void onRegister(e)}>
         <h1 className="text text_type_main-medium text-center">Регистрация</h1>
         <Input
           type={'text'}
@@ -93,7 +93,7 @@ const Register = (): React.JSX.Element => {
         <div className="mt-20 text text_type_main-default text_color_inactive text-center">
           <p>
             Уже зарегистрированы?
-            <Link className={`${styles.link} ml-2`} to="/login">
+            <Link className="auth_link ml-2" to="/login">
               Войти
             </Link>
           </p>

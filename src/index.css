@@ -26,6 +26,12 @@ body {
   padding: 20px 0;
 }
 
+.auth_page_wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 480px;
+}
+
 .link {
   display: flex;
   color: var(--text-inactive-color);
@@ -34,6 +40,11 @@ body {
 
 .link_active {
   color: var(--text-primary-color);
+}
+
+.auth_link {
+  color: var(--colors-interface-accent);
+  text-decoration: none;
 }
 
 .margin-auto-x {
