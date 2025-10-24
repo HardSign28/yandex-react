@@ -11,6 +11,8 @@ import {
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
+import type React from 'react';
+
 import styles from './register.module.css';
 
 const Register = (): React.JSX.Element => {
@@ -20,14 +22,27 @@ const Register = (): React.JSX.Element => {
   const inputRef = useRef(null);
   const [register, { isLoading }] = useRegisterMutation();
   const dispatch = useAppDispatch();
+  /**
+   * Изменение пароля
+   * @param e
+   */
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPassword(e.target.value);
   };
+
+  /**
+   * Изменение поля email
+   * @param e
+   */
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setEmail(e.target.value);
   };
 
-  const onRegister = async (): Promise<void> => {
+  /**
+   * Сабмит формы
+   */
+  const onRegister = async (e?: React.FormEvent): Promise<void> => {
+    e?.preventDefault();
     const res = await register({
       email,
       password,
@@ -40,7 +55,7 @@ const Register = (): React.JSX.Element => {
 
   return (
     <main className="main pl-4 pr-4">
-      <div className={styles.register_wrapper}>
+      <form className={styles.register_wrapper} onSubmit={(e) => void onRegister(e)}>
         <h1 className="text text_type_main-medium text-center">Регистрация</h1>
         <Input
           type={'text'}
@@ -68,11 +83,10 @@ const Register = (): React.JSX.Element => {
           extraClass="mt-6"
         />
         <Button
-          htmlType="button"
+          htmlType="submit"
           type="primary"
           size="medium"
           extraClass={`${styles.button} button_with_spinner mt-6 margin-auto-x`}
-          onClick={() => void onRegister()}
         >
           {isLoading ? <IconSpinner className="button_spinner" /> : 'Зарегистрироваться'}
         </Button>
@@ -84,7 +98,7 @@ const Register = (): React.JSX.Element => {
             </Link>
           </p>
         </div>
-      </div>
+      </form>
     </main>
   );
 };

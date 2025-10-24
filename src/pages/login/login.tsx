@@ -20,14 +20,25 @@ const Login = (): React.JSX.Element => {
 
   const navigate = useNavigate();
 
+  /**
+   * Изменение пароля
+   * @param e
+   */
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPassword(e.target.value);
   };
 
+  /**
+   * Изменение поля email
+   * @param e
+   */
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setEmail(e.target.value);
   };
 
+  /**
+   * Сабмит формы
+   */
   const onSubmit = async (): Promise<void> => {
     const res = await login({
       email,

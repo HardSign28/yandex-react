@@ -16,51 +16,66 @@ import styles from './profile.module.css';
 
 const Profile = (): React.JSX.Element => {
   const user = useAppSelector((state) => state.auth.user);
-
-  // контролируемые поля
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>(''); // пустой = не менять пароль
-
-  // локальные UI состояния
+  const [password, setPassword] = useState<string>('');
   const [nameDisabled, setNameDisabled] = useState(true);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  // RTK Query mutation
   const [updateUser, { isLoading }] = useUpdateUserMutation();
   const dispatch = useAppDispatch();
 
-  // при изменении user — заполняем локальные состояния
+  /**
+   * Заполняем поля профиля
+   */
   useEffect(() => {
     setName(user?.name ?? '');
     setEmail(user?.email ?? '');
     setPassword(''); // при загрузке пользователя не подставляем пароль
   }, [user]);
 
-  // автофокус при включении редактирования имени
+  /**
+   * Автофокус при редактирования имени
+   */
   useEffect(() => {
     if (!nameDisabled) {
       inputRef.current?.focus();
     }
   }, [nameDisabled]);
 
+  /**
+   * Снимаем disabled при клике на иконку edit
+   */
   const onNameIconClick = (): void => {
     setNameDisabled(false);
   };
 
+  /**
+   * Изменение поля Имя
+   * @param e
+   */
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setName(e.target.value);
   };
 
+  /**
+   * Изменение поля email
+   * @param e
+   */
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setEmail(e.target.value);
   };
 
+  /**
+   * Изменение пароля
+   * @param e
+   */
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPassword(e.target.value);
   };
 
-  // вычисляем какие поля изменились относительно user
+  /**
+   * Возвращает измененные поля
+   */
   const computeChangedFields = (): {
     name?: string;
     email?: string;
@@ -76,12 +91,10 @@ const Profile = (): React.JSX.Element => {
         changed.email = email.trim();
       }
     } else {
-      // если user отсутствует — отправляем поля, которые заполнены
       if (name.trim()) changed.name = name.trim();
       if (email.trim()) changed.email = email.trim();
     }
 
-    // если пароль не пустой — включаем его (сервер ожидает поле password при смене)
     if (password && password.trim().length > 0) {
       changed.password = password;
     }
@@ -92,22 +105,15 @@ const Profile = (): React.JSX.Element => {
   const changedFields = computeChangedFields();
   const hasChanges = Object.keys(changedFields).length > 0;
 
-  const onSave = async (): Promise<void> => {
-    if (!hasChanges) return; // ничего не менять
+  const onSave = async (e?: React.FormEvent): Promise<void> => {
+    e?.preventDefault();
+    if (!hasChanges) return;
 
     try {
-      // отправляем только изменённые поля
       const updatedUser = await updateUser(changedFields).unwrap();
 
-      // при необходимости: можно диспатчить setUser(updated) здесь,
-      // но у нас mutation инвалидирует 'Auth' и useGetUserQuery может обновиться.
-      // Пример:
-      // dispatch(setUser(updated))
-
-      // сбрасываем локальный пароль поле
       dispatch(setUser(updatedUser));
 
-      // Обновляем локальные контролы (на всякий случай / мгновенный эффект)
       setName(updatedUser.name ?? '');
       setEmail(updatedUser.email ?? '');
       setPassword('');
@@ -118,6 +124,9 @@ const Profile = (): React.JSX.Element => {
     }
   };
 
+  /**
+   * Возвращаем значения полей при отмене
+   */
   const onCancel = (): void => {
     setName(user?.name ?? '');
     setEmail(user?.email ?? '');
@@ -126,7 +135,7 @@ const Profile = (): React.JSX.Element => {
   };
 
   return (
-    <div>
+    <form onSubmit={(e) => void onSave(e)}>
       <Input
         type="text"
         placeholder="Имя"
@@ -174,18 +183,17 @@ const Profile = (): React.JSX.Element => {
           </Button>
 
           <Button
-            htmlType="button"
+            htmlType="submit"
             type="primary"
             size="medium"
             extraClass={`${styles.button} button_with_spinner mt-6`}
-            onClick={() => void onSave()}
             disabled={!hasChanges || isLoading}
           >
             {isLoading ? <IconSpinner className="button_spinner" /> : 'Сохранить'}
           </Button>
         </div>
       )}
-    </div>
+    </form>
   );
 };
 

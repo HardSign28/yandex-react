@@ -44,9 +44,7 @@ export const App = (): React.JSX.Element => {
   }, [dispatch, navigate]);
 
   useEffect(() => {
-    void dispatch(checkUserAuth()).finally(() => {
-      // ничего не нужно — thunk сам диспатчит setIsAuthChecked внутри (см. ниже)
-    });
+    void dispatch(checkUserAuth());
   }, [dispatch]);
 
   return (

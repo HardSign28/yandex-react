@@ -17,23 +17,29 @@ const ForgotPassword = (): React.JSX.Element => {
 
   const [passwordReset, { isLoading }] = usePasswordResetMutation();
 
+  /**
+   * Изменение поля email
+   * @param e
+   */
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setEmail(e.target.value);
     setErrorText(null);
   };
 
+  /**
+   * Сабмит формы
+   * @param e
+   */
   const handleSubmit = async (e?: React.FormEvent): Promise<void> => {
     e?.preventDefault();
     setErrorText(null);
 
-    // простая валидация email
     if (!email.trim()) {
       setErrorText('Введите email');
       return;
     }
 
     try {
-      // отправляем запрос
       const res = await passwordReset({
         email: email.trim(),
       }).unwrap();

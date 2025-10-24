@@ -9,6 +9,9 @@ const ProfileLayout = (): React.JSX.Element => {
   const [logoutApi] = useLogoutMutation();
   const refreshToken = useAppSelector((state) => state.auth.refreshToken);
   const dispatch = useAppDispatch();
+  /**
+   * Нажатие на кнопку Выход
+   */
   const onLogout = async (): Promise<void> => {
     try {
       if (refreshToken) {
