@@ -33,7 +33,7 @@ const Register = (): React.JSX.Element => {
       password,
       name,
     }).unwrap();
-    const accessToken = res.accessToken?.replace('Bearer ', '') ?? '';
+    const accessToken = res.accessToken ?? '';
     const refreshToken = res.refreshToken ?? '';
     dispatch(setCredentials({ user: res.user, accessToken, refreshToken }));
   };

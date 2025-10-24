@@ -341,6 +341,28 @@ export const api = createApi({
         }
       },
     }),
+
+    passwordReset: build.mutation<
+      { success: boolean; message: string },
+      { email: string }
+    >({
+      query: (body) => ({
+        url: '/password-reset',
+        method: 'POST',
+        body,
+      }),
+    }),
+
+    passwordResetConfirm: build.mutation<
+      { success: boolean; message: string },
+      { password: string; token: string }
+    >({
+      query: (body) => ({
+        url: '/password-reset/reset',
+        method: 'POST',
+        body,
+      }),
+    }),
   }),
 });
 
@@ -353,4 +375,6 @@ export const {
   useRefreshTokenMutation,
   useGetUserQuery,
   useUpdateUserMutation,
+  usePasswordResetMutation,
+  usePasswordResetConfirmMutation,
 } = api;

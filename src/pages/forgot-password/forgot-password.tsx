@@ -1,34 +1,97 @@
+import { usePasswordResetMutation } from '@/store/api';
 import { Button, EmailInput } from '@krgaa/react-developer-burger-ui-components';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
+import type { SerializedError } from '@reduxjs/toolkit';
+import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import type React from 'react';
 
 import styles from './forgot-password.module.css';
 
 const ForgotPassword = (): React.JSX.Element => {
   const [email, setEmail] = useState('');
+  const [errorText, setErrorText] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const [passwordReset, { isLoading }] = usePasswordResetMutation();
+
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setEmail(e.target.value);
+    setErrorText(null);
   };
+
+  const handleSubmit = async (e?: React.FormEvent): Promise<void> => {
+    e?.preventDefault();
+    setErrorText(null);
+
+    // простая валидация email
+    if (!email.trim()) {
+      setErrorText('Введите email');
+      return;
+    }
+
+    try {
+      // отправляем запрос
+      const res = await passwordReset({
+        email: email.trim(),
+      }).unwrap();
+      if (res?.success) {
+        // при успехе переходим на страницу сброса пароля
+        void navigate('/reset-password');
+        localStorage.setItem('resetPassword', '1');
+      } else {
+        setErrorText(res?.message ?? 'Неизвестная ошибка');
+      }
+    } catch (err) {
+      const error = err as FetchBaseQueryError | SerializedError;
+      let msg = 'Ошибка отправки письма';
+
+      if ('data' in error && typeof error.data === 'object' && error.data !== null) {
+        const data = error.data as Record<string, unknown>;
+        if (typeof data.message === 'string') msg = data.message;
+        else if (typeof data.error === 'string') msg = data.error;
+      } else if ('error' in error && typeof error.error === 'string') {
+        msg = error.error;
+      }
+
+      setErrorText(msg);
+    }
+  };
+
   return (
     <main className="main pl-4 pr-4">
-      <div className={styles.forgot_password_wrapper}>
+      <form
+        className={styles.forgot_password_wrapper}
+        onSubmit={(e) => void handleSubmit(e)}
+      >
         <h1 className="text text_type_main-medium text-center">Восстановление пароля</h1>
+
         <EmailInput
           placeholder="Укажите e-mail"
           onChange={onChangeEmail}
           value={email}
-          name={'email'}
+          name="email"
           isIcon={false}
           extraClass="mt-6"
         />
+
+        {errorText && (
+          <div className="text text_type_main-default text_color_error mt-4">
+            {errorText}
+          </div>
+        )}
+
         <Button
-          htmlType="button"
+          htmlType="submit"
           type="primary"
           size="medium"
           extraClass="mt-6 margin-auto-x"
+          disabled={isLoading}
         >
-          Восстановить
+          {isLoading ? 'Отправляем...' : 'Восстановить'}
         </Button>
+
         <div className="mt-20 text text_type_main-default text_color_inactive text-center">
           <p>
             Вспомнили пароль?
@@ -37,7 +100,7 @@ const ForgotPassword = (): React.JSX.Element => {
             </Link>
           </p>
         </div>
-      </div>
+      </form>
     </main>
   );
 };
