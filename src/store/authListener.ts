@@ -1,6 +1,7 @@
+import { setCredentials, logout } from '@/store/slices/authSlice';
 import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
 
-import { setCredentials, logout } from './slices/authSlice';
+import { clearTokens } from '@utils/auth';
 
 const authListener = createListenerMiddleware();
 
@@ -14,8 +15,7 @@ authListener.startListening({
     }
 
     if (logout.match(action)) {
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('accessToken');
+      clearTokens();
     }
   },
 });

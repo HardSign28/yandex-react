@@ -1,24 +1,22 @@
 import { useAppSelector } from '@/store/hooks';
-import { selectUser, selectIsAuthChecked } from '@/store/slices/authSlice'; // или userSlice, если у тебя иначе
+import { selectUser, selectIsAuthChecked } from '@/store/slices/authSlice';
 import { Navigate, useLocation } from 'react-router-dom';
 
-import type React from 'react';
+import Loader from '@components/loader/loader';
 
-type ProtectedProps = {
-  onlyUnAuth?: boolean;
-  component: React.JSX.Element;
-};
+import type { TLocationStateFrom, TProtectedProps } from '@utils/types';
+import type React from 'react';
 
 export const ProtectedRoute = ({
   onlyUnAuth = false,
   component,
-}: ProtectedProps): React.JSX.Element => {
+}: TProtectedProps): React.JSX.Element => {
   const user = useAppSelector(selectUser);
   const isAuthChecked = useAppSelector(selectIsAuthChecked);
-  const location = useLocation();
+  const location = useLocation() as unknown as Location & { state?: TLocationStateFrom };
 
   if (!isAuthChecked) {
-    return <div>Загрузка...</div>;
+    return <Loader />;
   }
 
   if (!onlyUnAuth && !user) {
@@ -26,7 +24,7 @@ export const ProtectedRoute = ({
   }
 
   if (onlyUnAuth && user) {
-    const { from } = location.state || { from: { pathname: '/' } };
+    const from = location.state?.from?.pathname ?? '/';
     return <Navigate to={from} replace />;
   }
 

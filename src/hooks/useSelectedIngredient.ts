@@ -1,4 +1,4 @@
-import { useGetIngredientsQuery } from '@/store/api.ts';
+import { useGetIngredientsQuery } from '@/store/api';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { select } from '@/store/slices/selectedIngredientSlice';
 import { useEffect, useMemo } from 'react';

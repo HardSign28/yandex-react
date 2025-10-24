@@ -1,3 +1,4 @@
+import type React from 'react';
 import type { Location } from 'react-router-dom';
 
 export type TIngredient = {
@@ -107,7 +108,7 @@ export type TIngredientUid = TIngredient & {
   uid: string;
 };
 
-export type TLocationState = {
+export type TLocationStateBackground = {
   background?: Location;
 };
 
@@ -138,4 +139,15 @@ export type TAuthState = {
   refreshToken: string | null;
   isAuthenticated: boolean;
   isAuthChecked: boolean;
+};
+
+export type TProtectedProps = {
+  onlyUnAuth?: boolean;
+  component: React.JSX.Element;
+};
+
+export type TLocationStateFrom = {
+  from?: {
+    pathname: string;
+  };
 };

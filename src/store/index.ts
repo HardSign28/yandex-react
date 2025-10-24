@@ -1,12 +1,11 @@
+import { api } from '@/store/api';
+import authListener from '@/store/authListener';
+import auth from '@/store/slices/authSlice';
+import burgerConstructor from '@/store/slices/burgerConstructorSlice';
+import ingredients from '@/store/slices/ingredientsSlice';
+import order from '@/store/slices/orderSlice';
+import selectedIngredient from '@/store/slices/selectedIngredientSlice';
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-
-import { api } from './api';
-import authListener from './authListener';
-import auth from './slices/authSlice';
-import burgerConstructor from './slices/burgerConstructorSlice';
-import ingredients from './slices/ingredientsSlice';
-import order from './slices/orderSlice';
-import selectedIngredient from './slices/selectedIngredientSlice';
 
 const rootReducer = combineReducers({
   burgerConstructor,

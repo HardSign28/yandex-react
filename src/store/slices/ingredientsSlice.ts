@@ -1,6 +1,5 @@
+import { api } from '@/store/api';
 import { createSlice } from '@reduxjs/toolkit';
-
-import { api } from '../api';
 
 import type { TIngredientsState } from '@utils/types';
 

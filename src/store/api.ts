@@ -1,7 +1,8 @@
 import { API_URL } from '@/constants/api';
+import { setCredentials, logout as logoutAction } from '@/store/slices/authSlice';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { setCredentials, logout as logoutAction } from './slices/authSlice';
+import { getAccessToken } from '@utils/auth';
 
 import type { RootState } from '@/store';
 import type {
@@ -16,6 +17,7 @@ import type {
   TIngredientsResponse,
   TOrderDetails,
   TOrderResponse,
+  TUser,
 } from '@utils/types';
 
 type RawExtra = Parameters<typeof rawBaseQuery>[2];
@@ -33,22 +35,22 @@ const rawBaseQuery = fetchBaseQuery({
 });
 
 const baseQueryWithReauth: BaseQueryFn<
-  string | FetchArgs, // тип аргумента (endpoint URL или объект с настройками)
-  unknown, // тип успешного результата (можно уточнить, если хотите)
-  FetchBaseQueryError, // тип ошибки
-  unknown, // дополнительные параметры, если есть
-  FetchBaseQueryMeta // метаданные запроса
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError,
+  unknown,
+  FetchBaseQueryMeta
 > = async (args, api, extraOptions) => {
   const rawExtra = extraOptions as RawExtra;
   let result = await rawBaseQuery(args, api, rawExtra);
 
   if (result?.error?.status === 401) {
-    // попробуем обновить токен
+    // Пробуем обновить токен
     const state = api.getState() as RootState;
     const refreshToken = state.auth.refreshToken;
 
     if (!refreshToken) {
-      // нет refresh — разлогиниваемся
+      // Нет refreshToken'а — разлогиниваемся
       api.dispatch(logoutAction());
       return result;
     }
@@ -57,7 +59,7 @@ const baseQueryWithReauth: BaseQueryFn<
       {
         url: '/auth/token',
         method: 'POST',
-        body: { token: refreshToken }, // форма тела зависит от вашего API
+        body: { token: refreshToken },
       },
       api,
       rawExtra
@@ -65,17 +67,15 @@ const baseQueryWithReauth: BaseQueryFn<
 
     if (refreshResult?.data) {
       const payload = refreshResult.data as TAuthResponse;
-      // достаём токены (приведите в соответствие с тем, что возвращает бэкенд)
+
       const accessToken = payload.accessToken?.replace('Bearer ', '') ?? '';
       const newRefresh = payload.refreshToken ?? refreshToken;
 
-      // сохраняем в state
       api.dispatch(setCredentials({ accessToken, refreshToken: newRefresh }));
 
-      // повторяем исходный запрос с обновлённым токеном
       result = await rawBaseQuery(args, api, rawExtra);
     } else {
-      // refresh не сработал — разлогиниваем
+      // Если refresh не сработал — разлогиниваемся
       api.dispatch(logoutAction());
     }
   }
@@ -158,7 +158,7 @@ export const api = createApi({
 
     getUser: build.query<TUser, void>({
       async queryFn(_arg, _api, _extra, baseQuery) {
-        const token = localStorage.getItem('accessToken');
+        const token = getAccessToken();
         if (!token) {
           return {
             error: {
@@ -179,7 +179,10 @@ export const api = createApi({
 
         if (!data?.success || !data.user) {
           return {
-            error: { status: 500, data: { message: 'Ошибка получения данных пользователя' } },
+            error: {
+              status: 500,
+              data: { message: 'Ошибка получения данных пользователя' },
+            },
           };
         }
 

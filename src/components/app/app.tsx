@@ -1,6 +1,7 @@
 import { useSelectedIngredient } from '@/hooks/useSelectedIngredient';
 import { useAppDispatch } from '@/store/hooks';
 import { select } from '@/store/slices/selectedIngredientSlice';
+import { checkUserAuth } from '@/store/thunks/checkUserAuth';
 import { useCallback, useEffect } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
@@ -8,7 +9,7 @@ import { AppHeader } from '@components/app-header/app-header';
 import IngredientDetails from '@components/burger-ingredients/ingredient-details/ingredient-details';
 import Loader from '@components/loader/loader';
 import Modal from '@components/modal/modal';
-import { ProtectedRoute } from '@components/protected-route/protected-route.tsx';
+import { ProtectedRoute } from '@components/protected-route/protected-route';
 import ForgotPassword from '@pages/forgot-password/forgot-password';
 import Home from '@pages/home/home';
 import Login from '@pages/login/login';
@@ -19,14 +20,15 @@ import ProfileLayout from '@pages/profile/profile-layout';
 import Register from '@pages/register/register';
 import ResetPassword from '@pages/reset-password/reset-password';
 
-import type { TLocationState } from '@utils/types';
+import type { TLocationStateBackground } from '@utils/types';
 
 import styles from './app.module.css';
-import { checkUserAuth } from '@/store/thunks/checkUserAuth.ts';
 
 export const App = (): React.JSX.Element => {
   const navigate = useNavigate();
-  const location = useLocation() as unknown as Location & { state?: TLocationState };
+  const location = useLocation() as unknown as Location & {
+    state?: TLocationStateBackground;
+  };
   const background = location.state?.background;
 
   const dispatch = useAppDispatch();
