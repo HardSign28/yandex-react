@@ -268,6 +268,79 @@ export const api = createApi({
       },
       providesTags: ['Auth'],
     }),
+
+    updateUser: build.mutation<
+      TUser,
+      { name?: string; email?: string; password?: string }
+    >({
+      async queryFn(body, _api, _extra, baseQuery) {
+        const token = getAccessToken();
+        if (!token) {
+          return {
+            error: {
+              status: 401,
+              data: { message: 'Токен не найден' },
+            },
+          };
+        }
+
+        const response = await baseQuery({
+          url: '/auth/user',
+          method: 'PATCH',
+          body,
+          headers: { authorization: token },
+        });
+
+        if (response.error) return { error: response.error };
+
+        const data = response.data as { success: boolean; user: TUser };
+
+        if (!data?.success || !data.user) {
+          return {
+            error: {
+              status: 500,
+              data: { message: 'Ошибка обновления данных пользователя' },
+            },
+          };
+        }
+
+        return { data: data.user };
+      },
+
+      // убираем invalidatesTags: ['Auth'], чтобы RTK Query не перезапрашивал getUser
+      // invalidatesTags: ['Auth'],
+
+      // аккуратно обновим кеш getUser и откатим при ошибке
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        // оптимистический патч: сразу применяем изменения к кешу getUser
+        // сохраняем undo функцию
+        const patchResult = dispatch(
+          api.util.updateQueryData('getUser', undefined, (draft) => {
+            // draft — текущий TUser (или undefined). Обновляем только те поля, что пришли в arg
+            if (!draft) return;
+            if (typeof arg.name === 'string') draft.name = arg.name;
+            if (typeof arg.email === 'string') draft.email = arg.email;
+            // пароль мы в кеше не храним
+          })
+        );
+
+        try {
+          // дождёмся результата запроса, чтобы удостовериться, что всё успешно
+          const { data } = await queryFulfilled;
+          // синхронизируем кеш с реальным ответом сервера (на случай, если сервер изменил что-то ещё)
+          dispatch(
+            api.util.updateQueryData('getUser', undefined, (draft) => {
+              if (!draft) return;
+              draft.name = data.name;
+              draft.email = data.email;
+            })
+          );
+        } catch (_) {
+          // при ошибке откатываем оптимистичный патч
+          patchResult.undo();
+        }
+      },
+    }),
   }),
 });
 
@@ -279,4 +352,5 @@ export const {
   useLogoutMutation,
   useRefreshTokenMutation,
   useGetUserQuery,
+  useUpdateUserMutation,
 } = api;
