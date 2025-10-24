@@ -1,3 +1,4 @@
+import IconSpinner from '@/images/spinner.svg?react';
 import { useUpdateUserMutation } from '@/store/api';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setUser } from '@/store/slices/authSlice';
@@ -176,11 +177,11 @@ const Profile = (): React.JSX.Element => {
             htmlType="button"
             type="primary"
             size="medium"
-            extraClass="mt-6"
+            extraClass={`${styles.button} button_with_spinner mt-6`}
             onClick={() => void onSave()}
             disabled={!hasChanges || isLoading}
           >
-            {isLoading ? 'Сохранение...' : 'Сохранить'}
+            {isLoading ? <IconSpinner className="button_spinner" /> : 'Сохранить'}
           </Button>
         </div>
       )}

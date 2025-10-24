@@ -1,3 +1,4 @@
+import IconSpinner from '@/images/spinner.svg?react';
 import { usePasswordResetConfirmMutation } from '@/store/api';
 import {
   Button,
@@ -120,9 +121,10 @@ const ResetPassword = (): React.JSX.Element => {
           htmlType="submit"
           type="primary"
           size="medium"
-          extraClass="mt-6 margin-auto-x"
+          extraClass={`${styles.button} button_with_spinner mt-6 margin-auto-x`}
+          disabled={isLoading}
         >
-          {isLoading ? 'Сохраняем...' : 'Сохранить'}
+          {isLoading ? <IconSpinner className="button_spinner" /> : 'Сохранить'}
         </Button>
         <div className="mt-20 text text_type_main-default text_color_inactive text-center">
           <p>

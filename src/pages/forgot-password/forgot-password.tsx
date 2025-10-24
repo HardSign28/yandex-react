@@ -1,3 +1,4 @@
+import IconSpinner from '@/images/spinner.svg?react';
 import { usePasswordResetMutation } from '@/store/api';
 import { Button, EmailInput } from '@krgaa/react-developer-burger-ui-components';
 import { useState } from 'react';
@@ -86,10 +87,10 @@ const ForgotPassword = (): React.JSX.Element => {
           htmlType="submit"
           type="primary"
           size="medium"
-          extraClass="mt-6 margin-auto-x"
+          extraClass={`${styles.button} button_with_spinner mt-6 margin-auto-x`}
           disabled={isLoading}
         >
-          {isLoading ? 'Отправляем...' : 'Восстановить'}
+          {isLoading ? <IconSpinner className="button_spinner" /> : 'Восстановить'}
         </Button>
 
         <div className="mt-20 text text_type_main-default text_color_inactive text-center">
