@@ -21,10 +21,6 @@ const Profile = (): React.JSX.Element => {
     }
   }, [nameDisabled]);
 
-  useEffect(() => {
-    console.log('user', user);
-  }, [user]);
-
   const onNameIconClick = (): void => {
     setNameDisabled(false);
   };
