@@ -52,10 +52,8 @@ const baseQueryWithReauth: BaseQueryFn<
 > = async (args, api, extraOptions) => {
   const rawExtra = extraOptions as RawExtra;
 
-  // Выполняем исходный запрос
   let result = await rawBaseQuery(args, api, rawExtra);
 
-  // Хелпер: определим, нужно ли пытаться рефрешить
   const isTokenExpiredError = (res: unknown): res is RawErrorShape => {
     if (typeof res !== 'object' || res === null) return false;
     const obj = res as Record<string, unknown>;
@@ -79,7 +77,6 @@ const baseQueryWithReauth: BaseQueryFn<
       else if ('error' in d && typeof d.error === 'string') message = d.error;
     }
 
-    // считаем просроченным при 401, 403 или тексте с 'expired'
     if (status === 401 || status === 403) return true;
     return message === 'jwt expired';
   };
@@ -90,14 +87,11 @@ const baseQueryWithReauth: BaseQueryFn<
       state.auth?.refreshToken ?? localStorage.getItem('refreshToken');
 
     if (!refreshToken) {
-      // нет refreshToken — разлогиниваемся
       api.dispatch(logoutAction());
       return result;
     }
 
     try {
-      // Если рефреш уже запущен — дождёмся его (mutex)
-      // Запускаем рефреш и сохраняем промис
       refreshPromise ??= (async (): Promise<{ ok: boolean }> => {
         const refreshResult = await rawBaseQuery(
           {
@@ -119,41 +113,22 @@ const baseQueryWithReauth: BaseQueryFn<
             setCredentials({ accessToken: newAccess, refreshToken: newRefresh })
           );
 
-          /*
-          // При желании — синхронно сохранить в localStorage (но у вас есть listener, который это делает)
-          // TODO: refactor
-          try {
-            if (newAccess) localStorage.setItem('accessToken', newAccess);
-            if (newRefresh) localStorage.setItem('refreshToken', newRefresh);
-          } catch (_) {
-            // ignore storage errors
-          }
-          */
-
           return { ok: true };
         } else {
-          // не удалось рефрешить
           api.dispatch(logoutAction());
           return { ok: false };
         }
       })();
 
-      // ждём завершения рефреша (успех/провал)
       const refreshResult = await refreshPromise;
-      // сбрасываем mutex
       refreshPromise = null;
 
-      // если рефреш успешен — повторяем исходный запрос
       if (refreshResult?.ok) {
-        // повторный вызов: rawBaseQuery использует prepareHeaders который берёт accessToken из state,
-        // поэтому после dispatch(setCredentials) header будет обновлён
         result = await rawBaseQuery(args, api, rawExtra);
       } else {
-        // рефреш упал — возвращаем исходную ошибку (и logout уже выполнен)
         return result;
       }
     } catch (_) {
-      // на случай непредвиденных ошибок
       refreshPromise = null;
       api.dispatch(logoutAction());
       return result;
@@ -309,24 +284,17 @@ export const api = createApi({
         return { data: data.user };
       },
 
-      // аккуратно обновим кеш getUser и откатим при ошибке
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-        // оптимистический патч: сразу применяем изменения к кешу getUser
-        // сохраняем undo функцию
         const patchResult = dispatch(
           api.util.updateQueryData('getUser', undefined, (draft) => {
-            // draft — текущий TUser (или undefined). Обновляем только те поля, что пришли в arg
             if (!draft) return;
             if (typeof arg.name === 'string') draft.name = arg.name;
             if (typeof arg.email === 'string') draft.email = arg.email;
-            // пароль мы в кеше не храним
           })
         );
 
         try {
-          // дождёмся результата запроса, чтобы удостовериться, что всё успешно
           const { data } = await queryFulfilled;
-          // синхронизируем кеш с реальным ответом сервера (на случай, если сервер изменил что-то ещё)
           dispatch(
             api.util.updateQueryData('getUser', undefined, (draft) => {
               if (!draft) return;
@@ -335,7 +303,6 @@ export const api = createApi({
             })
           );
         } catch (_) {
-          // при ошибке откатываем оптимистичный патч
           patchResult.undo();
         }
       },

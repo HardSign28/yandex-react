@@ -33,7 +33,6 @@ const ResetPassword = (): React.JSX.Element => {
     e.preventDefault();
     setErrorText(null);
 
-    // базовая валидация
     if (!password.trim()) {
       setErrorText('Введите новый пароль');
       return;
@@ -49,13 +48,11 @@ const ResetPassword = (): React.JSX.Element => {
         token: confirmCode.trim(),
       }).unwrap();
       if (res?.success) {
-        // очистим флаг, если вы его ставили при отправке письма
         try {
           localStorage.removeItem('resetPassword');
         } catch (_) {
-          // ignore
+          /* empty */
         }
-        // при успехе — перенаправляем на логин
         void navigate('/login');
       } else {
         setErrorText(res?.message ?? 'Ошибка сброса пароля');

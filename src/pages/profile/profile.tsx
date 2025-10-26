@@ -30,7 +30,7 @@ const Profile = (): React.JSX.Element => {
   useEffect(() => {
     setName(user?.name ?? '');
     setEmail(user?.email ?? '');
-    setPassword(''); // при загрузке пользователя не подставляем пароль
+    setPassword('');
   }, [user]);
 
   /**
@@ -120,7 +120,6 @@ const Profile = (): React.JSX.Element => {
       setNameDisabled(true);
     } catch (err) {
       console.error('update user failed', err);
-      // можно показать уведомление пользователю
     }
   };
 

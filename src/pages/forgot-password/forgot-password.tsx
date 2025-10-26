@@ -44,7 +44,6 @@ const ForgotPassword = (): React.JSX.Element => {
         email: email.trim(),
       }).unwrap();
       if (res?.success) {
-        // при успехе переходим на страницу сброса пароля
         void navigate('/reset-password');
         localStorage.setItem('resetPassword', '1');
       } else {
