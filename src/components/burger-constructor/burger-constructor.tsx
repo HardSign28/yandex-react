@@ -1,6 +1,7 @@
 import IconSpinner from '@/images/spinner.svg?react';
 import { useCreateOrderMutation } from '@/store/api';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { selectUser } from '@/store/slices/authSlice';
 import {
   setBun,
   addIngredient,
@@ -16,6 +17,7 @@ import {
 } from '@krgaa/react-developer-burger-ui-components';
 import { useCallback, useMemo } from 'react';
 import { useDrop, type DropTargetMonitor } from 'react-dnd';
+import { useNavigate } from 'react-router-dom';
 
 import BurgerConstructorItem from '@components/burger-constructor/burger-constructor-item/burger-constructor-item';
 import OrderDetails from '@components/burger-constructor/order-details/order-details';
@@ -27,10 +29,12 @@ import styles from './burger-constructor.module.css';
 
 export const BurgerConstructor = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
-  const bun = useAppSelector((s) => s.burgerConstructor.bun);
-  const ingredients = useAppSelector((s) => s.burgerConstructor.ingredients);
-  const orderDetails = useAppSelector((s) => s.order.last);
+  const bun = useAppSelector((state) => state.burgerConstructor.bun);
+  const ingredients = useAppSelector((state) => state.burgerConstructor.ingredients);
+  const orderDetails = useAppSelector((state) => state.order.last);
   const [createOrder, { isLoading }] = useCreateOrderMutation();
+  const user = useAppSelector(selectUser);
+  const navigate = useNavigate();
 
   /**
    * Расчет итоговой суммы
@@ -119,6 +123,10 @@ export const BurgerConstructor = (): React.JSX.Element => {
    */
   const checkout = async (): Promise<void> => {
     if (!bun || ingredients.length === 0) return;
+    if (!user) {
+      await navigate('/login');
+      return;
+    }
     const ingredientsId = [bun._id, ...ingredients.map((i) => i._id), bun._id];
 
     try {
@@ -217,10 +225,10 @@ export const BurgerConstructor = (): React.JSX.Element => {
           htmlType="button"
           type="primary"
           size="large"
-          extraClass={styles.button_with_spinner}
+          extraClass={`${styles.button} button_with_spinner`}
           disabled={isLoading}
         >
-          {isLoading && <IconSpinner className={styles.button_spinner} />} Оформить заказ
+          {isLoading ? <IconSpinner className="button_spinner" /> : 'Оформить заказ'}
         </Button>
       </div>
       <Modal

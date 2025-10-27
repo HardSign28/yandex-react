@@ -1,0 +1,15 @@
+.loading {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  font-size: 20px;
+  opacity: 0.5;
+}
+
+.spinner_icon {
+  width: 32px;
+  height: 32px;
+}

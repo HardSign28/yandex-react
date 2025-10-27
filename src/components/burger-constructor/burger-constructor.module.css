@@ -53,14 +53,6 @@
   outline: 2px dashed var(--colors-interface-accent);
 }
 
-.button_with_spinner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.button_spinner {
-  width: 24px;
-  height: 24px;
-  margin-right: 10px;
+.button {
+  min-width: 215px;
 }

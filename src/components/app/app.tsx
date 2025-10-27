@@ -1,38 +1,113 @@
-import IconSpinner from '@/images/spinner.svg?react';
-import { useGetIngredientsQuery } from '@/store/api';
-import { useAppSelector } from '@/store/hooks';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import { useSelectedIngredient } from '@/hooks/useSelectedIngredient';
+import { useAppDispatch } from '@/store/hooks';
+import { select } from '@/store/slices/selectedIngredientSlice';
+import { checkUserAuth } from '@/store/thunks/checkUserAuth';
+import { useCallback, useEffect } from 'react';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
 import { AppHeader } from '@components/app-header/app-header';
-import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
-import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
+import IngredientDetails from '@components/burger-ingredients/ingredient-details/ingredient-details';
+import Loader from '@components/loader/loader';
+import Modal from '@components/modal/modal';
+import { ProtectedRoute } from '@components/protected-route/protected-route';
+import ForgotPassword from '@pages/forgot-password/forgot-password';
+import Home from '@pages/home/home';
+import Login from '@pages/login/login';
+import NotFound from '@pages/not-found/not-found';
+import Orders from '@pages/profile/orders/orders';
+import Profile from '@pages/profile/profile';
+import ProfileLayout from '@pages/profile/profile-layout';
+import Register from '@pages/register/register';
+import ResetPassword from '@pages/reset-password/reset-password';
+
+import type { TLocationStateBackground } from '@utils/types';
 
 import styles from './app.module.css';
 
 export const App = (): React.JSX.Element => {
-  const { isLoading } = useGetIngredientsQuery();
-  const ingredients = useAppSelector((s) => s.ingredients.items);
+  const navigate = useNavigate();
+  const location = useLocation() as unknown as Location & {
+    state?: TLocationStateBackground;
+  };
+  const background = location.state?.background;
+
+  const dispatch = useAppDispatch();
+
+  const { ingredient: selectedIngredient, loading } = useSelectedIngredient();
+
+  /**
+   * Закрытие модалки ингредиента
+   */
+  const handleModalClose = useCallback(() => {
+    void navigate(-1);
+    dispatch(select(null));
+  }, [dispatch, navigate]);
+
+  useEffect(() => {
+    void dispatch(checkUserAuth());
+  }, [dispatch]);
+
   return (
     <div className={styles.app}>
       <AppHeader />
-      <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-4`}>
-        Соберите бургер
-      </h1>
-      <main className={`${styles.main} pl-4 pr-4`}>
-        {isLoading && (
-          <div className={`${styles.loading} text text_type_main-medium`}>
-            <IconSpinner className={styles.spinner_icon} />
-            Загрузка
-          </div>
-        )}
-        {!isLoading && ingredients.length > 0 && (
-          <DndProvider backend={HTML5Backend}>
-            <BurgerIngredients />
-            <BurgerConstructor />
-          </DndProvider>
-        )}
-      </main>
+      <Routes location={background ?? location}>
+        <Route path="/" element={<Home />} />
+        <Route
+          path="/profile"
+          element={<ProtectedRoute component={<ProfileLayout />} />}
+        >
+          <Route index element={<Profile />} />
+          <Route path="orders" element={<Orders />} />
+        </Route>
+        <Route
+          path="/ingredients/:ingredientId"
+          element={
+            selectedIngredient ? (
+              <IngredientDetails ingredient={selectedIngredient} />
+            ) : loading ? (
+              <Loader />
+            ) : (
+              <div>Ингредиент не найден.</div>
+            )
+          }
+        />
+        <Route
+          path="/login"
+          element={<ProtectedRoute onlyUnAuth component={<Login />} />}
+        />
+        <Route
+          path="/register"
+          element={<ProtectedRoute onlyUnAuth component={<Register />} />}
+        />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+
+      {background && (
+        <Routes>
+          <Route
+            path="/ingredients/:ingredientId"
+            element={
+              <Modal
+                isOpen={!!background}
+                labelledById="ingredient-modal-title"
+                closeOnOverlay
+                title="Детали ингридиента"
+                onClose={handleModalClose}
+              >
+                {selectedIngredient ? (
+                  <IngredientDetails ingredient={selectedIngredient} />
+                ) : loading ? (
+                  <Loader />
+                ) : (
+                  <div>Ингредиент не найден.</div>
+                )}
+              </Modal>
+            }
+          />
+        </Routes>
+      )}
     </div>
   );
 };

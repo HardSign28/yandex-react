@@ -6,39 +6,41 @@ const IngredientDetails = ({ ingredient }: TIngredientProps): React.JSX.Element 
   return (
     <div className={`${styles.ingredient_details} mb-4`}>
       <picture>
-        {ingredient.image_mobile && (
+        {ingredient?.image_mobile && (
           <source media="(max-width: 600px)" srcSet={ingredient.image_mobile} />
         )}
-        {ingredient.image_large && (
+        {ingredient?.image_large && (
           <source media="(min-width: 601px)" srcSet={ingredient.image_large} />
         )}
         <img
           className={`${styles.ingredient_details_image} mb-4`}
-          src={ingredient.image}
-          alt={ingredient.name}
+          src={ingredient?.image}
+          alt={ingredient?.name}
           loading="lazy"
           decoding="async"
         />
       </picture>
-      <div className="text text_type_main-medium mb-8">{ingredient.name}</div>
+      <div className="text text_type_main-medium mb-8">{ingredient?.name}</div>
       <div
         className={`${styles.nutritional_facts} text text_type_main-default text_color_inactive`}
       >
         <div className={styles.nutritional_facts_item}>
           <div>Калории, ккал</div>
-          <div className="text text_type_digits-default">420</div>
+          <div className="text text_type_digits-default">{ingredient?.calories}</div>
         </div>
         <div className={styles.nutritional_facts_item}>
           <div>Белки, г</div>
-          <div className="text text_type_digits-default">80</div>
+          <div className="text text_type_digits-default">{ingredient?.proteins}</div>
         </div>
         <div className={styles.nutritional_facts_item}>
           <div>Жиры, г</div>
-          <div className="text text_type_digits-default">24</div>
+          <div className="text text_type_digits-default">{ingredient?.fat}</div>
         </div>
         <div className={styles.nutritional_facts_item}>
           <div>Углеводы, г</div>
-          <div className="text text_type_digits-default">53</div>
+          <div className="text text_type_digits-default">
+            {ingredient?.carbohydrates}
+          </div>
         </div>
       </div>
     </div>

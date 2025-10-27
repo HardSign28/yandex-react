@@ -3,9 +3,7 @@ import { select } from '@/store/slices/selectedIngredientSlice';
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
 import { useMemo, useRef, useState, useCallback } from 'react';
 
-import IngredientDetails from '@components/burger-ingredients/ingredient-details/ingredient-details';
 import IngredientsGroup from '@components/burger-ingredients/ingredients-group/ingredients-group';
-import Modal from '@components/modal/modal';
 import { LABELS, TABS, TYPES } from '@utils/types';
 
 import type { TIngredientType, TIngredient } from '@utils/types';
@@ -19,10 +17,11 @@ export const BurgerIngredients = (): React.JSX.Element => {
   const mainRef = useRef<HTMLElement>(null);
   const sauceRef = useRef<HTMLElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const selectedIngredient = useAppSelector((s) => s.selectedIngredient.current);
-  const bun = useAppSelector((s) => s.burgerConstructor.bun);
-  const ingredients = useAppSelector((s) => s.ingredients.items);
-  const selectedIngredients = useAppSelector((s) => s.burgerConstructor.ingredients);
+  const bun = useAppSelector((state) => state.burgerConstructor.bun);
+  const ingredients = useAppSelector((state) => state.ingredients.items);
+  const selectedIngredients = useAppSelector(
+    (state) => state.burgerConstructor.ingredients
+  );
   const isTickingRef = useRef(false);
 
   /**
@@ -34,13 +33,6 @@ export const BurgerIngredients = (): React.JSX.Element => {
     },
     [dispatch]
   );
-
-  /**
-   * Закрытие модалки ингредиента
-   */
-  const closeModal = useCallback(() => {
-    dispatch(select(null));
-  }, [dispatch]);
 
   /**
    * Счетчик ингредиентов
@@ -183,15 +175,6 @@ export const BurgerIngredients = (): React.JSX.Element => {
           counts={counts}
         />
       </div>
-      <Modal
-        isOpen={!!selectedIngredient}
-        onClose={closeModal}
-        labelledById="ingredient-modal-title"
-        closeOnOverlay
-        title="Детали ингридиента"
-      >
-        {selectedIngredient && <IngredientDetails ingredient={selectedIngredient} />}
-      </Modal>
     </section>
   );
 };

@@ -1,22 +1,25 @@
+import { api } from '@/store/api';
+import authListener from '@/store/authListener';
+import auth from '@/store/slices/authSlice';
+import burgerConstructor from '@/store/slices/burgerConstructorSlice';
+import ingredients from '@/store/slices/ingredientsSlice';
+import order from '@/store/slices/orderSlice';
+import selectedIngredient from '@/store/slices/selectedIngredientSlice';
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-
-import { api } from './api';
-import burgerConstructor from './slices/burgerConstructorSlice.ts';
-import ingredients from './slices/ingredientsSlice';
-import order from './slices/orderSlice';
-import selectedIngredient from './slices/selectedIngredientSlice';
 
 const rootReducer = combineReducers({
   burgerConstructor,
   ingredients,
   selectedIngredient,
   order,
+  auth,
   [api.reducerPath]: api.reducer,
 });
 
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: (gDM) => gDM().concat(api.middleware),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().prepend(authListener.middleware).concat(api.middleware),
   devTools: import.meta.env.DEV,
 });
 

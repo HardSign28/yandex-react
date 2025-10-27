@@ -1,3 +1,6 @@
+import type React from 'react';
+import type { Location } from 'react-router-dom';
+
 export type TIngredient = {
   _id: string;
   name: string;
@@ -103,4 +106,48 @@ export type TOrderState = {
 
 export type TIngredientUid = TIngredient & {
   uid: string;
+};
+
+export type TLocationStateBackground = {
+  background?: Location;
+};
+
+export type TAuthResponse = {
+  success: boolean;
+  accessToken?: string;
+  refreshToken?: string;
+  user?: { name: string; email: string };
+  message?: string;
+};
+
+export type TIngredientsResponse = {
+  success: boolean;
+  data?: TIngredient[];
+  message?: string;
+};
+
+export type TOrderResponse = { success: boolean } & TOrderDetails;
+
+export type TUser = {
+  name?: string;
+  email?: string;
+};
+
+export type TAuthState = {
+  user: TUser | null;
+  accessToken: string | null;
+  refreshToken: string | null;
+  isAuthenticated: boolean;
+  isAuthChecked: boolean;
+};
+
+export type TProtectedProps = {
+  onlyUnAuth?: boolean;
+  component: React.JSX.Element;
+};
+
+export type TLocationStateFrom = {
+  from?: {
+    pathname: string;
+  };
 };

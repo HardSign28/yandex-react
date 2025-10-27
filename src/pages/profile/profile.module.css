@@ -1,0 +1,8 @@
+.button {
+  min-width: 167px;
+}
+
+.profile_footer {
+  display: flex;
+  justify-content: flex-end;
+}
