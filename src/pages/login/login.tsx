@@ -39,7 +39,8 @@ const Login = (): React.JSX.Element => {
   /**
    * Сабмит формы
    */
-  const onSubmit = async (): Promise<void> => {
+  const onSubmit = async (e?: React.FormEvent): Promise<void> => {
+    e?.preventDefault();
     const res = await login({
       email,
       password,
@@ -57,7 +58,7 @@ const Login = (): React.JSX.Element => {
 
   return (
     <main className="main pl-4 pr-4">
-      <div className="auth_page_wrapper">
+      <form className="auth_page_wrapper" onSubmit={(e) => void onSubmit(e)}>
         <h1 className="text text_type_main-medium text-center">Вход</h1>
         <EmailInput
           onChange={onChangeEmail}
@@ -73,11 +74,10 @@ const Login = (): React.JSX.Element => {
           extraClass="mt-6"
         />
         <Button
-          htmlType="button"
+          htmlType="submit"
           type="primary"
           size="medium"
           extraClass={`${styles.button} button_with_spinner mt-6 margin-auto-x`}
-          onClick={() => void onSubmit()}
         >
           {isLoading ? <IconSpinner className="button_spinner" /> : 'Войти'}
         </Button>
@@ -95,7 +95,7 @@ const Login = (): React.JSX.Element => {
             </Link>
           </p>
         </div>
-      </div>
+      </form>
     </main>
   );
 };

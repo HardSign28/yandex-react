@@ -17,6 +17,7 @@ import {
 } from '@krgaa/react-developer-burger-ui-components';
 import { useCallback, useMemo } from 'react';
 import { useDrop, type DropTargetMonitor } from 'react-dnd';
+import { useNavigate } from 'react-router-dom';
 
 import BurgerConstructorItem from '@components/burger-constructor/burger-constructor-item/burger-constructor-item';
 import OrderDetails from '@components/burger-constructor/order-details/order-details';
@@ -33,6 +34,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
   const orderDetails = useAppSelector((state) => state.order.last);
   const [createOrder, { isLoading }] = useCreateOrderMutation();
   const user = useAppSelector(selectUser);
+  const navigate = useNavigate();
 
   /**
    * Расчет итоговой суммы
@@ -121,6 +123,10 @@ export const BurgerConstructor = (): React.JSX.Element => {
    */
   const checkout = async (): Promise<void> => {
     if (!bun || ingredients.length === 0) return;
+    if (!user) {
+      await navigate('/login');
+      return;
+    }
     const ingredientsId = [bun._id, ...ingredients.map((i) => i._id), bun._id];
 
     try {
@@ -220,18 +226,10 @@ export const BurgerConstructor = (): React.JSX.Element => {
           type="primary"
           size="large"
           extraClass={`${styles.button} button_with_spinner`}
-          disabled={isLoading || !user}
-          title={!user ? 'Авторизуйтесь, чтобы оформить заказ' : ''}
+          disabled={isLoading}
         >
           {isLoading ? <IconSpinner className="button_spinner" /> : 'Оформить заказ'}
         </Button>
-        <div>
-          {!user && (
-            <span className="text text_type_main-small">
-              Авторизуйтесь, чтобы оформить заказ
-            </span>
-          )}
-        </div>
       </div>
       <Modal
         isOpen={!!orderDetails}
