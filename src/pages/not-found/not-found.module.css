@@ -33,3 +33,8 @@ svg {
 .color-3 {
   fill: var(--colors-button-inactive);
 }
+
+.img_ufo {
+  width: 200px;
+  height: 150px;
+}
