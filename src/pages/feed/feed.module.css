@@ -1,0 +1,35 @@
+.main {
+  display: flex;
+  justify-content: space-between;
+  width: 1260px;
+  height: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.orders_status {
+  display: flex;
+  gap: 36px;
+
+  & > div {
+    flex: 1;
+  }
+}
+
+.done {
+  margin: 0;
+  padding: 0;
+  color: var(--colors-interface-accent);
+  list-style: none;
+}
+
+.in_process {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.title {
+  /* empty */
+  opacity: 1;
+}

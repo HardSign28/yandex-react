@@ -11,7 +11,7 @@ const OrderDetails = ({
 }): React.JSX.Element => {
   return (
     <div className={`${styles.order_details} mt-8 mb-20`}>
-      <div className={`${styles.order_details_number} text text_type_digits-large`}>
+      <div className="digits_shadow text text_type_digits-large">
         {orderDetails?.order.number}
       </div>
       <div className="text text_type_main-medium mt-8">идентификатор заказа</div>

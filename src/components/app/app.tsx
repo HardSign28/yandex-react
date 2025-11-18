@@ -10,6 +10,7 @@ import IngredientDetails from '@components/burger-ingredients/ingredient-details
 import Loader from '@components/loader/loader';
 import Modal from '@components/modal/modal';
 import { ProtectedRoute } from '@components/protected-route/protected-route';
+import Feed from '@pages/feed/feed.tsx';
 import ForgotPassword from '@pages/forgot-password/forgot-password';
 import Home from '@pages/home/home';
 import Login from '@pages/login/login';
@@ -81,6 +82,7 @@ export const App = (): React.JSX.Element => {
         />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/feed" element={<Feed />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 
