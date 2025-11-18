@@ -1,3 +1,5 @@
+import OrderCard from '@components/order-card/order-card.tsx';
+
 import styles from './feed.module.css';
 const Feed = (): React.JSX.Element => {
   return (
@@ -6,9 +8,11 @@ const Feed = (): React.JSX.Element => {
         Лента заказов
       </h1>
       <main className={`${styles.main} pl-4 pr-4`}>
-        <div>Лента заказов</div>
-        <div>
-          <div className={styles.orders_status}>
+        <div className={styles.feed_orders}>
+          <OrderCard />
+        </div>
+        <div className={styles.feed_summary}>
+          <div className={`${styles.orders_status} mb-15`}>
             <div>
               <div className="text_type_main-medium mb-6">Готовы:</div>
               <ul className={`${styles.done} text_type_digits-default`}>
@@ -28,12 +32,12 @@ const Feed = (): React.JSX.Element => {
               </ul>
             </div>
           </div>
-          <div>
-            <div className="text_type_main-medium mb-6">Выполнено за все время:</div>
+          <div className="mb-15">
+            <div className="text_type_main-medium">Выполнено за все время:</div>
             <div className="digits_shadow text_type_digits-large">28 752</div>
           </div>
-          <div>
-            <div className="text_type_main-medium mb-6">Выполнено за сегодня:</div>
+          <div className="mb-15">
+            <div className="text_type_main-medium">Выполнено за сегодня:</div>
             <div className="digits_shadow text_type_digits-large">138</div>
           </div>
         </div>

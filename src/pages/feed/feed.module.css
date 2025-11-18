@@ -1,10 +1,19 @@
 .main {
   display: flex;
   justify-content: space-between;
+  gap: 60px;
   width: 1260px;
   height: 100%;
   margin: 0 auto;
   overflow: hidden;
+}
+
+.feed_orders {
+  flex: 1;
+}
+
+.feed_summary {
+  flex: 1;
 }
 
 .orders_status {
