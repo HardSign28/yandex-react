@@ -1,7 +1,13 @@
-import OrderCard from '@components/order-card/order-card.tsx';
+import { Link, useLocation } from 'react-router-dom';
+
+import OrderCard from '@components/order-card/order-card';
 
 import styles from './feed.module.css';
 const Feed = (): React.JSX.Element => {
+  const location = useLocation();
+  const dump = {
+    id: 1,
+  };
   return (
     <>
       <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-4`}>
@@ -9,7 +15,14 @@ const Feed = (): React.JSX.Element => {
       </h1>
       <main className={`${styles.main} pl-4 pr-4`}>
         <div className={styles.feed_orders}>
-          <OrderCard />
+          <Link
+            key={dump.id}
+            to={`/feed/${dump.id}`}
+            state={{ background: location }}
+            className="hidden_link"
+          >
+            <OrderCard />
+          </Link>
         </div>
         <div className={styles.feed_summary}>
           <div className={`${styles.orders_status} mb-15`}>

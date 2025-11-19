@@ -60,6 +60,7 @@ export const App = (): React.JSX.Element => {
         >
           <Route index element={<Profile />} />
           <Route path="orders" element={<Orders />} />
+          <Route path="orders/:id" element={<OrderDetails />} />
         </Route>
         <Route
           path="/ingredients/:ingredientId"
@@ -84,7 +85,7 @@ export const App = (): React.JSX.Element => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/feed" element={<Feed />} />
-        <Route path="/feed/:feedId" element={<OrderDetails />} />
+        <Route path="/feed/:id" element={<OrderDetails />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 
@@ -112,6 +113,20 @@ export const App = (): React.JSX.Element => {
           />
           <Route
             path="/feed/:feedId"
+            element={
+              <Modal
+                isOpen={!!background}
+                labelledById="ingredient-modal-title"
+                closeOnOverlay
+                title="Детали ингридиента"
+                onClose={handleModalClose}
+              >
+                <OrderDetails />
+              </Modal>
+            }
+          />
+          <Route
+            path="/profile/orders/:id"
             element={
               <Modal
                 isOpen={!!background}

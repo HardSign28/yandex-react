@@ -78,6 +78,11 @@ body {
     0 0 8px rgb(51 51 255 / 25%);
 }
 
+.hidden_link {
+  color: inherit;
+  text-decoration: inherit;
+}
+
 /* Fix for scrollbar */
 
 @supports (scrollbar-color: auto) {

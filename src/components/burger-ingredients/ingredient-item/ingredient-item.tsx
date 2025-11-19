@@ -28,7 +28,7 @@ const IngredientItem = ({
       key={ingredientId}
       to={`/ingredients/${ingredientId}`}
       state={{ background: location }}
-      className={styles.link}
+      className="hidden_link"
     >
       <li
         ref={(node) => {
