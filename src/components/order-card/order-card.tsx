@@ -3,6 +3,9 @@ import {
   FormattedDate,
 } from '@krgaa/react-developer-burger-ui-components';
 
+import IngredientImage from '@components/order-card/ingredient-image/ingredient-image';
+import { ingredients } from '@utils/ingredients';
+
 import styles from './order-card.module.css';
 const OrderCard = (): React.JSX.Element => {
   return (
@@ -16,59 +19,33 @@ const OrderCard = (): React.JSX.Element => {
       </div>
       <div className="text_type_main-medium mb-6">Death Star Starship Main бургер</div>
       <div className={styles.order_card_footer}>
-        <ul className={styles.order_card_ingredients}>
-          <li className={styles.order_card_ingredient}>
-            <div className={styles.ingredient_background}>
-              <img
-                className={styles.ingredient_img}
-                src="https://code.s3.yandex.net/react/code/bun-01.png"
-              />
-            </div>
-          </li>
-          <li className={styles.order_card_ingredient}>
-            <div className={styles.ingredient_background}>
-              <img
-                className={styles.ingredient_img}
-                src="https://code.s3.yandex.net/react/code/meat-03.png"
-              />
-            </div>
-          </li>
-          <li className={styles.order_card_ingredient}>
-            <div className={styles.ingredient_background}>
-              <img
-                className={styles.ingredient_img}
-                src="https://code.s3.yandex.net/react/code/core.png"
-              />
-            </div>
-          </li>
-          <li className={styles.order_card_ingredient}>
-            <div className={styles.ingredient_background}>
-              <img
-                className={styles.ingredient_img}
-                src="https://code.s3.yandex.net/react/code/mineral_rings.png"
-              />
-            </div>
-          </li>
-          <li className={styles.order_card_ingredient}>
-            <div className={styles.ingredient_background}>
-              <img
-                className={styles.ingredient_img}
-                src="https://code.s3.yandex.net/react/code/sauce-03.png"
-              />
-            </div>
-          </li>
-          <li className={`${styles.order_card_ingredient} ${styles.ingredient_more}`}>
-            <div className={styles.ingredient_background}>
-              <div className={`${styles.ingredient_count} text_type_main-default`}>
-                +3
-              </div>
-              <img
-                className={styles.ingredient_img}
-                src="https://code.s3.yandex.net/react/code/cheese.png"
-              />
-            </div>
-          </li>
-        </ul>
+        <div className={styles.order_card_ingredients}>
+          <IngredientImage
+            className={styles.order_card_ingredient}
+            ingredient={ingredients[14]}
+          />
+          <IngredientImage
+            className={styles.order_card_ingredient}
+            ingredient={ingredients[12]}
+          />
+          <IngredientImage
+            className={styles.order_card_ingredient}
+            ingredient={ingredients[10]}
+          />
+          <IngredientImage
+            className={styles.order_card_ingredient}
+            ingredient={ingredients[8]}
+          />
+          <IngredientImage
+            className={styles.order_card_ingredient}
+            ingredient={ingredients[5]}
+          />
+          <IngredientImage
+            className={styles.order_card_ingredient}
+            ingredient={ingredients[13]}
+            value="+3"
+          />
+        </div>
         <div className={`${styles.order_card_price} text_type_digits-default`}>
           480
           <CurrencyIcon type="primary" />

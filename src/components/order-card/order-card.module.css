@@ -28,13 +28,6 @@
 }
 
 .order_card_ingredient {
-  display: flex;
-  width: 64px;
-  height: 64px;
-  padding: 2px;
-  background: linear-gradient(90deg, #801ab2, #4c4cff);
-  border-radius: 50%;
-
   &:not(:first-child) {
     margin-left: -20px;
   }
@@ -61,30 +54,5 @@
 
   &:nth-child(6) {
     z-index: 1;
-  }
-}
-
-.ingredient_background {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  background: var(--background);
-  border-radius: 50%;
-}
-
-.ingredient_img {
-  height: 100%;
-  border-radius: 50%;
-}
-
-.ingredient_count {
-  position: absolute;
-}
-
-.ingredient_more {
-  .ingredient_img {
-    opacity: 0.5;
   }
 }

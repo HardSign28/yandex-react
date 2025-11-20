@@ -1,0 +1,25 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  max-width: 640px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.order_status {
+  color: var(--colors-interface-success);
+}
+
+/* TODO: Глобально? */
+
+.price {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.order_details_footer {
+  display: flex;
+  justify-content: space-between;
+}

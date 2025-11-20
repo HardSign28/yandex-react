@@ -11,7 +11,7 @@ import Loader from '@components/loader/loader';
 import Modal from '@components/modal/modal';
 import OrderDetails from '@components/order-card/order-details/order-details';
 import { ProtectedRoute } from '@components/protected-route/protected-route';
-import Feed from '@pages/feed/feed.tsx';
+import Feed from '@pages/feed/feed';
 import ForgotPassword from '@pages/forgot-password/forgot-password';
 import Home from '@pages/home/home';
 import Login from '@pages/login/login';
@@ -112,7 +112,7 @@ export const App = (): React.JSX.Element => {
             }
           />
           <Route
-            path="/feed/:feedId"
+            path="/feed/:id"
             element={
               <Modal
                 isOpen={!!background}
