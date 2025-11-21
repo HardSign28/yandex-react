@@ -174,3 +174,9 @@ export type TOrdersWSResponse = {
 export type TOrderCardProps = {
   order: TOrder;
 };
+
+export enum OrderStatus {
+  created = 'Создан',
+  pending = 'Готовится',
+  done = 'Выполнен',
+}

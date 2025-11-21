@@ -2,15 +2,22 @@ import {
   CurrencyIcon,
   FormattedDate,
 } from '@krgaa/react-developer-burger-ui-components';
+import { useMatch } from 'react-router-dom';
 
-import IngredientImage from '@components/order-card/ingredient-image/ingredient-image';
-import { ingredients } from '@utils/ingredients';
+import IngredientsShort from '@components/order-card/ingredients-short/ingredients-short';
+import { useIngredientsByIds } from '@hooks/useIngredientsByIds';
+import { OrderStatus } from '@utils/types';
 
 import type { TOrderCardProps } from '@utils/types';
 
 import styles from './order-card.module.css';
 
 const OrderCard = ({ order }: TOrderCardProps): React.JSX.Element => {
+  const { ingredients } = useIngredientsByIds(order.ingredients);
+
+  const match = useMatch('/profile/orders');
+  const isDone = order.status === 'done';
+
   return (
     <div className={`${styles.order_card} p-6`}>
       <div className={`${styles.order_card_header} mb-6`}>
@@ -20,33 +27,19 @@ const OrderCard = ({ order }: TOrderCardProps): React.JSX.Element => {
           date={new Date(order?.createdAt)}
         />
       </div>
-      <div className="text_type_main-medium mb-6">{order?.name}</div>
-      {order?.ingredients?.map((ingredient, index) => (
-        <div key={index}>{ingredient}</div>
-      ))}
+      <div className={`text_type_main-medium ${!match ? 'mb-6' : 'mb-2'}`}>
+        {order?.name}
+      </div>
+      {match && (
+        <div
+          className={`text_type_main-default mb-6 ${isDone ? styles.order_done : ''}`}
+        >
+          {OrderStatus[order.status]}
+        </div>
+      )}
       <div className={styles.order_card_footer}>
         <div className={styles.order_card_ingredients}>
-          <IngredientImage
-            className={styles.order_card_ingredient}
-            ingredient={ingredients[12]}
-          />
-          <IngredientImage
-            className={styles.order_card_ingredient}
-            ingredient={ingredients[10]}
-          />
-          <IngredientImage
-            className={styles.order_card_ingredient}
-            ingredient={ingredients[8]}
-          />
-          <IngredientImage
-            className={styles.order_card_ingredient}
-            ingredient={ingredients[5]}
-          />
-          <IngredientImage
-            className={styles.order_card_ingredient}
-            ingredient={ingredients[13]}
-            value="+3"
-          />
+          <IngredientsShort ingredients={ingredients} />
         </div>
         <div className={`${styles.order_card_price} text_type_digits-default`}>
           480
