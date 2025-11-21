@@ -10,6 +10,7 @@
 
 .feed_orders {
   flex: 1;
+  overflow-x: scroll;
 }
 
 .feed_summary {

@@ -7,6 +7,8 @@ import order from '@/store/slices/orderSlice';
 import selectedIngredient from '@/store/slices/selectedIngredientSlice';
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 
+import { wsApi } from './thunks/wsApi';
+
 const rootReducer = combineReducers({
   burgerConstructor,
   ingredients,
@@ -14,12 +16,16 @@ const rootReducer = combineReducers({
   order,
   auth,
   [api.reducerPath]: api.reducer,
+  [wsApi.reducerPath]: wsApi.reducer,
 });
 
 export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().prepend(authListener.middleware).concat(api.middleware),
+    getDefaultMiddleware()
+      .prepend(authListener.middleware)
+      .concat(api.middleware)
+      .concat(wsApi.middleware),
   devTools: import.meta.env.DEV,
 });
 

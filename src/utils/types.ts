@@ -151,3 +151,26 @@ export type TLocationStateFrom = {
     pathname: string;
   };
 };
+
+export type TIngredientId = string;
+
+export type TOrder = {
+  _id: string;
+  status: 'done' | 'pending' | 'created';
+  number: number;
+  name: string;
+  ingredients: TIngredientId[];
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TOrdersWSResponse = {
+  success: boolean;
+  orders: TOrder[];
+  total: number;
+  totalToday: number;
+};
+
+export type TOrderCardProps = {
+  order: TOrder;
+};

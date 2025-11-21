@@ -6,24 +6,26 @@ import {
 import IngredientImage from '@components/order-card/ingredient-image/ingredient-image';
 import { ingredients } from '@utils/ingredients';
 
+import type { TOrderCardProps } from '@utils/types';
+
 import styles from './order-card.module.css';
-const OrderCard = (): React.JSX.Element => {
+
+const OrderCard = ({ order }: TOrderCardProps): React.JSX.Element => {
   return (
     <div className={`${styles.order_card} p-6`}>
       <div className={`${styles.order_card_header} mb-6`}>
-        <div className="text_type_digits-default">#034535</div>
+        <div className="text_type_digits-default">#{order?.number}</div>
         <FormattedDate
           className="text_type_main-default text_color_inactive"
-          date={new Date()}
+          date={new Date(order?.createdAt)}
         />
       </div>
-      <div className="text_type_main-medium mb-6">Death Star Starship Main бургер</div>
+      <div className="text_type_main-medium mb-6">{order?.name}</div>
+      {order?.ingredients?.map((ingredient, index) => (
+        <div key={index}>{ingredient}</div>
+      ))}
       <div className={styles.order_card_footer}>
         <div className={styles.order_card_ingredients}>
-          <IngredientImage
-            className={styles.order_card_ingredient}
-            ingredient={ingredients[14]}
-          />
           <IngredientImage
             className={styles.order_card_ingredient}
             ingredient={ingredients[12]}
