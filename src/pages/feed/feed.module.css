@@ -9,8 +9,12 @@
 }
 
 .feed_orders {
+  display: flex;
   flex: 1;
-  overflow-x: scroll;
+  flex-direction: column;
+  gap: 24px;
+  padding-right: 8px;
+  overflow-y: scroll;
 }
 
 .feed_summary {

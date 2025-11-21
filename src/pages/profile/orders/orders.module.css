@@ -1,3 +1,13 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 30px 0;
+}
+
 .orders {
-  /* заготовка */
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  overflow-y: scroll;
 }

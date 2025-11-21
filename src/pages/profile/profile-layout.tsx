@@ -22,8 +22,8 @@ const ProfileLayout = (): React.JSX.Element => {
     }
   };
   return (
-    <main className={`${styles.main} pl-4 pr-4 mt-30`}>
-      <aside className={styles.aside}>
+    <main className={`${styles.main} pl-4 pr-4`}>
+      <aside className={`${styles.aside} mt-30`}>
         <nav>
           <NavLink
             to="/profile"

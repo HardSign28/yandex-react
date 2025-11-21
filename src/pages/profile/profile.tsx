@@ -134,7 +134,7 @@ const Profile = (): React.JSX.Element => {
   };
 
   return (
-    <form onSubmit={(e) => void onSave(e)}>
+    <form className="mt-30" onSubmit={(e) => void onSave(e)}>
       <Input
         type="text"
         placeholder="Имя"

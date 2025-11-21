@@ -16,23 +16,23 @@ const Orders = (): React.JSX.Element => {
 
   return (
     <>
-      <div className={`${styles.orders} text text_type_main-medium`}>
-        История заказов
-      </div>
-
       {isLoading && <Loader />}
       {data && (
         <>
-          {data?.orders?.map((order) => (
-            <Link
-              key={order._id}
-              to={`/feed/${order.number}`}
-              state={{ background: location }}
-              className="hidden_link"
-            >
-              <OrderCard order={order} />
-            </Link>
-          ))}
+          <div className={`${styles.main}`}>
+            <div className={`${styles.orders} custom-scroll`}>
+              {data?.orders?.map((order) => (
+                <Link
+                  key={order._id}
+                  to={`/feed/${order.number}`}
+                  state={{ background: location }}
+                  className="hidden_link"
+                >
+                  <OrderCard order={order} />
+                </Link>
+              ))}
+            </div>
+          </div>
         </>
       )}
     </>

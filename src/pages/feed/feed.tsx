@@ -19,7 +19,7 @@ const Feed = (): React.JSX.Element => {
         {isLoading && <Loader />}
         {data && (
           <>
-            <div className={styles.feed_orders}>
+            <div className={`${styles.feed_orders} custom-scroll`}>
               {data?.orders?.map((order) => (
                 <Link
                   key={order._id}
