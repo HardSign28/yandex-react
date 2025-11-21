@@ -1,4 +1,5 @@
 import { useFeedOrdersQuery } from '@/store/thunks/wsApi';
+import { formatThousands } from '@/utils/format';
 import { Link, useLocation } from 'react-router-dom';
 
 import Loader from '@components/loader/loader.tsx';
@@ -9,6 +10,12 @@ const Feed = (): React.JSX.Element => {
   const location = useLocation();
   const { data, isLoading } = useFeedOrdersQuery();
   console.log('data', data);
+
+  const total = data?.total;
+  const totalToday = data?.totalToday;
+  const doneOrders = data?.orders?.filter((order) => order.status === 'done') ?? [];
+  const pendingOrders =
+    data?.orders?.filter((order) => order.status === 'pending') ?? [];
 
   return (
     <>
@@ -35,30 +42,32 @@ const Feed = (): React.JSX.Element => {
               <div className={`${styles.orders_status} mb-15`}>
                 <div>
                   <div className="text_type_main-medium mb-6">Готовы:</div>
-                  <ul className={`${styles.done} text_type_digits-default`}>
-                    <li className="mb-2">034533</li>
-                    <li className="mb-2">034532</li>
-                    <li className="mb-2">034530</li>
-                    <li className="mb-2">034527</li>
-                    <li className="mb-2">034525</li>
-                  </ul>
+                  <div className={`${styles.done} text_type_digits-default`}>
+                    {doneOrders.map((order, index) => (
+                      <div key={index}>{order.number}</div>
+                    ))}
+                  </div>
                 </div>
                 <div>
                   <div className="text_type_main-medium mb-6">В работе:</div>
-                  <ul className={`${styles.in_process} text_type_digits-default`}>
-                    <li className="mb-2">034538</li>
-                    <li className="mb-2">034541</li>
-                    <li className="mb-2">034542</li>
-                  </ul>
+                  <div className={`${styles.pending} text_type_digits-default`}>
+                    {pendingOrders.map((order, index) => (
+                      <div key={index}>{order.number}</div>
+                    ))}
+                  </div>
                 </div>
               </div>
               <div className="mb-15">
                 <div className="text_type_main-medium">Выполнено за все время:</div>
-                <div className="digits_shadow text_type_digits-large">28 752</div>
+                <div className="digits_shadow text_type_digits-large">
+                  {formatThousands(Number(total) || 0)}
+                </div>
               </div>
               <div className="mb-15">
                 <div className="text_type_main-medium">Выполнено за сегодня:</div>
-                <div className="digits_shadow text_type_digits-large">138</div>
+                <div className="digits_shadow text_type_digits-large">
+                  {formatThousands(Number(totalToday) || 0)}
+                </div>
               </div>
             </div>
           </>
