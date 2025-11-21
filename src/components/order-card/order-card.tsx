@@ -6,6 +6,7 @@ import { useMatch } from 'react-router-dom';
 
 import IngredientsShort from '@components/order-card/ingredients-short/ingredients-short';
 import { useIngredientsByIds } from '@hooks/useIngredientsByIds';
+import { formatThousands } from '@utils/format.ts';
 import { OrderStatus } from '@utils/types';
 
 import type { TOrderCardProps } from '@utils/types';
@@ -17,6 +18,7 @@ const OrderCard = ({ order }: TOrderCardProps): React.JSX.Element => {
 
   const match = useMatch('/profile/orders');
   const isDone = order.status === 'done';
+  const total = ingredients.reduce((sum, item) => sum + item.price, 0);
 
   return (
     <div className={`${styles.order_card} p-6`}>
@@ -42,7 +44,7 @@ const OrderCard = ({ order }: TOrderCardProps): React.JSX.Element => {
           <IngredientsShort ingredients={ingredients} />
         </div>
         <div className={`${styles.order_card_price} text_type_digits-default`}>
-          480
+          {formatThousands(total)}
           <CurrencyIcon type="primary" />
         </div>
       </div>

@@ -14,10 +14,8 @@ export const useIngredientsByIds = (ids: string[]): useIngredientsByIdsResult =>
   const dispatch = useAppDispatch();
   const ingredients = useAppSelector((s) => s.ingredients?.items ?? []);
 
-  // Проверяем, есть ли все id в сторе
   const missingIds = ids.filter((id) => !ingredients.find((it) => it._id === id));
 
-  // Нужно ли делать запрос
   const needFetch = missingIds.length > 0;
 
   const { data: fetchedData, isLoading: isFetching } = useGetIngredientsQuery(
@@ -25,7 +23,6 @@ export const useIngredientsByIds = (ids: string[]): useIngredientsByIdsResult =>
     { skip: !needFetch }
   );
 
-  // После получения данных кладём недостающие ингредиенты в стор
   useEffect(() => {
     if (!fetchedData || !Array.isArray(fetchedData)) return;
 
@@ -36,7 +33,6 @@ export const useIngredientsByIds = (ids: string[]): useIngredientsByIdsResult =>
     });
   }, [fetchedData, ingredients, dispatch]);
 
-  // Собираем итоговый массив ингредиентов для заказа
   const result = useMemo(
     () =>
       ids

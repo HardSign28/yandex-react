@@ -83,6 +83,13 @@ body {
   text-decoration: inherit;
 }
 
+.price {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
 /* Fix for scrollbar */
 
 @supports (scrollbar-color: auto) {
