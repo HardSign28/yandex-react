@@ -11,28 +11,31 @@ import { useParams } from 'react-router-dom';
 import Loader from '@components/loader/loader.tsx';
 import IngredientImage from '@components/order-card/ingredient-image/ingredient-image';
 import { useIngredientsByIds } from '@hooks/useIngredientsByIds';
+import { getAccessToken } from '@utils/auth.ts';
 import { groupIngredientsObjects } from '@utils/format';
 import { OrderStatus } from '@utils/types.ts';
 
+import type { TOrdersWSResponse } from '@utils/types.ts';
+
 import styles from './order-details.module.css';
 
-/* TODO: Переименовать тут или у бургера */
 const OrderDetails = (): React.JSX.Element => {
   const { id } = useParams();
-
   const orderNumber = Number(id);
 
-  const accessToken = localStorage.getItem('accessToken')?.replace('Bearer ', '');
+  const accessToken = getAccessToken()?.replace('Bearer ', '') ?? '';
 
-  const wsOrder = useSelector(makeSelectOrderByNumber(orderNumber, accessToken ?? ''));
+  const wsOrder = useSelector(makeSelectOrderByNumber(orderNumber, accessToken));
 
   const { data: apiOrder, isLoading } = useGetOrderByNumberQuery(
     wsOrder ? skipToken : orderNumber
   );
 
-  const order = wsOrder ?? apiOrder?.orders?.[0];
+  const apiResolved = apiOrder as TOrdersWSResponse | undefined;
 
-  const { ingredients } = useIngredientsByIds(order?.ingredients || []);
+  const order = wsOrder ?? apiResolved?.orders?.[0] ?? null;
+
+  const { ingredients } = useIngredientsByIds(order?.ingredients ?? []);
   const grouped = groupIngredientsObjects(ingredients);
   const total = ingredients.reduce((sum, item) => sum + item.price, 0);
 
@@ -45,6 +48,7 @@ const OrderDetails = (): React.JSX.Element => {
       <div className={`${styles.order_status} text_type_main-default mb-15`}>
         {OrderStatus[order.status]}
       </div>
+
       <div className="text_type_main-medium">Состав:</div>
       <div className={`${styles.ingredients} custom-scroll`}>
         {grouped.map(({ ingredient, count }) => (
@@ -60,6 +64,7 @@ const OrderDetails = (): React.JSX.Element => {
           </div>
         ))}
       </div>
+
       <div className={styles.order_details_footer}>
         <FormattedDate
           className="text_type_main-default text_color_inactive"
