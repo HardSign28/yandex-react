@@ -329,6 +329,10 @@ export const api = createApi({
         body,
       }),
     }),
+
+    getOrderByNumber: build.query<TOrderResponse, number>({
+      query: (number) => `/orders/${number}`,
+    }),
   }),
 });
 
@@ -341,4 +345,5 @@ export const {
   useUpdateUserMutation,
   usePasswordResetMutation,
   usePasswordResetConfirmMutation,
+  useGetOrderByNumberQuery,
 } = api;

@@ -1,43 +1,49 @@
+import { makeSelectOrderByNumber } from '@/selectors/ordersSelectors';
+import { useGetOrderByNumberQuery } from '@/store/api';
 import {
   CurrencyIcon,
   FormattedDate,
 } from '@krgaa/react-developer-burger-ui-components';
+import { skipToken } from '@reduxjs/toolkit/query';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
+import Loader from '@components/loader/loader.tsx';
 import IngredientImage from '@components/order-card/ingredient-image/ingredient-image';
-
-const dumpOrder = {
-  ingredients: [
-    '643d69a5c3f7b9001cfa093d',
-    '643d69a5c3f7b9001cfa093e',
-    '643d69a5c3f7b9001cfa093e',
-    '643d69a5c3f7b9001cfa093e',
-    '643d69a5c3f7b9001cfa0940',
-    '643d69a5c3f7b9001cfa0946',
-    '643d69a5c3f7b9001cfa0949',
-    '643d69a5c3f7b9001cfa093d',
-  ],
-};
-
 import { useIngredientsByIds } from '@hooks/useIngredientsByIds';
 import { groupIngredientsObjects } from '@utils/format';
+import { OrderStatus } from '@utils/types.ts';
 
 import styles from './order-details.module.css';
 
 /* TODO: Переименовать тут или у бургера */
 const OrderDetails = (): React.JSX.Element => {
   const { id } = useParams();
-  const { ingredients } = useIngredientsByIds(dumpOrder.ingredients);
+
+  const orderNumber = Number(id);
+
+  const accessToken = localStorage.getItem('accessToken')?.replace('Bearer ', '');
+
+  const wsOrder = useSelector(makeSelectOrderByNumber(orderNumber, accessToken ?? ''));
+
+  const { data: apiOrder, isLoading } = useGetOrderByNumberQuery(
+    wsOrder ? skipToken : orderNumber
+  );
+
+  const order = wsOrder ?? apiOrder?.orders?.[0];
+
+  const { ingredients } = useIngredientsByIds(order?.ingredients || []);
   const grouped = groupIngredientsObjects(ingredients);
   const total = ingredients.reduce((sum, item) => sum + item.price, 0);
+
+  if (!order || isLoading) return <Loader />;
+
   return (
     <main className={`${styles.main} mt-30`}>
       <div className="text_type_digits-default text-center mb-10">#{id}</div>
-      <div className="text_type_main-medium mb-2">
-        Black Hole Singularity острый бургер
-      </div>
+      <div className="text_type_main-medium mb-2">{order.name}</div>
       <div className={`${styles.order_status} text_type_main-default mb-15`}>
-        Выполнен
+        {OrderStatus[order.status]}
       </div>
       <div className="text_type_main-medium">Состав:</div>
       <div className={`${styles.ingredients} custom-scroll`}>
