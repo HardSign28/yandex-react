@@ -21,16 +21,18 @@ const Orders = (): React.JSX.Element => {
         <>
           <div className={`${styles.main}`}>
             <div className={`${styles.orders} custom-scroll`}>
-              {data?.orders?.map((order) => (
-                <Link
-                  key={order._id}
-                  to={`/feed/${order.number}`}
-                  state={{ background: location }}
-                  className="hidden_link"
-                >
-                  <OrderCard order={order} />
-                </Link>
-              ))}
+              {data?.orders
+                ?.filter((order) => order?._id && order?.number)
+                .map((order) => (
+                  <Link
+                    key={order._id}
+                    to={`/feed/${order.number}`}
+                    state={{ background: location }}
+                    className="hidden_link"
+                  >
+                    <OrderCard order={order} />
+                  </Link>
+                ))}
             </div>
           </div>
         </>

@@ -28,16 +28,18 @@ const Feed = (): React.JSX.Element => {
         {data && (
           <>
             <div className={`${styles.feed_orders} custom-scroll`}>
-              {data?.orders?.map((order) => (
-                <Link
-                  key={order._id}
-                  to={`/feed/${order.number}`}
-                  state={{ background: location }}
-                  className="hidden_link"
-                >
-                  <OrderCard order={order} />
-                </Link>
-              ))}
+              {data?.orders
+                ?.filter((order) => order?._id && order?.number)
+                .map((order) => (
+                  <Link
+                    key={order._id}
+                    to={`/feed/${order.number}`}
+                    state={{ background: location }}
+                    className="hidden_link"
+                  >
+                    <OrderCard order={order} />
+                  </Link>
+                ))}
             </div>
             <div className={styles.feed_summary}>
               <div className={`${styles.orders_status} mb-15`}>
