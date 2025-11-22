@@ -15,7 +15,7 @@ import styles from './login.module.css';
 const Login = (): React.JSX.Element => {
   const [password, setPassword] = useState('password');
   const [email, setEmail] = useState('demo@test.kz');
-  const [login, { isLoading, data, error }] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
@@ -48,11 +48,6 @@ const Login = (): React.JSX.Element => {
     const accessToken = res.accessToken ?? '';
     const refreshToken = res.refreshToken ?? '';
     dispatch(setCredentials({ user: res.user, accessToken, refreshToken }));
-    console.log('data', data);
-    console.log('error', error);
-    console.log('user', res.user);
-    console.log('accessToken', accessToken);
-    console.log('refreshToken', refreshToken);
     await navigate('/');
   };
 

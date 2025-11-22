@@ -9,7 +9,6 @@ import styles from './feed.module.css';
 const Feed = (): React.JSX.Element => {
   const location = useLocation();
   const { data, isLoading } = useFeedOrdersQuery();
-  console.log('data', data);
 
   const total = data?.total;
   const totalToday = data?.totalToday;
