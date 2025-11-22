@@ -114,13 +114,7 @@ export const App = (): React.JSX.Element => {
           <Route
             path="/feed/:id"
             element={
-              <Modal
-                isOpen={!!background}
-                labelledById="ingredient-modal-title"
-                closeOnOverlay
-                title="Детали ингридиента"
-                onClose={handleModalClose}
-              >
+              <Modal isOpen={!!background} closeOnOverlay onClose={handleModalClose}>
                 <OrderDetails />
               </Modal>
             }
@@ -128,13 +122,7 @@ export const App = (): React.JSX.Element => {
           <Route
             path="/profile/orders/:id"
             element={
-              <Modal
-                isOpen={!!background}
-                labelledById="ingredient-modal-title"
-                closeOnOverlay
-                title="Детали ингридиента"
-                onClose={handleModalClose}
-              >
+              <Modal isOpen={!!background} closeOnOverlay onClose={handleModalClose}>
                 <OrderDetails />
               </Modal>
             }

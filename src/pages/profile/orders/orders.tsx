@@ -28,7 +28,7 @@ const Orders = (): React.JSX.Element => {
                     key={order._id}
                     to={`/feed/${order.number}`}
                     state={{ background: location }}
-                    className="hidden_link"
+                    className="hidden_link pr-2"
                   >
                     <OrderCard order={order} />
                   </Link>

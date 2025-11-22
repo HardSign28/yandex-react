@@ -22,6 +22,7 @@ import { useNavigate } from 'react-router-dom';
 import BurgerConstructorItem from '@components/burger-constructor/burger-constructor-item/burger-constructor-item';
 import OrderDetails from '@components/burger-constructor/order-details/order-details';
 import Modal from '@components/modal/modal';
+import { formatThousands } from '@utils/format.ts';
 
 import type { TCollected, TDragItem } from '@utils/types';
 
@@ -145,7 +146,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
   };
 
   return (
-    <section className={`${styles.burger_constructor} mb-10`}>
+    <section className={styles.burger_constructor}>
       <div className={`${styles.burger_constructor_wrapper}`}>
         <div
           ref={(node) => {
@@ -217,7 +218,9 @@ export const BurgerConstructor = (): React.JSX.Element => {
       </div>
       <div className={`${styles.checkout} mt-10 mb-10`}>
         <div className={`${styles.checkout_price} mr-10`}>
-          <div className="text text_type_digits-medium mr-2">{total}</div>
+          <div className="text text_type_digits-medium mr-2">
+            {formatThousands(total)}
+          </div>
           <CurrencyIcon type="primary" />
         </div>
         <Button

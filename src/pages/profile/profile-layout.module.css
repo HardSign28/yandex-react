@@ -1,14 +1,15 @@
 .main {
   display: flex;
-  width: 1260px;
   height: 100%;
-  margin-right: auto;
-  margin-left: auto;
   overflow: hidden;
 }
 
 .aside {
   max-width: 320px;
+}
+
+.outlet {
+  flex: 1;
 }
 
 .description {

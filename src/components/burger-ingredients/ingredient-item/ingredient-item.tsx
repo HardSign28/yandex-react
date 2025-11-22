@@ -2,6 +2,8 @@ import { Counter, CurrencyIcon } from '@krgaa/react-developer-burger-ui-componen
 import { useDrag } from 'react-dnd';
 import { Link, useLocation } from 'react-router-dom';
 
+import { formatThousands } from '@utils/format.ts';
+
 import type { TDragItem, TIngredientType, TIngredientProps } from '@utils/types';
 
 import styles from './ingredient-item.module.css';
@@ -53,7 +55,7 @@ const IngredientItem = ({
         <div
           className={`${styles.ingredient_item_price} text text_type_digits-default mt-1 mb-1`}
         >
-          {ingredient.price}
+          {formatThousands(ingredient.price)}
           <CurrencyIcon type="primary" />
         </div>
         <div className={`${styles.ingredient_item_name} text text_type_main-default`}>

@@ -13,11 +13,9 @@ const Home = (): React.JSX.Element => {
   const { isLoading } = useGetIngredientsQuery();
   const ingredients = useAppSelector((state) => state.ingredients.items);
   return (
-    <>
-      <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-4`}>
-        Соберите бургер
-      </h1>
-      <main className={`${styles.main} pl-4 pr-4`}>
+    <div className="container">
+      <h1 className="text_type_main-large mt-10 mb-5 pl-4">Соберите бургер</h1>
+      <main className={`${styles.main} pl-4 pr-4 pb-10`}>
         {isLoading && <Loader />}
         {!isLoading && ingredients.length > 0 && (
           <DndProvider backend={HTML5Backend}>
@@ -26,7 +24,7 @@ const Home = (): React.JSX.Element => {
           </DndProvider>
         )}
       </main>
-    </>
+    </div>
   );
 };
 

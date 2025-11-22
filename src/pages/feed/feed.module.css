@@ -2,9 +2,7 @@
   display: flex;
   justify-content: space-between;
   gap: 60px;
-  width: 1260px;
   height: 100%;
-  margin: 0 auto;
   overflow: hidden;
 }
 
@@ -40,9 +38,4 @@
 
 .done {
   color: var(--colors-interface-success);
-}
-
-.title {
-  /* empty */
-  opacity: 1;
 }

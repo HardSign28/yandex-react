@@ -15,15 +15,14 @@ body {
   margin: 0;
 }
 
-.main {
+.container {
   display: flex;
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  width: 1260px;
-  margin-right: auto;
-  margin-left: auto;
-  padding: 20px 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1260px;
+  margin: 0 auto;
+  overflow: hidden;
 }
 
 .auth_page_wrapper {

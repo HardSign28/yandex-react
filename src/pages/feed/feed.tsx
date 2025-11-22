@@ -19,11 +19,9 @@ const Feed = (): React.JSX.Element => {
     data?.orders?.filter((o) => o.status === 'pending').slice(0, limit) ?? [];
 
   return (
-    <>
-      <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-4`}>
-        Лента заказов
-      </h1>
-      <main className={`${styles.main} pl-4 pr-4`}>
+    <div className="container">
+      <h1 className="text_type_main-large mt-10 mb-5 pl-4">Лента заказов</h1>
+      <main className={`${styles.main} pl-4 pr-4 pb-10`}>
         {isLoading && <Loader />}
         {data && (
           <>
@@ -76,7 +74,7 @@ const Feed = (): React.JSX.Element => {
           </>
         )}
       </main>
-    </>
+    </div>
   );
 };
 
