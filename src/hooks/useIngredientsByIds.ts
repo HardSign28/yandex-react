@@ -1,45 +1,37 @@
 import { useGetIngredientsQuery } from '@/store/api';
-import { useAppSelector, useAppDispatch } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { select } from '@/store/slices/selectedIngredientSlice';
 import { useEffect, useMemo } from 'react';
 
-import type { TIngredient } from '@utils/types';
+import type { TIngredient, UseIngredientsByIdsResult } from '@utils/types';
 
-type useIngredientsByIdsResult = {
-  ingredients: TIngredient[];
-  loading: boolean;
-};
-
-export const useIngredientsByIds = (ids: string[]): useIngredientsByIdsResult => {
+export const useIngredientsByIds = (ids: string[]): UseIngredientsByIdsResult => {
   const dispatch = useAppDispatch();
-  const ingredients = useAppSelector((s) => s.ingredients?.items ?? []);
 
-  const missingIds = ids.filter((id) => !ingredients.find((it) => it._id === id));
+  const items = useAppSelector((s) => s.ingredients.items);
 
-  const needFetch = missingIds.length > 0;
+  const map = useMemo(() => new Map(items.map((i) => [i._id, i])), [items]);
 
-  const { data: fetchedData, isLoading: isFetching } = useGetIngredientsQuery(
-    undefined,
-    { skip: !needFetch }
-  );
+  const missingIds = ids.filter((id) => !map.has(id));
+
+  const { data: fetchedData, isLoading } = useGetIngredientsQuery(undefined, {
+    skip: missingIds.length === 0,
+  });
 
   useEffect(() => {
-    if (!fetchedData || !Array.isArray(fetchedData)) return;
+    if (!fetchedData) return;
 
     fetchedData.forEach((ing: TIngredient) => {
-      if (!ingredients.find((i) => i._id === ing._id)) {
-        dispatch(select(ing)); // или отдельный slice для всех ингредиентов
+      if (!map.has(ing._id)) {
+        dispatch(select(ing));
       }
     });
-  }, [fetchedData, ingredients, dispatch]);
+  }, [fetchedData, map, dispatch]);
 
-  const result = useMemo(
-    () =>
-      ids
-        .map((id) => ingredients.find((i) => i._id === id))
-        .filter(Boolean) as TIngredient[],
-    [ids, ingredients]
+  const ingredients = useMemo(
+    () => ids.map((id) => map.get(id)).filter(Boolean) as TIngredient[],
+    [ids, map]
   );
 
-  return { ingredients: result, loading: isFetching };
+  return { ingredients, loading: isLoading };
 };

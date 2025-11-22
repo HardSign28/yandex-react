@@ -1,4 +1,4 @@
-import type { TIngredient } from '@utils/types.ts';
+import type { TIngredient } from '@utils/types';
 
 export const formatThousands = (num: number): string =>
   num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');

@@ -2,7 +2,7 @@ import { useFeedOrdersQuery } from '@/store/thunks/wsApi';
 import { formatThousands } from '@/utils/format';
 import { Link, useLocation } from 'react-router-dom';
 
-import Loader from '@components/loader/loader.tsx';
+import Loader from '@components/loader/loader';
 import OrderCard from '@components/order-card/order-card';
 
 import styles from './feed.module.css';

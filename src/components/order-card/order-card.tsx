@@ -6,7 +6,7 @@ import { useMatch } from 'react-router-dom';
 
 import IngredientsShort from '@components/order-card/ingredients-short/ingredients-short';
 import { useIngredientsByIds } from '@hooks/useIngredientsByIds';
-import { formatThousands } from '@utils/format.ts';
+import { formatThousands } from '@utils/format';
 import { OrderStatus } from '@utils/types';
 
 import type { TOrderCardProps } from '@utils/types';

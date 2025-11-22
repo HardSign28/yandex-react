@@ -180,3 +180,8 @@ export enum OrderStatus {
   pending = 'Готовится',
   done = 'Выполнен',
 }
+
+export type UseIngredientsByIdsResult = {
+  ingredients: TIngredient[];
+  loading: boolean;
+};

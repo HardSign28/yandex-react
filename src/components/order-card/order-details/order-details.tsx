@@ -8,14 +8,14 @@ import { skipToken } from '@reduxjs/toolkit/query';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import Loader from '@components/loader/loader.tsx';
+import Loader from '@components/loader/loader';
 import IngredientImage from '@components/order-card/ingredient-image/ingredient-image';
 import { useIngredientsByIds } from '@hooks/useIngredientsByIds';
-import { getAccessToken } from '@utils/auth.ts';
+import { getAccessToken } from '@utils/auth';
 import { groupIngredientsObjects } from '@utils/format';
-import { OrderStatus } from '@utils/types.ts';
+import { OrderStatus } from '@utils/types';
 
-import type { TOrdersWSResponse } from '@utils/types.ts';
+import type { TOrdersWSResponse } from '@utils/types';
 
 import styles from './order-details.module.css';
 
