@@ -52,46 +52,48 @@ const Login = (): React.JSX.Element => {
   };
 
   return (
-    <main className="main pl-4 pr-4">
-      <form className="auth_page_wrapper" onSubmit={(e) => void onSubmit(e)}>
-        <h1 className="text text_type_main-medium text-center">Вход</h1>
-        <EmailInput
-          onChange={onChangeEmail}
-          value={email}
-          name={'email'}
-          isIcon={false}
-          extraClass="mt-6"
-        />
-        <PasswordInput
-          onChange={onChangePassword}
-          value={password}
-          name={'password'}
-          extraClass="mt-6"
-        />
-        <Button
-          htmlType="submit"
-          type="primary"
-          size="medium"
-          extraClass={`${styles.button} button_with_spinner mt-6 margin-auto-x`}
-        >
-          {isLoading ? <IconSpinner className="button_spinner" /> : 'Войти'}
-        </Button>
-        <div className="mt-20 text text_type_main-default text_color_inactive text-center">
-          <p>
-            Вы - новый пользователь?
-            <Link className="auth_link ml-2" to="/register">
-              Зарегистрироваться
-            </Link>
-          </p>
-          <p>
-            Забыли пароль?
-            <Link className="auth_link ml-2" to="/forgot-password">
-              Восстановить пароль
-            </Link>
-          </p>
-        </div>
-      </form>
-    </main>
+    <div className="container">
+      <main className="main pl-4 pr-4 pt-5 pb-5">
+        <form className="auth_page_wrapper" onSubmit={(e) => void onSubmit(e)}>
+          <h1 className="text text_type_main-medium text-center">Вход</h1>
+          <EmailInput
+            onChange={onChangeEmail}
+            value={email}
+            name={'email'}
+            isIcon={false}
+            extraClass="mt-6"
+          />
+          <PasswordInput
+            onChange={onChangePassword}
+            value={password}
+            name={'password'}
+            extraClass="mt-6"
+          />
+          <Button
+            htmlType="submit"
+            type="primary"
+            size="medium"
+            extraClass={`${styles.button} button_with_spinner mt-6 margin-auto-x`}
+          >
+            {isLoading ? <IconSpinner className="button_spinner" /> : 'Войти'}
+          </Button>
+          <div className="mt-20 text text_type_main-default text_color_inactive text-center">
+            <p>
+              Вы - новый пользователь?
+              <Link className="auth_link ml-2" to="/register">
+                Зарегистрироваться
+              </Link>
+            </p>
+            <p>
+              Забыли пароль?
+              <Link className="auth_link ml-2" to="/forgot-password">
+                Восстановить пароль
+              </Link>
+            </p>
+          </div>
+        </form>
+      </main>
+    </div>
   );
 };
 

@@ -54,7 +54,7 @@ const Register = (): React.JSX.Element => {
   };
 
   return (
-    <main className="main pl-4 pr-4">
+    <main className="main pl-4 pr-4 pt-5 pb-5">
       <form className="auth_page_wrapper" onSubmit={(e) => void onRegister(e)}>
         <h1 className="text text_type_main-medium text-center">Регистрация</h1>
         <Input

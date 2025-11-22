@@ -15,29 +15,25 @@ const Orders = (): React.JSX.Element => {
   });
 
   return (
-    <>
+    <div className={`${styles.main}`}>
       {isLoading && <Loader />}
       {data && (
-        <>
-          <div className={`${styles.main}`}>
-            <div className={`${styles.orders} custom-scroll`}>
-              {data?.orders
-                ?.filter((order) => order?._id && order?.number)
-                .map((order) => (
-                  <Link
-                    key={order._id}
-                    to={`/feed/${order.number}`}
-                    state={{ background: location }}
-                    className="hidden_link pr-2"
-                  >
-                    <OrderCard order={order} />
-                  </Link>
-                ))}
-            </div>
-          </div>
-        </>
+        <div className={`${styles.orders} custom-scroll`}>
+          {data?.orders
+            ?.filter((order) => order?._id && order?.number)
+            .map((order) => (
+              <Link
+                key={order._id}
+                to={`/feed/${order.number}`}
+                state={{ background: location }}
+                className="hidden_link pr-2"
+              >
+                <OrderCard order={order} />
+              </Link>
+            ))}
+        </div>
       )}
-    </>
+    </div>
   );
 };
 
