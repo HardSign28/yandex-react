@@ -41,12 +41,6 @@ const authSlice = createSlice({
       state.refreshToken = null;
       state.isAuthenticated = false;
     },
-    /*
-    checkUserAuth: (state) => {
-      state.isAuthenticated = !!localStorage.getItem('refreshToken');
-      state.isAuthChecked = true;
-    },
-    */
   },
   selectors: {
     selectUser: (state) => state.user,

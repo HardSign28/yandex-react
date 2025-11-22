@@ -338,8 +338,6 @@ export const {
   useLoginMutation,
   useRegisterMutation,
   useLogoutMutation,
-  useRefreshTokenMutation,
-  useGetUserQuery,
   useUpdateUserMutation,
   usePasswordResetMutation,
   usePasswordResetConfirmMutation,
