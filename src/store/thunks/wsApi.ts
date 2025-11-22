@@ -6,18 +6,45 @@ import type { TOrdersWSResponse } from '@utils/types';
 function initWebSocket(
   this: void,
   url: string,
-  updateCachedData: (fn: (draft: TOrdersWSResponse) => void) => void
+  updateCachedData: (fn: (draft: TOrdersWSResponse) => void) => void,
+  isActive: () => boolean
 ): WebSocket {
-  const socket = new WebSocket(url);
+  let reconnectAttempts = 0;
 
-  socket.onmessage = (event): void => {
-    const message = String(event.data);
-    const raw = JSON.parse(message) as unknown;
-    const wsData = raw as TOrdersWSResponse;
-    updateCachedData(() => wsData);
+  const connect = (): WebSocket => {
+    const socket = new WebSocket(url);
+
+    socket.onopen = (): void => {
+      reconnectAttempts = 0;
+    };
+
+    socket.onmessage = (event): void => {
+      const message = String(event.data);
+      const raw = JSON.parse(message) as unknown;
+      const wsData = raw as TOrdersWSResponse;
+      updateCachedData(() => wsData);
+    };
+
+    socket.onclose = (): void => {
+      if (!isActive()) return;
+
+      const timeout = Math.min(1000 * 2 ** reconnectAttempts, 8000);
+      reconnectAttempts++;
+
+      setTimeout(() => {
+        console.log('socket disconnected. Retrying to connect...');
+        if (isActive()) connect();
+      }, timeout);
+    };
+
+    socket.onerror = (): void => {
+      socket.close();
+    };
+
+    return socket;
   };
 
-  return socket;
+  return connect();
 }
 
 export const wsApi = createApi({
@@ -32,11 +59,19 @@ export const wsApi = createApi({
         // eslint-disable-next-line @typescript-eslint/unbound-method
         const { updateCachedData, cacheDataLoaded, cacheEntryRemoved } = api;
 
-        const socket = initWebSocket(`${WS_API_URL}/orders/all`, updateCachedData);
+        let active = true;
+        const isActive = (): boolean => active;
+
+        const socket = initWebSocket(
+          `${WS_API_URL}/orders/all`,
+          updateCachedData,
+          isActive
+        );
 
         await cacheDataLoaded;
         await cacheEntryRemoved;
 
+        active = false;
         socket.close();
         console.log('socket feedOrders closed');
       },
@@ -50,14 +85,19 @@ export const wsApi = createApi({
         // eslint-disable-next-line @typescript-eslint/unbound-method
         const { updateCachedData, cacheDataLoaded, cacheEntryRemoved } = api;
 
+        let active = true;
+        const isActive = (): boolean => active;
+
         const socket = initWebSocket(
           `${WS_API_URL}/orders?token=${token}`,
-          updateCachedData
+          updateCachedData,
+          isActive
         );
 
         await cacheDataLoaded;
         await cacheEntryRemoved;
 
+        active = false;
         socket.close();
         console.log('socket userOrders closed');
       },

@@ -13,9 +13,11 @@ const Feed = (): React.JSX.Element => {
 
   const total = data?.total;
   const totalToday = data?.totalToday;
-  const doneOrders = data?.orders?.filter((order) => order.status === 'done') ?? [];
+  const limit = 20;
+  const doneOrders =
+    data?.orders?.filter((o) => o.status === 'done').slice(0, limit) ?? [];
   const pendingOrders =
-    data?.orders?.filter((order) => order.status === 'pending') ?? [];
+    data?.orders?.filter((o) => o.status === 'pending').slice(0, limit) ?? [];
 
   return (
     <>
