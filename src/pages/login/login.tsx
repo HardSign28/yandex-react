@@ -13,8 +13,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import styles from './login.module.css';
 
 const Login = (): React.JSX.Element => {
-  const [password, setPassword] = useState('password');
-  const [email, setEmail] = useState('demo@test.kz');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
   const [login, { isLoading }] = useLoginMutation();
   const dispatch = useAppDispatch();
 

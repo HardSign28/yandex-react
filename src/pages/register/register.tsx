@@ -16,9 +16,9 @@ import type React from 'react';
 import styles from './register.module.css';
 
 const Register = (): React.JSX.Element => {
-  const [name, setName] = useState('Космос');
-  const [password, setPassword] = useState('password');
-  const [email, setEmail] = useState('demo@test.kz');
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
   const inputRef = useRef(null);
   const [register, { isLoading }] = useRegisterMutation();
   const dispatch = useAppDispatch();
