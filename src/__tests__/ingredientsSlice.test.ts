@@ -1,12 +1,18 @@
-import { describe, it, expect } from 'vitest';
 import ingredientsReducer from '@/store/slices/ingredientsSlice';
+import { describe, it, expect } from 'vitest';
+
+import type { UnknownAction } from '@reduxjs/toolkit';
 import type { TIngredient, TIngredientsState } from '@utils/types';
 
-//
-// Вспомогательная функция для генерации meta,
-// чтобы matchers RTK Query сработали
-//
-const makeMeta = () => ({
+type TestMeta = {
+  arg: {
+    endpointName: string;
+    originalArgs: unknown;
+    type: string;
+  };
+};
+
+const makeMeta = (): TestMeta => ({
   arg: {
     endpointName: 'getIngredients',
     originalArgs: undefined,
@@ -21,7 +27,7 @@ describe('ingredientsSlice reducer', () => {
   };
 
   it('initializes correctly', () => {
-    const state = ingredientsReducer(undefined, { type: '' } as any);
+    const state = ingredientsReducer(undefined, { type: '' } as UnknownAction);
     expect(state).toEqual(initialState);
   });
 
@@ -31,26 +37,25 @@ describe('ingredientsSlice reducer', () => {
       meta: makeMeta(),
     };
 
-    const next = ingredientsReducer(initialState, action as any);
+    const next = ingredientsReducer(initialState, action as UnknownAction);
 
-    // pending не изменяет состояние
     expect(next).toEqual(initialState);
   });
 
   it('handles getIngredients.fulfilled', () => {
     const ingredients: TIngredient[] = [
       {
-        _id: '1',
-        name: 'Булка',
+        _id: '60666c42cc7b410027a1a9b1',
+        name: 'Краторная булка N-200i',
         type: 'bun',
-        proteins: 10,
-        fat: 5,
-        carbohydrates: 20,
-        calories: 150,
-        price: 50,
-        image: '',
-        image_large: '',
-        image_mobile: '',
+        proteins: 80,
+        fat: 24,
+        carbohydrates: 53,
+        calories: 420,
+        price: 1255,
+        image: 'https://code.s3.yandex.net/react/code/bun-02.png',
+        image_mobile: 'https://code.s3.yandex.net/react/code/bun-02-mobile.png',
+        image_large: 'https://code.s3.yandex.net/react/code/bun-02-large.png',
         __v: 0,
       },
     ];
@@ -61,7 +66,7 @@ describe('ingredientsSlice reducer', () => {
       meta: makeMeta(),
     };
 
-    const next = ingredientsReducer(initialState, action as any);
+    const next = ingredientsReducer(initialState, action as UnknownAction);
 
     expect(next.items).toEqual(ingredients);
     expect(next.error).toBeNull();
@@ -74,7 +79,7 @@ describe('ingredientsSlice reducer', () => {
       meta: makeMeta(),
     };
 
-    const next = ingredientsReducer(initialState, action as any);
+    const next = ingredientsReducer(initialState, action as UnknownAction);
 
     expect(next.error).toBe('Server error');
     expect(next.items).toEqual([]);
