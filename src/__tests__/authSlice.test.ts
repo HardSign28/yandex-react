@@ -1,11 +1,12 @@
-import { describe, it, expect } from 'vitest';
 import authReducer, {
   setCredentials,
   logout,
   setUser,
   setIsAuthChecked,
 } from '@/store/slices/authSlice';
+import { describe, it, expect } from 'vitest';
 
+import type { UnknownAction } from '@reduxjs/toolkit';
 import type { TAuthState, TUser } from '@utils/types';
 
 describe('authSlice reducer', () => {
@@ -18,15 +19,15 @@ describe('authSlice reducer', () => {
   };
 
   it('initializes correctly', () => {
-    const state = authReducer(undefined, { type: '' } as any);
+    const state = authReducer(undefined, { type: '' } as UnknownAction);
     expect(state).toEqual(initialState);
   });
 
   it('setCredentials sets tokens and user', () => {
     const mockUser: TUser = {
-      name: 'Vlad',
-      email: 'vlad@example.com',
-    } as any;
+      name: 'Test',
+      email: 'test@test.com',
+    };
 
     const action = {
       type: setCredentials.type,
@@ -37,7 +38,7 @@ describe('authSlice reducer', () => {
       },
     };
 
-    const state = authReducer(initialState, action as any);
+    const state = authReducer(initialState, action as UnknownAction);
 
     expect(state.user).toEqual(mockUser);
     expect(state.accessToken).toBe('access-token');
@@ -49,11 +50,11 @@ describe('authSlice reducer', () => {
     const mockUser: TUser = {
       name: 'Anna',
       email: 'anna@example.com',
-    } as any;
+    };
 
     const action = { type: setUser.type, payload: mockUser };
 
-    const state = authReducer(initialState, action as any);
+    const state = authReducer(initialState, action as UnknownAction);
 
     expect(state.user).toEqual(mockUser);
     expect(state.isAuthenticated).toBe(false);
@@ -66,14 +67,14 @@ describe('authSlice reducer', () => {
       payload: true,
     };
 
-    const state = authReducer(initialState, action as any);
+    const state = authReducer(initialState, action as UnknownAction);
 
     expect(state.isAuthChecked).toBe(true);
   });
 
   it('logout resets authentication state', () => {
     const loggedState: TAuthState = {
-      user: { name: 'X' } as any,
+      user: { name: 'Test' },
       accessToken: 'token',
       refreshToken: 'refresh',
       isAuthenticated: true,
@@ -82,7 +83,7 @@ describe('authSlice reducer', () => {
 
     const action = { type: logout.type };
 
-    const state = authReducer(loggedState, action as any);
+    const state = authReducer(loggedState, action as UnknownAction);
 
     expect(state.user).toBeNull();
     expect(state.accessToken).toBeNull();
