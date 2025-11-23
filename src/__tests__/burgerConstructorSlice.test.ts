@@ -1,11 +1,13 @@
-import { describe, it, expect } from 'vitest';
 import burgerConstructorReducer, {
   addIngredient,
   removeIngredient,
   moveIngredient,
-  setBun, resetConstructor,
+  setBun,
+  resetConstructor,
 } from '@/store/slices/burgerConstructorSlice';
+import { describe, it, expect } from 'vitest';
 
+import type { UnknownAction } from '@reduxjs/toolkit';
 import type { TIngredient, TConstructorState } from '@utils/types';
 
 describe('burgerConstructorSlice reducer', () => {
@@ -31,7 +33,7 @@ describe('burgerConstructorSlice reducer', () => {
   });
 
   it('initializes correctly', () => {
-    const state = burgerConstructorReducer(undefined, { type: '' } as any);
+    const state = burgerConstructorReducer(undefined, { type: '' } as UnknownAction);
     expect(state).toEqual(initialState);
   });
 
@@ -52,7 +54,7 @@ describe('burgerConstructorSlice reducer', () => {
     };
 
     const action = { type: setBun.type, payload: bun };
-    const next = burgerConstructorReducer(initialState, action as any);
+    const next = burgerConstructorReducer(initialState, action as UnknownAction);
 
     expect(next.bun).toEqual(bun);
   });
@@ -61,7 +63,7 @@ describe('burgerConstructorSlice reducer', () => {
     const ingredient = makeIngredient('111');
 
     const action = { type: addIngredient.type, payload: ingredient };
-    const next = burgerConstructorReducer(initialState, action as any);
+    const next = burgerConstructorReducer(initialState, action as UnknownAction);
 
     expect(next.ingredients.length).toBe(1);
     expect(next.ingredients[0]).toEqual(ingredient);
@@ -77,7 +79,7 @@ describe('burgerConstructorSlice reducer', () => {
     };
 
     const action = { type: removeIngredient.type, payload: ing1.uid };
-    const next = burgerConstructorReducer(initial, action as any);
+    const next = burgerConstructorReducer(initial, action as UnknownAction);
 
     expect(next.ingredients.length).toBe(1);
     expect(next.ingredients[0]._id).toBe('2');
@@ -94,7 +96,7 @@ describe('burgerConstructorSlice reducer', () => {
       payload: { from: 0, to: 2 },
     };
 
-    const next = burgerConstructorReducer(initial, action as any);
+    const next = burgerConstructorReducer(initial, action as UnknownAction);
 
     expect(next.ingredients.map((i) => i._id)).toEqual(['b', 'c', 'a']);
   });
@@ -106,7 +108,7 @@ describe('burgerConstructorSlice reducer', () => {
     };
 
     const action = { type: resetConstructor.type };
-    const next = burgerConstructorReducer(dirty, action as any);
+    const next = burgerConstructorReducer(dirty, action as UnknownAction);
 
     expect(next).toEqual(initialState);
   });
