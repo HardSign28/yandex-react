@@ -1,9 +1,18 @@
-import { describe, it, expect } from 'vitest';
 import orderReducer from '@/store/slices/orderSlice';
+import { describe, it, expect } from 'vitest';
+
+import type { UnknownAction } from '@reduxjs/toolkit';
 import type { TOrderDetails, TOrderState } from '@utils/types';
 
-// Генерация meta для RTK Query matchers
-const makeMeta = () => ({
+type TestMeta = {
+  arg: {
+    endpointName: string;
+    originalArgs: unknown;
+    type: string;
+  };
+};
+
+const makeMeta = (): TestMeta => ({
   arg: {
     endpointName: 'createOrder',
     originalArgs: undefined,
@@ -19,7 +28,7 @@ describe('orderSlice reducer', () => {
   };
 
   it('initializes correctly', () => {
-    const state = orderReducer(undefined, { type: '' } as any);
+    const state = orderReducer(undefined, { type: '' } as UnknownAction);
     expect(state).toEqual(initialState);
   });
 
@@ -31,7 +40,7 @@ describe('orderSlice reducer', () => {
     };
 
     const action = { type: 'order/clearOrder' };
-    const next = orderReducer(dirty, action as any);
+    const next = orderReducer(dirty, action as UnknownAction);
 
     expect(next.last).toBeNull();
     expect(next.error).toBeNull();
@@ -44,7 +53,7 @@ describe('orderSlice reducer', () => {
       meta: makeMeta(),
     };
 
-    const next = orderReducer(initialState, action as any);
+    const next = orderReducer(initialState, action as UnknownAction);
 
     expect(next.isLoading).toBe(true);
     expect(next.error).toBeNull();
@@ -54,7 +63,7 @@ describe('orderSlice reducer', () => {
   it('handles createOrder.fulfilled', () => {
     const payload: TOrderDetails = {
       success: true,
-      name: 'Order Test',
+      name: 'Тестовый заказ',
       order: { number: 1234 },
     };
 
@@ -64,7 +73,7 @@ describe('orderSlice reducer', () => {
       meta: makeMeta(),
     };
 
-    const next = orderReducer(initialState, action as any);
+    const next = orderReducer(initialState, action as UnknownAction);
 
     expect(next.isLoading).toBe(false);
     expect(next.last).toEqual(payload);
@@ -78,7 +87,7 @@ describe('orderSlice reducer', () => {
       meta: makeMeta(),
     };
 
-    const next = orderReducer(initialState, action as any);
+    const next = orderReducer(initialState, action as UnknownAction);
 
     expect(next.isLoading).toBe(false);
     expect(next.last).toBeNull();
