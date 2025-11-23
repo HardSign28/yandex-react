@@ -50,14 +50,13 @@ const Modal = ({
         onMouseDown={(e) => {
           e.stopPropagation();
         }}
+        data-testid="modal"
       >
         <div className={`${styles.modal_header} text text_type_main-large pt-3 pb-3`}>
           {title}
-          <CloseIcon
-            className={styles.modal_icon_close}
-            onClick={onClose}
-            type="primary"
-          />
+          <div className={styles.modal_icon_close} data-testid="modal-close">
+            <CloseIcon onClick={onClose} type="primary" />
+          </div>
         </div>
         {children}
       </div>

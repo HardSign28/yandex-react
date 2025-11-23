@@ -31,6 +31,9 @@ const IngredientItem = ({
       to={`/ingredients/${ingredientId}`}
       state={{ background: location }}
       className="hidden_link"
+      data-testid="ingredient-card"
+      data-type={ingredient.type}
+      data-name={ingredient.name}
     >
       <li
         ref={(node) => {

@@ -1,0 +1,33 @@
+{
+  "success": true,
+  "data": [
+    {
+      "_id": "1",
+      "name": "Булка",
+      "type": "bun",
+      "proteins": 10,
+      "fat": 5,
+      "carbohydrates": 20,
+      "calories": 150,
+      "price": 50,
+      "image": "",
+      "image_large": "",
+      "image_mobile": "",
+      "__v": 0
+    },
+    {
+      "_id": "2",
+      "name": "Соус",
+      "type": "sauce",
+      "proteins": 5,
+      "fat": 2,
+      "carbohydrates": 10,
+      "calories": 40,
+      "price": 15,
+      "image": "",
+      "image_large": "",
+      "image_mobile": "",
+      "__v": 0
+    }
+  ]
+}
