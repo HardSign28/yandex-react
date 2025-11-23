@@ -41,7 +41,8 @@
   align-items: center;
 }
 
-.burger_ingredient_empty {
+/* stylelint-disable-next-line selector-pseudo-class-no-unknown, rule-empty-line-before */
+:global(.constructor-element).burger_ingredient_empty {
   display: flex;
   flex-grow: 0;
   justify-content: center;
