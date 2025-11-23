@@ -1,11 +1,11 @@
 import { makeSelectOrderByNumber } from '@/selectors/ordersSelectors';
 import { useGetOrderByNumberQuery } from '@/store/api';
+import { useAppSelector } from '@/store/hooks';
 import {
   CurrencyIcon,
   FormattedDate,
 } from '@krgaa/react-developer-burger-ui-components';
 import { skipToken } from '@reduxjs/toolkit/query';
-import { useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
 
 import Loader from '@components/loader/loader';
@@ -27,7 +27,7 @@ const OrderDetails = (): React.JSX.Element => {
 
   const accessToken = getAccessToken()?.replace('Bearer ', '') ?? '';
 
-  const wsOrder = useSelector(makeSelectOrderByNumber(orderNumber, accessToken));
+  const wsOrder = useAppSelector(makeSelectOrderByNumber(orderNumber, accessToken));
 
   const { data: apiOrder, isLoading } = useGetOrderByNumberQuery(
     wsOrder ? skipToken : orderNumber

@@ -4,11 +4,13 @@ import {
   Logo,
   ProfileIcon,
 } from '@krgaa/react-developer-burger-ui-components';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 
 import styles from './app-header.module.css';
 
 export const AppHeader = (): React.JSX.Element => {
+  const location = useLocation();
+  const isHome = location.pathname === '/';
   return (
     <header className={styles.header}>
       <nav className={`${styles.menu} p-4`}>
@@ -37,7 +39,13 @@ export const AppHeader = (): React.JSX.Element => {
           </NavLink>
         </div>
         <div className={styles.logo}>
-          <Logo />
+          {isHome ? (
+            <Logo />
+          ) : (
+            <Link to="/">
+              <Logo />
+            </Link>
+          )}
         </div>
         <NavLink
           to="/profile"
