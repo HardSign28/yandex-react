@@ -134,65 +134,67 @@ const Profile = (): React.JSX.Element => {
   };
 
   return (
-    <form onSubmit={(e) => void onSave(e)}>
-      <Input
-        type="text"
-        placeholder="Имя"
-        onChange={onChangeName}
-        value={name}
-        name="name"
-        error={false}
-        ref={inputRef}
-        errorText="Ошибка"
-        size="default"
-        icon="EditIcon"
-        disabled={nameDisabled}
-        onIconClick={onNameIconClick}
-        onBlur={() => setNameDisabled(true)}
-      />
+    <div className={styles.profile}>
+      <form className="mt-30" onSubmit={(e) => void onSave(e)}>
+        <Input
+          type="text"
+          placeholder="Имя"
+          onChange={onChangeName}
+          value={name}
+          name="name"
+          error={false}
+          ref={inputRef}
+          errorText="Ошибка"
+          size="default"
+          icon="EditIcon"
+          disabled={nameDisabled}
+          onIconClick={onNameIconClick}
+          onBlur={() => setNameDisabled(true)}
+        />
 
-      <EmailInput
-        placeholder="Логин"
-        onChange={onChangeEmail}
-        value={email}
-        name="email"
-        isIcon={true}
-        extraClass="mt-6"
-      />
+        <EmailInput
+          placeholder="Логин"
+          onChange={onChangeEmail}
+          value={email}
+          name="email"
+          isIcon={true}
+          extraClass="mt-6"
+        />
 
-      <PasswordInput
-        onChange={onChangePassword}
-        value={password}
-        name="password"
-        extraClass="mt-6"
-        icon="EditIcon"
-      />
+        <PasswordInput
+          onChange={onChangePassword}
+          value={password}
+          name="password"
+          extraClass="mt-6"
+          icon="EditIcon"
+        />
 
-      {hasChanges && (
-        <div className={styles.profile_footer}>
-          <Button
-            htmlType="button"
-            type="secondary"
-            size="medium"
-            extraClass="mt-6"
-            onClick={onCancel}
-            disabled={isLoading}
-          >
-            Отмена
-          </Button>
+        {hasChanges && (
+          <div className={styles.profile_footer}>
+            <Button
+              htmlType="button"
+              type="secondary"
+              size="medium"
+              extraClass="mt-6"
+              onClick={onCancel}
+              disabled={isLoading}
+            >
+              Отмена
+            </Button>
 
-          <Button
-            htmlType="submit"
-            type="primary"
-            size="medium"
-            extraClass={`${styles.button} button_with_spinner mt-6`}
-            disabled={!hasChanges || isLoading}
-          >
-            {isLoading ? <IconSpinner className="button_spinner" /> : 'Сохранить'}
-          </Button>
-        </div>
-      )}
-    </form>
+            <Button
+              htmlType="submit"
+              type="primary"
+              size="medium"
+              extraClass={`${styles.button} button_with_spinner mt-6`}
+              disabled={!hasChanges || isLoading}
+            >
+              {isLoading ? <IconSpinner className="button_spinner" /> : 'Сохранить'}
+            </Button>
+          </div>
+        )}
+      </form>
+    </div>
   );
 };
 

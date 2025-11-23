@@ -130,7 +130,7 @@ export const BurgerIngredients = (): React.JSX.Element => {
   }, [currentTab]);
 
   return (
-    <section className={`${styles.burger_ingredients} mb-10`}>
+    <section className={styles.burger_ingredients}>
       <nav>
         <ul className={styles.menu}>
           {TABS.map((tab) => (

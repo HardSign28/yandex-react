@@ -9,7 +9,9 @@ import { AppHeader } from '@components/app-header/app-header';
 import IngredientDetails from '@components/burger-ingredients/ingredient-details/ingredient-details';
 import Loader from '@components/loader/loader';
 import Modal from '@components/modal/modal';
+import OrderDetails from '@components/order-card/order-details/order-details';
 import { ProtectedRoute } from '@components/protected-route/protected-route';
+import Feed from '@pages/feed/feed';
 import ForgotPassword from '@pages/forgot-password/forgot-password';
 import Home from '@pages/home/home';
 import Login from '@pages/login/login';
@@ -60,6 +62,10 @@ export const App = (): React.JSX.Element => {
           <Route path="orders" element={<Orders />} />
         </Route>
         <Route
+          path="/profile/orders/:id"
+          element={<ProtectedRoute component={<OrderDetails />} />}
+        />
+        <Route
           path="/ingredients/:ingredientId"
           element={
             selectedIngredient ? (
@@ -81,6 +87,8 @@ export const App = (): React.JSX.Element => {
         />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/feed" element={<Feed />} />
+        <Route path="/feed/:id" element={<OrderDetails />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 
@@ -103,6 +111,22 @@ export const App = (): React.JSX.Element => {
                 ) : (
                   <div>Ингредиент не найден.</div>
                 )}
+              </Modal>
+            }
+          />
+          <Route
+            path="/feed/:id"
+            element={
+              <Modal isOpen={!!background} closeOnOverlay onClose={handleModalClose}>
+                <OrderDetails />
+              </Modal>
+            }
+          />
+          <Route
+            path="/profile/orders/:id"
+            element={
+              <Modal isOpen={!!background} closeOnOverlay onClose={handleModalClose}>
+                <OrderDetails />
               </Modal>
             }
           />

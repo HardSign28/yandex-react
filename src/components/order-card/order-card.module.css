@@ -1,0 +1,32 @@
+.order_card {
+  flex: 1;
+  background: var(--background);
+  border-radius: var(--common-border-radius-s);
+}
+
+.order_card_header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.order_card_footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.order_card_price {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.order_card_ingredients {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.order_done {
+  color: var(--colors-interface-success);
+}

@@ -2,6 +2,10 @@
   min-width: 167px;
 }
 
+.profile {
+  width: 100%;
+}
+
 .profile_footer {
   display: flex;
   justify-content: flex-end;

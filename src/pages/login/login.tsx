@@ -13,9 +13,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import styles from './login.module.css';
 
 const Login = (): React.JSX.Element => {
-  const [password, setPassword] = useState('password');
-  const [email, setEmail] = useState('demo@test.kz');
-  const [login, { isLoading, data, error }] = useLoginMutation();
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [login, { isLoading }] = useLoginMutation();
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
@@ -48,55 +48,52 @@ const Login = (): React.JSX.Element => {
     const accessToken = res.accessToken ?? '';
     const refreshToken = res.refreshToken ?? '';
     dispatch(setCredentials({ user: res.user, accessToken, refreshToken }));
-    console.log('data', data);
-    console.log('error', error);
-    console.log('user', res.user);
-    console.log('accessToken', accessToken);
-    console.log('refreshToken', refreshToken);
     await navigate('/');
   };
 
   return (
-    <main className="main pl-4 pr-4">
-      <form className="auth_page_wrapper" onSubmit={(e) => void onSubmit(e)}>
-        <h1 className="text text_type_main-medium text-center">Вход</h1>
-        <EmailInput
-          onChange={onChangeEmail}
-          value={email}
-          name={'email'}
-          isIcon={false}
-          extraClass="mt-6"
-        />
-        <PasswordInput
-          onChange={onChangePassword}
-          value={password}
-          name={'password'}
-          extraClass="mt-6"
-        />
-        <Button
-          htmlType="submit"
-          type="primary"
-          size="medium"
-          extraClass={`${styles.button} button_with_spinner mt-6 margin-auto-x`}
-        >
-          {isLoading ? <IconSpinner className="button_spinner" /> : 'Войти'}
-        </Button>
-        <div className="mt-20 text text_type_main-default text_color_inactive text-center">
-          <p>
-            Вы - новый пользователь?
-            <Link className="auth_link ml-2" to="/register">
-              Зарегистрироваться
-            </Link>
-          </p>
-          <p>
-            Забыли пароль?
-            <Link className="auth_link ml-2" to="/forgot-password">
-              Восстановить пароль
-            </Link>
-          </p>
-        </div>
-      </form>
-    </main>
+    <div className="container">
+      <main className="main pl-4 pr-4 pt-5 pb-5">
+        <form className="auth_page_wrapper" onSubmit={(e) => void onSubmit(e)}>
+          <h1 className="text text_type_main-medium text-center">Вход</h1>
+          <EmailInput
+            onChange={onChangeEmail}
+            value={email}
+            name={'email'}
+            isIcon={false}
+            extraClass="mt-6"
+          />
+          <PasswordInput
+            onChange={onChangePassword}
+            value={password}
+            name={'password'}
+            extraClass="mt-6"
+          />
+          <Button
+            htmlType="submit"
+            type="primary"
+            size="medium"
+            extraClass={`${styles.button} button_with_spinner mt-6 margin-auto-x`}
+          >
+            {isLoading ? <IconSpinner className="button_spinner" /> : 'Войти'}
+          </Button>
+          <div className="mt-20 text text_type_main-default text_color_inactive text-center">
+            <p>
+              Вы - новый пользователь?
+              <Link className="auth_link ml-2" to="/register">
+                Зарегистрироваться
+              </Link>
+            </p>
+            <p>
+              Забыли пароль?
+              <Link className="auth_link ml-2" to="/forgot-password">
+                Восстановить пароль
+              </Link>
+            </p>
+          </div>
+        </form>
+      </main>
+    </div>
   );
 };
 

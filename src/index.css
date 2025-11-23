@@ -20,10 +20,16 @@ body {
   flex: 1;
   justify-content: center;
   align-items: center;
-  width: 1260px;
-  margin-right: auto;
-  margin-left: auto;
-  padding: 20px 0;
+}
+
+.container {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1260px;
+  margin: 0 auto;
+  overflow: hidden;
 }
 
 .auth_page_wrapper {
@@ -69,6 +75,25 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.digits_shadow {
+  text-shadow:
+    0 0 16px rgb(51 51 255 / 25%),
+    0 4px 32px rgb(51 51 255 / 50%),
+    0 0 8px rgb(51 51 255 / 25%);
+}
+
+.hidden_link {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+.price {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
 }
 
 /* Fix for scrollbar */

@@ -22,46 +22,48 @@ const ProfileLayout = (): React.JSX.Element => {
     }
   };
   return (
-    <main className={`${styles.main} pl-4 pr-4 mt-30`}>
-      <aside className={styles.aside}>
-        <nav>
-          <NavLink
-            to="/profile"
-            end
-            className={({ isActive }) =>
-              `text text_type_main-medium link mt-4 mb-7 ${isActive ? 'link_active' : ''}`
-            }
+    <div className="container">
+      <main className={`${styles.main} pl-4 pr-4 pb-10 pt-10`}>
+        <aside className={`${styles.aside} mt-30`}>
+          <nav>
+            <NavLink
+              to="/profile"
+              end
+              className={({ isActive }) =>
+                `text text_type_main-medium link mt-4 mb-7 ${isActive ? 'link_active' : ''}`
+              }
+            >
+              Профиль
+            </NavLink>
+            <NavLink
+              to="orders"
+              className={({ isActive }) =>
+                `text text_type_main-medium link mt-4 mb-7 ${isActive ? 'link_active' : ''}`
+              }
+            >
+              История заказов
+            </NavLink>
+            <NavLink
+              to=""
+              onClick={() => void onLogout()}
+              className="text text_type_main-medium link mt-4 mb-7"
+            >
+              Выход
+            </NavLink>
+          </nav>
+          <div
+            className={`${styles.description} text text_type_main-default text_color_inactive mt-30`}
           >
-            Профиль
-          </NavLink>
-          <NavLink
-            to="orders"
-            className={({ isActive }) =>
-              `text text_type_main-medium link mt-4 mb-7 ${isActive ? 'link_active' : ''}`
-            }
-          >
-            История заказов
-          </NavLink>
-          <NavLink
-            to=""
-            onClick={() => void onLogout()}
-            className="text text_type_main-medium link mt-4 mb-7"
-          >
-            Выход
-          </NavLink>
-        </nav>
-        <div
-          className={`${styles.description} text text_type_main-default text_color_inactive mt-30`}
-        >
-          В этом разделе вы можете
-          <br />
-          изменить свои персональные данные
+            В этом разделе вы можете
+            <br />
+            изменить свои персональные данные
+          </div>
+        </aside>
+        <div className={`${styles.outlet} ml-15`}>
+          <Outlet />
         </div>
-      </aside>
-      <div className="ml-15">
-        <Outlet />
-      </div>
-    </main>
+      </main>
+    </div>
   );
 };
 

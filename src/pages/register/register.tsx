@@ -16,9 +16,9 @@ import type React from 'react';
 import styles from './register.module.css';
 
 const Register = (): React.JSX.Element => {
-  const [name, setName] = useState('Космос');
-  const [password, setPassword] = useState('password');
-  const [email, setEmail] = useState('demo@test.kz');
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
   const inputRef = useRef(null);
   const [register, { isLoading }] = useRegisterMutation();
   const dispatch = useAppDispatch();
@@ -54,7 +54,7 @@ const Register = (): React.JSX.Element => {
   };
 
   return (
-    <main className="main pl-4 pr-4">
+    <main className="main pl-4 pr-4 pt-5 pb-5">
       <form className="auth_page_wrapper" onSubmit={(e) => void onRegister(e)}>
         <h1 className="text text_type_main-medium text-center">Регистрация</h1>
         <Input
