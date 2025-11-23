@@ -40,7 +40,7 @@ describe('Burger Constructor flow', () => {
 
     cy.getFirstIngredient().click();
 
-    cy.get(SELECTORS.modal).should('exist');
+    cy.get(SELECTORS.modal).as('Modal').should('exist');
 
     cy.get('@ingredientCard')
       .find(SELECTORS.ingredientName)
@@ -57,7 +57,7 @@ describe('Burger Constructor flow', () => {
     cy.get('[data-testid="ingredient-carbohydrates"]').should('exist');
 
     cy.get(SELECTORS.modalClose).click();
-    cy.get(SELECTORS.modal).should('not.exist');
+    cy.get('@Modal').should('not.exist');
 
     cy.getFirstIngredient().drag(SELECTORS.bunTop);
 
@@ -69,7 +69,7 @@ describe('Burger Constructor flow', () => {
 
     cy.wait('@makeOrder');
 
-    cy.get(SELECTORS.modal).should('exist');
-    cy.get(SELECTORS.modal).contains('12345');
+    cy.get('@Modal').should('exist');
+    cy.get('@Modal').contains('12345');
   });
 });
