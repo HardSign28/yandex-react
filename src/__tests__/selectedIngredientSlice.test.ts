@@ -1,5 +1,9 @@
+import selectedIngredientReducer, {
+  select,
+} from '@/store/slices/selectedIngredientSlice';
 import { describe, it, expect } from 'vitest';
-import selectedIngredientReducer, { select } from '@/store/slices/selectedIngredientSlice';
+
+import type { UnknownAction } from '@reduxjs/toolkit';
 import type { TIngredient, TSelectedState } from '@utils/types';
 
 describe('selectedIngredientSlice reducer', () => {
@@ -8,20 +12,20 @@ describe('selectedIngredientSlice reducer', () => {
   };
 
   it('initializes correctly', () => {
-    const state = selectedIngredientReducer(undefined, { type: '' } as any);
+    const state = selectedIngredientReducer(undefined, { type: '' } as UnknownAction);
     expect(state).toEqual(initialState);
   });
 
   it('select sets current ingredient', () => {
     const ingredient: TIngredient = {
-      _id: '1',
-      name: 'Булка',
+      _id: '60666c42cc7b410027a1a9b1',
+      name: 'Краторная булка N-200i',
       type: 'bun',
-      proteins: 10,
-      fat: 5,
-      carbohydrates: 20,
-      calories: 150,
-      price: 50,
+      proteins: 80,
+      fat: 24,
+      carbohydrates: 53,
+      calories: 420,
+      price: 1255,
       image: '',
       image_large: '',
       image_mobile: '',
@@ -29,7 +33,7 @@ describe('selectedIngredientSlice reducer', () => {
     };
 
     const action = { type: select.type, payload: ingredient };
-    const next = selectedIngredientReducer(initialState, action as any);
+    const next = selectedIngredientReducer(initialState, action as UnknownAction);
 
     expect(next.current).toEqual(ingredient);
   });
@@ -37,14 +41,14 @@ describe('selectedIngredientSlice reducer', () => {
   it('select(null) resets selected ingredient', () => {
     const dirty: TSelectedState = {
       current: {
-        _id: '2',
-        name: 'Соус',
-        type: 'sauce',
-        proteins: 1,
-        fat: 1,
-        carbohydrates: 1,
-        calories: 1,
-        price: 10,
+        _id: '60666c42cc7b410027a1a9b5',
+        name: 'Говяжий метеорит (отбивная)',
+        type: 'main',
+        proteins: 800,
+        fat: 800,
+        carbohydrates: 300,
+        calories: 2674,
+        price: 3000,
         image: '',
         image_large: '',
         image_mobile: '',
@@ -53,7 +57,7 @@ describe('selectedIngredientSlice reducer', () => {
     };
 
     const action = { type: select.type, payload: null };
-    const next = selectedIngredientReducer(dirty, action as any);
+    const next = selectedIngredientReducer(dirty, action as UnknownAction);
 
     expect(next.current).toBeNull();
   });

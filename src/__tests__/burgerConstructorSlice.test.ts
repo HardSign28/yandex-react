@@ -19,7 +19,7 @@ describe('burgerConstructorSlice reducer', () => {
   const makeIngredient = (id: string): TIngredient & { uid: string } => ({
     _id: id,
     uid: `uid-${id}`,
-    name: `Ingredient ${id}`,
+    name: `Ингредиент ${id}`,
     type: 'main',
     proteins: 0,
     fat: 0,
@@ -40,13 +40,13 @@ describe('burgerConstructorSlice reducer', () => {
   it('setBun assigns bun', () => {
     const bun: TIngredient = {
       _id: 'bun1',
-      name: 'Big Bun',
+      name: 'Краторная булка N-200i',
       type: 'bun',
-      proteins: 10,
-      fat: 5,
-      carbohydrates: 20,
-      calories: 150,
-      price: 50,
+      proteins: 80,
+      fat: 24,
+      carbohydrates: 53,
+      calories: 420,
+      price: 1255,
       image: '',
       image_large: '',
       image_mobile: '',
