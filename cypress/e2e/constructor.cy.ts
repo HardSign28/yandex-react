@@ -34,6 +34,29 @@ describe('Burger Constructor flow', () => {
   });
 
   it('может собрать заказ и открыть модалку заказа', () => {
+    cy.get('[data-testid="ingredient-card"]').first().as('ingredientCard');
+
+    cy.get('@ingredientCard').click();
+
+    cy.get('[data-testid="modal"]').should('exist');
+
+    cy.get('@ingredientCard')
+      .find('[data-testid="ingredient-name"]')
+      .invoke('text')
+      .then((ingredientName) => {
+        cy.get('[data-testid="ingredient-modal-name"]')
+          .invoke('text')
+          .should('contain', ingredientName.trim());
+      });
+
+    cy.get('[data-testid="ingredient-calories"]').should('exist');
+    cy.get('[data-testid="ingredient-proteins"]').should('exist');
+    cy.get('[data-testid="ingredient-fat"]').should('exist');
+    cy.get('[data-testid="ingredient-carbohydrates"]').should('exist');
+
+    cy.get('[data-testid="modal-close"]').click();
+    cy.get('[data-testid="modal"]').should('not.exist');
+
     cy.get('[data-testid="ingredient-card"][data-type="bun"]')
       .first()
       .trigger('dragstart');
