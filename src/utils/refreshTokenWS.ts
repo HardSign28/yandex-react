@@ -1,3 +1,4 @@
+import { API_URL } from '@/constants/api';
 import { store } from '@/store';
 import { setCredentials, logout } from '@/store/slices/authSlice';
 
@@ -11,7 +12,7 @@ export const refreshTokenWS = async (): Promise<string | null> => {
   }
 
   try {
-    const response = await fetch('/auth/token', {
+    const response = await fetch(`${API_URL}/auth/token`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token: refreshToken }),

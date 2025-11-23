@@ -16,7 +16,7 @@ const Orders = (): React.JSX.Element => {
 
   return (
     <div className={`${styles.main}`}>
-      {isLoading && <Loader />}
+      {(isLoading || !data) && <Loader />}
       {data && (
         <div className={`${styles.orders} custom-scroll`}>
           {data?.orders
