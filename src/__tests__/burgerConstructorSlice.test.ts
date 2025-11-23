@@ -3,7 +3,6 @@ import burgerConstructorReducer, {
   addIngredient,
   removeIngredient,
   moveIngredient,
-  clearConstructor,
   setBun, resetConstructor,
 } from '@/store/slices/burgerConstructorSlice';
 
