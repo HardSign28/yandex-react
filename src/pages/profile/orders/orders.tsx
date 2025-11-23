@@ -23,7 +23,7 @@ const Orders = (): React.JSX.Element => {
             .map((order) => (
               <Link
                 key={order._id}
-                to={`/feed/${order.number}`}
+                to={`/profile/orders/${order.number}`}
                 state={{ background: location }}
                 className="hidden_link pr-2"
               >
