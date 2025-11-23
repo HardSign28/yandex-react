@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
 describe('Burger Constructor flow', () => {
   beforeEach(() => {
     cy.intercept('GET', '**/ingredients', {
