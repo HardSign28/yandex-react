@@ -9,14 +9,13 @@ import styles from './orders.module.css';
 const Orders = (): React.JSX.Element => {
   const location = useLocation();
   const accessToken = localStorage.getItem('accessToken')?.replace('Bearer ', '');
-
   const { data, isLoading } = useUserOrdersQuery(accessToken!, {
     skip: !accessToken,
   });
 
   return (
     <div className={`${styles.main}`}>
-      {(isLoading || !data) && <Loader />}
+      {(isLoading || !data?.orders) && <Loader />}
       {data && (
         <div className={`${styles.orders} custom-scroll`}>
           {data?.orders

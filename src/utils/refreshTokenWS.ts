@@ -1,15 +1,10 @@
 import { API_URL } from '@/constants/api';
 import { store } from '@/store';
-import { setCredentials, logout } from '@/store/slices/authSlice';
+import { setCredentials } from '@/store/slices/authSlice';
 
 export const refreshTokenWS = async (): Promise<string | null> => {
   const state = store.getState();
-  const refreshToken = state.auth.refreshToken;
-
-  if (!refreshToken) {
-    store.dispatch(logout());
-    return null;
-  }
+  const refreshToken = state.auth.refreshToken ?? localStorage.getItem('refreshToken');
 
   try {
     const response = await fetch(`${API_URL}/auth/token`, {
@@ -34,7 +29,6 @@ export const refreshTokenWS = async (): Promise<string | null> => {
 
     return data.accessToken.replace(/^Bearer\s+/, '');
   } catch {
-    store.dispatch(logout());
     return null;
   }
 };
