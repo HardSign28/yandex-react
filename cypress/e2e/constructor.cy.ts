@@ -1,3 +1,5 @@
+import { SELECTORS } from '../support/selectors';
+
 describe('Burger Constructor flow', () => {
   beforeEach(() => {
     cy.intercept('GET', '**/ingredients', {
@@ -27,24 +29,24 @@ describe('Burger Constructor flow', () => {
     window.localStorage.setItem('accessToken', 'test-access');
     window.localStorage.setItem('refreshToken', 'test-refresh');
 
-    cy.visit('http://localhost:5173/');
+    cy.visit('/');
 
     cy.wait('@getIngredients');
     cy.wait('@getUser');
   });
 
   it('может собрать заказ и открыть модалку заказа', () => {
-    cy.get('[data-testid="ingredient-card"]').first().as('ingredientCard');
+    cy.get(SELECTORS.ingredientCard).first().as('ingredientCard');
 
-    cy.get('@ingredientCard').click();
+    cy.getFirstIngredient().click();
 
-    cy.get('[data-testid="modal"]').should('exist');
+    cy.get(SELECTORS.modal).should('exist');
 
     cy.get('@ingredientCard')
-      .find('[data-testid="ingredient-name"]')
+      .find(SELECTORS.ingredientName)
       .invoke('text')
       .then((ingredientName) => {
-        cy.get('[data-testid="ingredient-modal-name"]')
+        cy.get(SELECTORS.modalIngredientName)
           .invoke('text')
           .should('contain', ingredientName.trim());
       });
@@ -54,28 +56,28 @@ describe('Burger Constructor flow', () => {
     cy.get('[data-testid="ingredient-fat"]').should('exist');
     cy.get('[data-testid="ingredient-carbohydrates"]').should('exist');
 
-    cy.get('[data-testid="modal-close"]').click();
-    cy.get('[data-testid="modal"]').should('not.exist');
+    cy.get(SELECTORS.modalClose).click();
+    cy.get(SELECTORS.modal).should('not.exist');
 
     cy.get('[data-testid="ingredient-card"][data-type="bun"]')
       .first()
       .trigger('dragstart');
 
-    cy.get('[data-testid="drop-bun-top"]').trigger('drop');
+    cy.get(SELECTORS.bunTop).trigger('drop');
 
     cy.get(
-      '[data-testid="ingredient-card"][data-type="main"],[data-testid="ingredient-card"][data-type="sauce"]'
+      '[data-testid="ingredient-card"][data-type="main"], [data-testid="ingredient-card"][data-type="sauce"]'
     )
       .first()
       .trigger('dragstart');
 
-    cy.get('[data-testid="drop-ingredients"]').trigger('drop');
+    cy.get(SELECTORS.dropIngredients).trigger('drop');
 
-    cy.get('[data-testid="order-button"]').click();
+    cy.get(SELECTORS.orderButton).click();
 
     cy.wait('@makeOrder');
 
-    cy.get('[data-testid="modal"]').should('exist');
-    cy.get('[data-testid="modal"]').contains('12345');
+    cy.get(SELECTORS.modal).should('exist');
+    cy.get(SELECTORS.modal).contains('12345');
   });
 });

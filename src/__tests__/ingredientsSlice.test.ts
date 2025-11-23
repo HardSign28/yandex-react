@@ -1,8 +1,8 @@
-import ingredientsReducer from '@/store/slices/ingredientsSlice';
+import ingredientsReducer, { initialState } from '@/store/slices/ingredientsSlice';
 import { describe, it, expect } from 'vitest';
 
 import type { UnknownAction } from '@reduxjs/toolkit';
-import type { TIngredient, TIngredientsState } from '@utils/types';
+import type { TIngredient } from '@utils/types';
 
 type TestMeta = {
   arg: {
@@ -21,11 +21,6 @@ const makeMeta = (): TestMeta => ({
 });
 
 describe('ingredientsSlice reducer', () => {
-  const initialState: TIngredientsState = {
-    items: [],
-    error: null,
-  };
-
   it('initializes correctly', () => {
     const state = ingredientsReducer(undefined, { type: '' } as UnknownAction);
     expect(state).toEqual(initialState);

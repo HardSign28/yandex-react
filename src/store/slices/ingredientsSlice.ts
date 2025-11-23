@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import type { TIngredientsState } from '@utils/types';
 
-const initialState: TIngredientsState = { items: [], error: null };
+export const initialState: TIngredientsState = { items: [], error: null };
 
 const ingredientsSlice = createSlice({
   name: 'ingredients',

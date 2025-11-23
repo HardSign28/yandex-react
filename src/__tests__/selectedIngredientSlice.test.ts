@@ -1,5 +1,6 @@
 import selectedIngredientReducer, {
   select,
+  initialState,
 } from '@/store/slices/selectedIngredientSlice';
 import { describe, it, expect } from 'vitest';
 
@@ -7,10 +8,6 @@ import type { UnknownAction } from '@reduxjs/toolkit';
 import type { TIngredient, TSelectedState } from '@utils/types';
 
 describe('selectedIngredientSlice reducer', () => {
-  const initialState: TSelectedState = {
-    current: null,
-  };
-
   it('initializes correctly', () => {
     const state = selectedIngredientReducer(undefined, { type: '' } as UnknownAction);
     expect(state).toEqual(initialState);

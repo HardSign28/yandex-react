@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import type { TOrderState } from '@utils/types';
 
-const initialState: TOrderState = { last: null, error: null, isLoading: false };
+export const initialState: TOrderState = { last: null, error: null, isLoading: false };
 
 const orderSlice = createSlice({
   name: 'order',

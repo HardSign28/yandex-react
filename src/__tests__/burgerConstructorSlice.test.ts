@@ -4,6 +4,7 @@ import burgerConstructorReducer, {
   moveIngredient,
   setBun,
   resetConstructor,
+  initialState,
 } from '@/store/slices/burgerConstructorSlice';
 import { describe, it, expect } from 'vitest';
 
@@ -11,11 +12,6 @@ import type { UnknownAction } from '@reduxjs/toolkit';
 import type { TIngredient, TConstructorState } from '@utils/types';
 
 describe('burgerConstructorSlice reducer', () => {
-  const initialState: TConstructorState = {
-    bun: null,
-    ingredients: [],
-  };
-
   const makeIngredient = (id: string): TIngredient & { uid: string } => ({
     _id: id,
     uid: `uid-${id}`,

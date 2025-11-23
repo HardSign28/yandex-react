@@ -3,6 +3,7 @@ import authReducer, {
   logout,
   setUser,
   setIsAuthChecked,
+  initialState,
 } from '@/store/slices/authSlice';
 import { describe, it, expect } from 'vitest';
 
@@ -10,14 +11,6 @@ import type { UnknownAction } from '@reduxjs/toolkit';
 import type { TAuthState, TUser } from '@utils/types';
 
 describe('authSlice reducer', () => {
-  const initialState: TAuthState = {
-    user: null,
-    accessToken: null,
-    refreshToken: null,
-    isAuthenticated: false,
-    isAuthChecked: false,
-  };
-
   it('initializes correctly', () => {
     const state = authReducer(undefined, { type: '' } as UnknownAction);
     expect(state).toEqual(initialState);

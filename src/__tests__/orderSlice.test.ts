@@ -1,4 +1,4 @@
-import orderReducer from '@/store/slices/orderSlice';
+import orderReducer, { initialState } from '@/store/slices/orderSlice';
 import { describe, it, expect } from 'vitest';
 
 import type { UnknownAction } from '@reduxjs/toolkit';
@@ -21,12 +21,6 @@ const makeMeta = (): TestMeta => ({
 });
 
 describe('orderSlice reducer', () => {
-  const initialState: TOrderState = {
-    last: null,
-    error: null,
-    isLoading: false,
-  };
-
   it('initializes correctly', () => {
     const state = orderReducer(undefined, { type: '' } as UnknownAction);
     expect(state).toEqual(initialState);
