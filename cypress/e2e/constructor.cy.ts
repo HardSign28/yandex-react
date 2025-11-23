@@ -59,19 +59,11 @@ describe('Burger Constructor flow', () => {
     cy.get(SELECTORS.modalClose).click();
     cy.get(SELECTORS.modal).should('not.exist');
 
-    cy.get('[data-testid="ingredient-card"][data-type="bun"]')
-      .first()
-      .trigger('dragstart');
+    cy.getFirstIngredient().drag(SELECTORS.bunTop);
 
-    cy.get(SELECTORS.bunTop).trigger('drop');
-
-    cy.get(
-      '[data-testid="ingredient-card"][data-type="main"], [data-testid="ingredient-card"][data-type="sauce"]'
-    )
-      .first()
-      .trigger('dragstart');
-
-    cy.get(SELECTORS.dropIngredients).trigger('drop');
+    cy.get('[data-testid="ingredient-card"][data-type="main"]').drag(
+      SELECTORS.dropIngredients
+    );
 
     cy.get(SELECTORS.orderButton).click();
 
