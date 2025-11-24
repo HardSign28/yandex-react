@@ -31,6 +31,9 @@ const IngredientItem = ({
       to={`/ingredients/${ingredientId}`}
       state={{ background: location }}
       className="hidden_link"
+      data-testid="ingredient-card"
+      data-type={ingredient.type}
+      data-name={ingredient.name}
     >
       <li
         ref={(node) => {
@@ -58,7 +61,10 @@ const IngredientItem = ({
           {formatThousands(ingredient.price)}
           <CurrencyIcon type="primary" />
         </div>
-        <div className={`${styles.ingredient_item_name} text text_type_main-default`}>
+        <div
+          data-testid="ingredient-name"
+          className={`${styles.ingredient_item_name} text text_type_main-default`}
+        >
           {ingredient.name}
         </div>
         {count > 0 && (

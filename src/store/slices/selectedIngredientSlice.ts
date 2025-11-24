@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { TSelectedState, TIngredient } from '@utils/types';
 
-const initialState: TSelectedState = { current: null };
+export const initialState: TSelectedState = { current: null };
 
 const selectedIngredientSlice = createSlice({
   name: 'selectedIngredient',

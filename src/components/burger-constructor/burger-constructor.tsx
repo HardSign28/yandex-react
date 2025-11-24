@@ -155,6 +155,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
           className={`${styles.burger_ingredient_empty} ${
             canDropTop || canDropBottom ? styles.can_drop : ''
           } constructor-element constructor-element_pos_top ml-10`}
+          data-testid="drop-bun-top"
         >
           {bun ? (
             <ConstructorElement
@@ -174,6 +175,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
             if (node) dropMidRef(node);
           }}
           className={`${styles.burger_ingredients} custom-scroll`}
+          data-testid="drop-ingredients"
         >
           {ingredients.length === 0 ? (
             <div
@@ -230,6 +232,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
           size="large"
           extraClass={`${styles.button} button_with_spinner`}
           disabled={isLoading}
+          data-testid="order-button"
         >
           {isLoading ? <IconSpinner className="button_spinner" /> : 'Оформить заказ'}
         </Button>

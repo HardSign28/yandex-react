@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { TConstructorState, TIngredient, TIngredientUid } from '@utils/types';
 
-const initialState: TConstructorState = { bun: null, ingredients: [] };
+export const initialState: TConstructorState = { bun: null, ingredients: [] };
 
 const burgerConstructorSlice = createSlice({
   name: 'burgerConstructor',

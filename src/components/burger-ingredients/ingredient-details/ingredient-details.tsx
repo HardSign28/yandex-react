@@ -20,24 +20,29 @@ const IngredientDetails = ({ ingredient }: TIngredientProps): React.JSX.Element 
           decoding="async"
         />
       </picture>
-      <div className="text text_type_main-medium mb-8">{ingredient?.name}</div>
+      <div
+        className="text text_type_main-medium mb-8"
+        data-testid="ingredient-modal-name"
+      >
+        {ingredient?.name}
+      </div>
       <div
         className={`${styles.nutritional_facts} text text_type_main-default text_color_inactive`}
       >
         <div className={styles.nutritional_facts_item}>
-          <div>Калории, ккал</div>
+          <div data-testid="ingredient-calories">Калории, ккал</div>
           <div className="text text_type_digits-default">{ingredient?.calories}</div>
         </div>
         <div className={styles.nutritional_facts_item}>
-          <div>Белки, г</div>
+          <div data-testid="ingredient-proteins">Белки, г</div>
           <div className="text text_type_digits-default">{ingredient?.proteins}</div>
         </div>
         <div className={styles.nutritional_facts_item}>
-          <div>Жиры, г</div>
+          <div data-testid="ingredient-fat">Жиры, г</div>
           <div className="text text_type_digits-default">{ingredient?.fat}</div>
         </div>
         <div className={styles.nutritional_facts_item}>
-          <div>Углеводы, г</div>
+          <div data-testid="ingredient-carbohydrates">Углеводы, г</div>
           <div className="text text_type_digits-default">
             {ingredient?.carbohydrates}
           </div>
