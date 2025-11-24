@@ -75,11 +75,7 @@ const NotFound: React.FC = (): React.JSX.Element => {
         ))}
       </svg>
       <div className={styles.page}>
-        <img
-          src={imgUfo}
-          className={`${styles.img_ufo} mt-15`}
-          alt="iconOrderDetails"
-        ></img>
+        <img src={imgUfo} className={styles.img_ufo} alt="Image UFO"></img>
         <h1 className="text text_type_digits-large">404</h1>
         <div className="text text_type_main-default text-center mb-10">
           Такой страницы не существует

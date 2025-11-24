@@ -12,6 +12,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding-bottom: 40px;
+  overflow-y: auto;
 }
 
 svg {
@@ -35,6 +37,7 @@ svg {
 }
 
 .img_ufo {
+  flex-shrink: 0;
   width: 200px;
   height: 150px;
 }
