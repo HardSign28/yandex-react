@@ -21,7 +21,7 @@ export default defineConfig({
     tsconfigPaths(),
     svgr(),
   ],
-  base: '',
+  base: '/',
   test: {
     globals: true,
     environment: 'jsdom',
