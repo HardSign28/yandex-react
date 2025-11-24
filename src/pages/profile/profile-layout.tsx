@@ -59,7 +59,7 @@ const ProfileLayout = (): React.JSX.Element => {
             изменить свои персональные данные
           </div>
         </aside>
-        <div className="ml-15">
+        <div className={`${styles.outlet} ml-15`}>
           <Outlet />
         </div>
       </main>

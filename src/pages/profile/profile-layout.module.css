@@ -8,6 +8,10 @@
   max-width: 320px;
 }
 
+.outlet {
+  flex: 1;
+}
+
 .description {
   opacity: 0.4;
 }
